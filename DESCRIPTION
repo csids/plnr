@@ -1,0 +1,21 @@
+Package: plnr
+Title: Organising Projects
+Version: 2019.4.2
+Authors@R: person("Richard", "White", email = "w@rwhite.no", role = c("aut", "cre"))
+Description: A system to help you organize projects. Most analyses have three (or more) main sections: code, results, and data, each with different requirements (version control/sharing/encryption). You provide folder locations and 'org' helps you take care of the details.
+Depends: R (>= 3.3.0)
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+Imports: data.table,
+  methods,
+  R6,
+  fhi,
+  parallel,
+  foreach,
+  doParallel
+Suggests: testthat,
+  knitr,
+  rmarkdown
+RoxygenNote: 6.1.1
+VignetteBuilder: knitr

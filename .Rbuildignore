@@ -1,0 +1,11 @@
+^CRAN-RELEASE$
+.travis.yml
+travis/
+project.Rproj
+^.*\.Rproj$
+^\.Rproj\.user$
+LICENSE
+deploy.sh
+make.sh
+cran-comments.md
+^.*\.Rcheck
