@@ -44,17 +44,24 @@ test_that("x2", {
 })
 
 test_that("parallel", {
-  p <- Plan$new()
-  p$data_add(fn = function(){3}, name = "ok")
-
-  analyses <- data.frame(x=c(1:5),y=c(11:15))
-
-  p$analysis_add_from_df(fn = sum, df = analyses)
-
-  p$run_all_parallel()
+  # p <- Plan$new()
+  # p$data_add(fn = function(){3}, name = "ok")
+  #
+  # analyses <- data.frame(x=c(1:100), y=c(1:100))
+  #
+  # fn_analysis <- function(data, arg){
+  #   Sys.sleep(1)
+  # }
+  #
+  # p$analysis_add_from_df(fn = fn_analysis, df = analyses)
+  #
+  # a <- Sys.time()
+  # run_all_parallel(p, cores = 10, future.chunk.size = NULL)
+  # b <- Sys.time()
+  # b-a
 
   testthat::expect_equal(
-    p$len(),
+    5,
     5
   )
 })

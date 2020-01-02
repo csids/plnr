@@ -12,8 +12,9 @@ Imports: data.table,
   R6,
   fhi,
   parallel,
-  foreach,
-  doParallel
+  future,
+  future.callr,
+  future.apply
 Suggests: testthat,
   knitr,
   rmarkdown

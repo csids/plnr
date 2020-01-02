@@ -2,7 +2,6 @@
 #'
 #' @import data.table
 #' @import R6
-#' @import foreach
 #' @export
 #' @exportClass Plan
 Plan <- R6::R6Class(
@@ -61,53 +60,68 @@ Plan <- R6::R6Class(
       return(data)
     },
     analysis_get = function(index_analysis){
-      list_analysis[[index_analysis]]
+      p <- list_analysis[[index_analysis]]
+      p[[name_arg]]$index_analysis <- index_analysis
+      return(p)
     },
-    run_one = function(index_analysis){
-      data <- data_get()
+    run_one_with_data = function(index_analysis, data){
       p <- analysis_get(index_analysis)
       p$fn(
         data = data,
         p[[name_arg]]
       )
     },
+    run_one = function(index_analysis){
+      data <- data_get()
+      run_one_with_data(index_analysis = index_analysis, data = data)
+    },
     run_all = function(verbose = interactive()){
       data <- data_get()
       if(verbose) pb <- fhi::txt_progress_bar(max=len())
       for(i in x_seq_along()){
-        p <- analysis_get(i)
-        p$fn(
-          data = data,
-          p[[name_arg]]
-        )
+        run_one_with_data(index_analysis = i, data = data)
         if(verbose) utils::setTxtProgressBar(pb, value = i)
       }
-    },
-    run_all_parallel = function(cores = parallel::detectCores(), verbose = interactive()){
-      cl <- parallel::makeCluster(cores, outfile = "")
-      doParallel::registerDoParallel(cl)
-      on.exit(stopCluster(cl))
-
-      data <- data_get()
-      if(verbose) pb <- fhi::txt_progress_bar(max=len())
-
-      foreach(
-        i = x_seq_along(),
-        .packages = c("data.table", "noispiah"),
-        .verbose = T,
-        .export = c("data", "list_analysis", "analysis_get", "name_arg")
-        ) %dopar% {
-        p <- analysis_get(i)
-        p$fn(
-          data = data,
-          p[[name_arg]]
-        )
-        if(verbose) utils::setTxtProgressBar(pb, value = i)
-      }
-
     }
   )
 )
+
+# #' run_all_parallel
+# #' @param plan a
+# #' @param cores a
+# #' @param future.chunk.size Size of future chunks
+# #' @param verbose a
+# #' @param multisession a
+# #' @export
+# run_all_parallel <- function(
+#   plan,
+#   cores = parallel::detectCores(),
+#   future.chunk.size = NULL,
+#   verbose = interactive(),
+#   multisession = TRUE){
+#
+#   if(multisession){
+#     future::plan(future::multisession, workers = cores, earlySignal = TRUE)
+#   } else {
+#     future::plan(future.callr::callr, workers = cores, earlySignal = TRUE)
+#   }
+#   on.exit(future:::ClusterRegistry("stop"))
+#
+#   progressr::handlers(progressr::progress_handler(
+#     format = "[:bar] :current/:total (:percent) in :elapsedfull, eta: :eta",
+#     clear = FALSE
+#     ))
+#
+#   y <- progressr::with_progress({
+#     pb <- progressr::progressor(along = plan$x_seq_along())
+#     data <- plan$data_get()
+#
+#     future.apply::future_lapply(plan$x_seq_along(), function(x) {
+#       pb(sprintf("x=%g", x))
+#       plan$run_one_with_data(index_analysis = x, data = data)
+#     }, future.chunk.size = future.chunk.size)
+#   })
+# }
 
 #' Plans
 #' @import data.table
