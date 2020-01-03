@@ -1,14 +1,14 @@
 context("InitialiseProject")
 
 test_that("x1", {
-  fn <- function(data, arg){
+  fn <- function(data, arg) {
     return(1)
   }
 
   p <- Plan$new()
   p$data_add(df = cars, name = "ok")
-  p$analysis_add(fn = fn, r=4, g=5)
-  p$analysis_add(fn = fn, r=2, gg=9)
+  p$analysis_add(fn = fn, r = 4, g = 5)
+  p$analysis_add(fn = fn, r = 2, gg = 9)
 
   p$list_analysis[[1]]$args
 
@@ -19,21 +19,23 @@ test_that("x1", {
   ps$list_plan[[1]]$list_analysis[[2]]$args
 
   testthat::expect_equal(
-    p$analysis_get(index_analysis=1),
-    ps$analysis_get(index_plan=1, index_analysis=1)
+    p$analysis_get(index_analysis = 1),
+    ps$analysis_get(index_plan = 1, index_analysis = 1)
   )
 
   testthat::expect_equal(
     p$data_get(),
-    ps$data_get(index_plan=1)
+    ps$data_get(index_plan = 1)
   )
 })
 
 test_that("x2", {
   p <- Plan$new()
-  p$data_add(fn = function(){3}, name = "ok")
+  p$data_add(fn = function() {
+    3
+  }, name = "ok")
 
-  analyses <- data.frame(x=c(1:5),y=c(11:15))
+  analyses <- data.frame(x = c(1:5), y = c(11:15))
 
   p$analysis_add_from_df(fn = sum, df = analyses)
 
@@ -65,5 +67,3 @@ test_that("parallel", {
     5
   )
 })
-
-
