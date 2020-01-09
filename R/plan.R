@@ -34,7 +34,7 @@ Plan <- R6::R6Class(
       )
     },
     argset_add = function(name = uuid::UUIDgenerate(), ...) {
-      if(is.null(list_analysis[[name]])) list_analysis[[name]] <- list()
+      if (is.null(list_analysis[[name]])) list_analysis[[name]] <- list()
 
       dots <- list(...)
       list_analysis[[name]][[name_argset]] <<- dots
@@ -47,7 +47,7 @@ Plan <- R6::R6Class(
       }
     },
     analysis_add = function(fn = NULL, name = uuid::UUIDgenerate(), ...) {
-      if(is.null(list_analysis[[name]])) list_analysis[[name]] <- list()
+      if (is.null(list_analysis[[name]])) list_analysis[[name]] <- list()
 
       dots <- list(...)
       list_analysis[[name]] <<- list(fn = fn)
