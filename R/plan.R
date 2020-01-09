@@ -1,5 +1,16 @@
 #' plan class description
 #'
+#' An argset is:
+#' - a set of arguments
+#'
+#' An analysis is:
+#' - one argset
+#' - one function
+#'
+#' A plan is:
+#' - one data pull
+#' - a list of analyses
+#'
 #' @import data.table
 #' @import R6
 #' @export
@@ -11,9 +22,9 @@ Plan <- R6::R6Class(
   public = list(
     list_data = list(),
     list_analysis = list(),
-    name_arg = "arg",
-    initialize = function(name_arg = "arg") {
-      name_arg <<- name_arg
+    name_argset = "argset",
+    initialize = function(name_argset = "argset") {
+      name_argset <<- name_argset
     },
     data_add = function(fn = NULL, df = NULL, name) {
       list_data[[length(list_data) + 1]] <<- list(
@@ -22,17 +33,32 @@ Plan <- R6::R6Class(
         name = name
       )
     },
+    argset_add = function(name = uuid::UUIDgenerate(), ...) {
+      if(is.null(list_analysis[[name]])) list_analysis[[name]] <- list()
+
+      dots <- list(...)
+      list_analysis[[name]][[name_argset]] <<- dots
+    },
+    argset_add_from_df = function(df) {
+      df <- as.data.frame(df)
+      for (i in 1:nrow(df)) {
+        argset <- df[i, ]
+        do.call(argset_add, argset)
+      }
+    },
     analysis_add = function(fn = NULL, name = uuid::UUIDgenerate(), ...) {
+      if(is.null(list_analysis[[name]])) list_analysis[[name]] <- list()
+
       dots <- list(...)
       list_analysis[[name]] <<- list(fn = fn)
-      list_analysis[[name]][[name_arg]] <<- dots
+      list_analysis[[name]][[name_argset]] <<- dots
     },
     analysis_add_from_df = function(fn = NULL, df) {
       df <- as.data.frame(df)
       for (i in 1:nrow(df)) {
-        arg <- df[i, ]
-        arg$fn <- fn
-        do.call(analysis_add, arg)
+        argset <- df[i, ]
+        argset$fn <- fn
+        do.call(analysis_add, argset)
       }
     },
     analysis_fn_apply_to_all = function(fn) {
@@ -61,14 +87,18 @@ Plan <- R6::R6Class(
     },
     analysis_get = function(index_analysis) {
       p <- list_analysis[[index_analysis]]
-      p[[name_arg]]$index_analysis <- index_analysis
+      p[[name_argset]]$index_analysis <- index_analysis
+      return(p)
+    },
+    argset_get = function(index_analysis) {
+      p <- list_analysis[[index_analysis]][[name_argset]]
       return(p)
     },
     run_one_with_data = function(index_analysis, data) {
       p <- analysis_get(index_analysis)
       p$fn(
         data = data,
-        p[[name_arg]]
+        p[[name_argset]]
       )
     },
     run_one = function(index_analysis) {
@@ -118,7 +148,7 @@ Plan <- R6::R6Class(
 #
 #     future.apply::future_lapply(plan$x_seq_along(), function(x) {
 #       pb(sprintf("x=%g", x))
-#       plan$run_one_with_data(index_analysis = x, data = data)
+#       plan$run_one_with_data(index_arg = x, data = data)
 #     }, future.chunk.size = future.chunk.size)
 #   })
 # }
@@ -149,15 +179,15 @@ Plans <- R6::R6Class(
       }
 
       # add analyses
-      for (i in seq_along(p$list_analysis)) {
-        arg <- p$list_analysis[[i]]$arg
-        arg$fn <- p$list_analysis[[i]]$fn
+      for (i in seq_along(p$list_arg)) {
+        arg <- p$list_arg[[i]]$arg
+        arg$fn <- p$list_arg[[i]]$fn
 
         do.call(list_plan[[length(list_plan)]]$analysis_add, arg)
       }
     },
     analysis_add = function(fn, ...) {
-      list_analysis[[length(list_analysis) + 1]] <<- list(
+      list_arg[[length(list_arg) + 1]] <<- list(
         fn = fn,
         arg = ...
       )
@@ -179,8 +209,8 @@ Plans <- R6::R6Class(
     data_get = function(index_plan) {
       list_plan[[index_plan]]$data_get()
     },
-    analysis_get = function(index_plan, index_analysis) {
-      list_plan[[index_plan]]$analysis_get(index_analysis)
+    analysis_get = function(index_plan, index_arg) {
+      list_plan[[index_plan]]$analysis_get(index_arg)
     },
     analysis_run = function(data, analysis) {
       analysis$fn(

@@ -9,6 +9,8 @@
 Plan
 }
 \description{
-plan class description
+A plan is:
+- one data pull
+- multiple sets of arguments, each of which call a function once
 }
 \keyword{datasets}
