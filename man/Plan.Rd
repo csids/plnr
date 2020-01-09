@@ -9,8 +9,16 @@
 Plan
 }
 \description{
+An argset is:
+- a set of arguments
+}
+\details{
+An analysis is:
+- one argset
+- one function
+
 A plan is:
 - one data pull
-- multiple sets of arguments, each of which call a function once
+- a list of analyses
 }
 \keyword{datasets}
