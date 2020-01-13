@@ -98,9 +98,9 @@ Plan <- R6::R6Class(
     },
     run_one_with_data = function(index_analysis, data, ...) {
       p <- analysis_get(index_analysis)
-      if(length(formals(p$fn))<2){
+      if (length(formals(p$fn)) < 2) {
         stop("fn must have at least two arguments")
-      } else if(length(formals(p$fn))==2){
+      } else if (length(formals(p$fn)) == 2) {
         p$fn(
           data = data,
           p[[name_argset]]
@@ -112,7 +112,6 @@ Plan <- R6::R6Class(
           ...
         )
       }
-
     },
     run_one = function(index_analysis, ...) {
       data <- data_get()

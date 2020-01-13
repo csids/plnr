@@ -52,7 +52,7 @@ test_that("test len()", {
 
   analyses <- data.frame(x = c(1:5), y = c(11:15))
 
-  fn <- function(data, argset){
+  fn <- function(data, argset) {
     return(1)
   }
 
@@ -72,7 +72,7 @@ test_that("test run_one", {
 
   analyses <- data.frame(x = c(1:5), y = c(11:15))
 
-  fn <- function(data, argset){
+  fn <- function(data, argset) {
     return(1)
   }
 
@@ -92,7 +92,7 @@ test_that("see if dots work", {
 
   analyses <- data.frame(x = c(1:5), y = c(11:15))
 
-  fn <- function(data, argset, hello){
+  fn <- function(data, argset, hello) {
     return(hello)
   }
 
