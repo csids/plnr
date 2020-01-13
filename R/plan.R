@@ -121,7 +121,7 @@ Plan <- R6::R6Class(
       data <- data_get()
       if (verbose) pb <- txt_progress_bar(max = len())
       for (i in x_seq_along()) {
-        run_one_with_data(index_analysis = i, data = data)
+        run_one_with_data(index_analysis = i, data = data, ...)
         if (verbose) utils::setTxtProgressBar(pb, value = i)
       }
     }
