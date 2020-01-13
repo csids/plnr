@@ -95,9 +95,8 @@ test_that("see if dots work", {
   fn <- function(data, argset, hello){
     return(hello)
   }
-  fn(3,3,3)
 
-  p$analysis_add(fn = fn, an_argument = 3)
+  p$analysis_add(fn = fn, an_argument = 7)
 
 
   testthat::expect_equal(
