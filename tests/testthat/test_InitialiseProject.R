@@ -29,7 +29,7 @@ context("InitialiseProject")
 #   )
 # })
 
-test_that("x2", {
+test_that("testing error if <2 arguments", {
   p <- Plan$new()
   p$data_add(fn = function() {
     3
@@ -39,9 +39,48 @@ test_that("x2", {
 
   p$analysis_add_from_df(fn = sum, df = analyses)
 
+  testthat::expect_error(
+    p$run_all()
+  )
+})
+
+test_that("test len()", {
+  p <- Plan$new()
+  p$data_add(fn = function() {
+    3
+  }, name = "ok")
+
+  analyses <- data.frame(x = c(1:5), y = c(11:15))
+
+  fn <- function(data, argset){
+    return(1)
+  }
+
+  p$analysis_add_from_df(fn = fn, df = analyses)
+
   testthat::expect_equal(
     p$len(),
     5
+  )
+})
+
+test_that("test run_one", {
+  p <- Plan$new()
+  p$data_add(fn = function() {
+    3
+  }, name = "ok")
+
+  analyses <- data.frame(x = c(1:5), y = c(11:15))
+
+  fn <- function(data, argset){
+    return(1)
+  }
+
+  p$analysis_add_from_df(fn = fn, df = analyses)
+
+  testthat::expect_equal(
+    p$run_one(1),
+    1
   )
 })
 
