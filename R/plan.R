@@ -23,8 +23,10 @@ Plan <- R6::R6Class(
     list_data = list(),
     list_analysis = list(),
     name_argset = "argset",
-    initialize = function(name_argset = "argset") {
+    verbose = FALSE,
+    initialize = function(name_argset = "argset", verbose = interactive()) {
       name_argset <<- name_argset
+      verbose <<- verbose
     },
     data_add = function(fn = NULL, df = NULL, name) {
       list_data[[length(list_data) + 1]] <<- list(
@@ -94,18 +96,19 @@ Plan <- R6::R6Class(
       p <- list_analysis[[index_analysis]][[name_argset]]
       return(p)
     },
-    run_one_with_data = function(index_analysis, data) {
+    run_one_with_data = function(index_analysis, data, ...) {
       p <- analysis_get(index_analysis)
       p$fn(
         data = data,
-        p[[name_argset]]
+        p[[name_argset]],
+        ...
       )
     },
-    run_one = function(index_analysis) {
+    run_one = function(index_analysis, ...) {
       data <- data_get()
-      run_one_with_data(index_analysis = index_analysis, data = data)
+      run_one_with_data(index_analysis = index_analysis, data = data, ...)
     },
-    run_all = function(verbose = interactive()) {
+    run_all = function(...) {
       data <- data_get()
       if (verbose) pb <- txt_progress_bar(max = len())
       for (i in x_seq_along()) {

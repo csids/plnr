@@ -45,6 +45,28 @@ test_that("x2", {
   )
 })
 
+test_that("see if dots work", {
+  p <- Plan$new()
+  p$data_add(fn = function() {
+    3
+  }, name = "ok")
+
+  analyses <- data.frame(x = c(1:5), y = c(11:15))
+
+  fn <- function(data, argset, hello){
+    return(hello)
+  }
+  fn(3,3,3)
+
+  p$analysis_add(fn = fn, an_argument = 3)
+
+
+  testthat::expect_equal(
+    p$run_one(1, hello = 3),
+    3
+  )
+})
+
 test_that("parallel", {
   # p <- Plan$new()
   # p$data_add(fn = function(){3}, name = "ok")
