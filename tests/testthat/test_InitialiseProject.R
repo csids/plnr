@@ -31,13 +31,13 @@ context("InitialiseProject")
 
 test_that("testing error if <2 arguments", {
   p <- Plan$new()
-  p$data_add(fn = function() {
+  p$add_data(fn = function() {
     3
   }, name = "ok")
 
   analyses <- data.frame(x = c(1:5), y = c(11:15))
 
-  p$analysis_add_from_df(fn = sum, df = analyses)
+  p$add_analysis_from_df(fn = sum, df = analyses)
 
   testthat::expect_error(
     p$run_all()
@@ -46,7 +46,7 @@ test_that("testing error if <2 arguments", {
 
 test_that("test len()", {
   p <- Plan$new()
-  p$data_add(fn = function() {
+  p$add_data(fn = function() {
     3
   }, name = "ok")
 
@@ -56,7 +56,7 @@ test_that("test len()", {
     return(1)
   }
 
-  p$analysis_add_from_df(fn = fn, df = analyses)
+  p$add_analysis_from_df(fn = fn, df = analyses)
 
   testthat::expect_equal(
     p$len(),
@@ -66,9 +66,11 @@ test_that("test len()", {
 
 test_that("test run_one", {
   p <- Plan$new()
-  p$data_add(fn = function() {
-    3
-  }, name = "ok")
+  p$add_data(
+    name = "ok",
+    fn = function() {
+      3
+    })
 
   analyses <- data.frame(x = c(1:5), y = c(11:15))
 
@@ -76,7 +78,7 @@ test_that("test run_one", {
     return(1)
   }
 
-  p$analysis_add_from_df(fn = fn, df = analyses)
+  p$add_analysis_from_df(fn = fn, df = analyses)
 
   testthat::expect_equal(
     p$run_one(1),
@@ -86,7 +88,7 @@ test_that("test run_one", {
 
 test_that("see if dots work", {
   p <- Plan$new()
-  p$data_add(fn = function() {
+  p$add_data(fn = function() {
     3
   }, name = "ok")
 
@@ -96,7 +98,7 @@ test_that("see if dots work", {
     return(hello)
   }
 
-  p$analysis_add(fn = fn, an_argument = 7)
+  p$add_analysis(fn = fn, an_argument = 7)
 
 
   testthat::expect_equal(

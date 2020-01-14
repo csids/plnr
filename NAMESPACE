@@ -2,9 +2,7 @@
 
 export(PROJ)
 export(Plan)
-export(Plans)
 export(txt_progress_bar)
 exportClasses(Plan)
-exportClasses(Plans)
 import(R6)
 import(data.table)
