@@ -70,7 +70,8 @@ test_that("test run_one", {
     name = "ok",
     fn = function() {
       3
-    })
+    }
+  )
 
   analyses <- data.frame(x = c(1:5), y = c(11:15))
 
