@@ -10,7 +10,7 @@ LazyData: true
 Imports: data.table,
   methods,
   R6,
-  fhi,
+  progress,
   parallel,
   future,
   future.callr,

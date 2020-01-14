@@ -24,6 +24,7 @@ Plan <- R6::R6Class(
     analyses = list(),
     name_argset = "argset",
     verbose = FALSE,
+    pb = NULL,
     initialize = function(name_argset = "argset", verbose = interactive()) {
       name_argset <<- name_argset
       verbose <<- verbose
@@ -74,6 +75,9 @@ Plan <- R6::R6Class(
     x_seq_along = function() {
       base::seq_along(analyses)
     },
+    set_pb = function(pb){
+      pb <<- pb
+    },
     get_data = function() {
       retval <- list()
       for (i in seq_along(data)) {
@@ -119,10 +123,16 @@ Plan <- R6::R6Class(
     },
     run_all = function(...) {
       data <- get_data()
-      if (verbose) pb <- txt_progress_bar(max = len())
+      if (verbose & is.null(pb)){
+        pb <<- progress::progress_bar$new(
+          format = "[:bar] :current/:total (:percent) in :elapsed, eta: :eta",
+          total = len()
+          )
+        on.exit(pb <<- NULL)
+      }
       for (i in x_seq_along()) {
+        if (verbose & !is.null(pb)) pb$tick()
         run_one_with_data(index_analysis = i, data = data, ...)
-        if (verbose) utils::setTxtProgressBar(pb, value = i)
       }
     }
   )
