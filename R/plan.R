@@ -75,7 +75,7 @@ Plan <- R6::R6Class(
     x_seq_along = function() {
       base::seq_along(analyses)
     },
-    set_pb = function(pb){
+    set_pb = function(pb) {
       pb <<- pb
     },
     get_data = function() {
@@ -123,11 +123,11 @@ Plan <- R6::R6Class(
     },
     run_all = function(...) {
       data <- get_data()
-      if (verbose & is.null(pb)){
+      if (verbose & is.null(pb)) {
         pb <<- progress::progress_bar$new(
           format = "[:bar] :current/:total (:percent) in :elapsed, eta: :eta",
           total = len()
-          )
+        )
         on.exit(pb <<- NULL)
       }
       for (i in x_seq_along()) {

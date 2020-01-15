@@ -1,3 +1,3 @@
-set_config <- function(){
+set_config <- function() {
 
 }
