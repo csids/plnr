@@ -24,7 +24,7 @@ Plan <- R6::R6Class(
     analyses = list(),
     name_argset = "argset",
     verbose = FALSE,
-    pb = NULL,
+    p = NULL,
     initialize = function(name_argset = "argset", verbose = interactive()) {
       name_argset <<- name_argset
       verbose <<- verbose
@@ -75,8 +75,8 @@ Plan <- R6::R6Class(
     x_seq_along = function() {
       base::seq_along(analyses)
     },
-    set_pb = function(pb) {
-      pb <<- pb
+    set_progress = function(p) {
+      p <<- p
     },
     get_data = function() {
       retval <- list()
@@ -123,17 +123,23 @@ Plan <- R6::R6Class(
     },
     run_all = function(...) {
       data <- get_data()
-      if (verbose & is.null(pb)) {
-        pb <<- progress::progress_bar$new(
-          format = "[:bar] :current/:total (:percent) in :elapsed, eta: :eta",
-          total = len()
-        )
-        on.exit(pb <<- NULL)
+      if (verbose & is.null(p)) {
+        progressr::handlers(progressr::progress_handler(
+          format = "[:bar] :current/:total (:percent) in :elapsedfull, eta: :eta",
+          clear = FALSE
+        ))
+        p <<- progressr::progressor(along = x_seq_along())
+        on.exit(p <<- NULL)
       }
       for (i in x_seq_along()) {
-        if (verbose & !is.null(pb)) pb$tick()
+        if (verbose & !is.null(p)) p()
         run_one_with_data(index_analysis = i, data = data, ...)
       }
+    },
+    run_all_progress = function(...) {
+      progressr::with_progress({
+        run_all(...)
+      })
     }
   )
 )
