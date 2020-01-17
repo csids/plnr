@@ -125,7 +125,7 @@ Plan <- R6::R6Class(
     run_all = function(...) {
       # try to deparse important arguments
       dots <- list(...)
-      if(".plnr.options" %in% names(dots)){
+      if (".plnr.options" %in% names(dots)) {
         chunk_size <- dots[["chunk_size"]]
       } else {
         chunk_size <- 1
