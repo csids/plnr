@@ -13,6 +13,7 @@
 #'
 #' @import data.table
 #' @import R6
+#' @import foreach
 #' @export
 #' @exportClass Plan
 Plan <- R6::R6Class(
@@ -122,6 +123,13 @@ Plan <- R6::R6Class(
       run_one_with_data(index_analysis = index_analysis, data = data, ...)
     },
     run_all = function(...) {
+      # try to deparse important arguments
+      dots <- list(...)
+      if(".plnr.options" %in% names(dots)){
+        chunk_size <- dots[["chunk_size"]]
+      } else {
+        chunk_size <- 1
+      }
       data <- get_data()
       if (verbose & is.null(p)) {
         progressr::handlers(progressr::progress_handler(
@@ -131,7 +139,7 @@ Plan <- R6::R6Class(
         p <<- progressr::progressor(along = x_seq_along())
         on.exit(p <<- NULL)
       }
-      for (i in x_seq_along()) {
+      y <- foreach(i = x_seq_along(), .options.future = list(chunk.size = chunk_size)) %dopar% {
         if (verbose & !is.null(p)) p()
         run_one_with_data(index_analysis = i, data = data, ...)
       }

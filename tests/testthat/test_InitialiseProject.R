@@ -53,7 +53,7 @@ test_that("test len()", {
   analyses <- data.frame(x = c(1:5), y = c(11:15))
 
   fn <- function(data, argset) {
-    Sys.sleep(1)
+    #Sys.sleep(1)
     return(1)
   }
 

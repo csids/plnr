@@ -12,10 +12,7 @@ Imports: data.table,
   R6,
   progressr,
   uuid,
-  parallel,
-  future,
-  future.callr,
-  future.apply
+  foreach
 Suggests: testthat,
   knitr,
   rmarkdown
