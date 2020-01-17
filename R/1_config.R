@@ -1,3 +1,3 @@
 set_config <- function() {
-  if(!foreach::getDoParRegistered()) foreach::registerDoSEQ()
+  if (!foreach::getDoParRegistered()) foreach::registerDoSEQ()
 }
