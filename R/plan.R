@@ -23,11 +23,11 @@ Plan <- R6::R6Class(
   public = list(
     data = list(),
     analyses = list(),
-    name_argset = "argset",
+    argset_name = "argset",
     verbose = FALSE,
     p = NULL,
-    initialize = function(name_argset = "argset", verbose = interactive()) {
-      name_argset <<- name_argset
+    initialize = function(argset_name = "argset", verbose = interactive()) {
+      argset_name <<- argset_name
       verbose <<- verbose
     },
     add_data = function(name, fn = NULL, direct = NULL) {
@@ -41,7 +41,7 @@ Plan <- R6::R6Class(
       if (is.null(analyses[[name]])) analyses[[name]] <- list()
 
       dots <- list(...)
-      analyses[[name]][[name_argset]] <<- dots
+      analyses[[name]][[argset_name]] <<- dots
     },
     add_argset_from_df = function(df) {
       df <- as.data.frame(df)
@@ -55,7 +55,7 @@ Plan <- R6::R6Class(
 
       dots <- list(...)
       analyses[[name]] <<- list(fn = fn)
-      analyses[[name]][[name_argset]] <<- dots
+      analyses[[name]][[argset_name]] <<- dots
     },
     add_analysis_from_df = function(fn = NULL, df) {
       df <- as.data.frame(df)
@@ -65,7 +65,7 @@ Plan <- R6::R6Class(
         do.call(add_analysis, argset)
       }
     },
-    analysis_fn_apply_to_all = function(fn) {
+    apply_analysis_fn_to_all = function(fn) {
       for (i in seq_along(analyses)) {
         analyses[[i]]$fn <<- fn
       }
@@ -94,11 +94,11 @@ Plan <- R6::R6Class(
     },
     get_analysis = function(index_analysis) {
       p <- analyses[[index_analysis]]
-      p[[name_argset]]$index_analysis <- index_analysis
+      p[[argset_name]]$index_analysis <- index_analysis
       return(p)
     },
     get_argset = function(index_analysis) {
-      p <- analyses[[index_analysis]][[name_argset]]
+      p <- analyses[[index_analysis]][[argset_name]]
       return(p)
     },
     run_one_with_data = function(index_analysis, data, ...) {
@@ -108,12 +108,12 @@ Plan <- R6::R6Class(
       } else if (length(formals(p$fn)) == 2) {
         p$fn(
           data = data,
-          p[[name_argset]]
+          p[[argset_name]]
         )
       } else {
         p$fn(
           data = data,
-          p[[name_argset]],
+          p[[argset_name]],
           ...
         )
       }
