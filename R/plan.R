@@ -140,16 +140,16 @@ Plan <- R6::R6Class(
         on.exit(p <<- NULL)
       }
 
-      if(foreach::getDoParWorkers()==1){
+      if (foreach::getDoParWorkers() == 1) {
         # running not in parallel
         print("NOT PARALLEL")
-        for(i in x_seq_along()){
+        for (i in x_seq_along()) {
           if (verbose & !is.null(p)) p()
           run_one_with_data(index_analysis = i, data = data, ...)
         }
       } else {
         # running in parallel
-        y <- foreach(i = x_seq_along(), .options.future = list(chunk.size = chunk_size), .errorhandling="stop") %dopar% {
+        y <- foreach(i = x_seq_along(), .options.future = list(chunk.size = chunk_size), .errorhandling = "stop") %dopar% {
           if (verbose & !is.null(p)) p()
           run_one_with_data(index_analysis = i, data = data, ...)
         }
