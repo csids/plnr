@@ -145,7 +145,7 @@ Plan <- R6::R6Class(
         }
       } else {
         # running in parallel
-        y <- foreach(i = x_seq_along(), .options.future = list(chunk.size = chunk_size), .errorhandling = "stop") %dopar% {
+        y <- foreach(i = x_seq_along(), .options.future = list(chunk.size = chunk_size)) %dopar% {
           if (verbose & !is.null(pb_progress)) pb_progress$tick()
           if (verbose & !is.null(pb_progressor)) pb_progressor()
           run_one_with_data(index_analysis = i, data = data, ...)
