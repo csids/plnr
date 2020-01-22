@@ -138,6 +138,16 @@ Plan <- R6::R6Class(
 
       if (foreach::getDoParWorkers() == 1) {
         # running not in parallel
+        if (verbose & is.null(pb_progress) & is.null(pb_progressor)) {
+          pb_progress <<- progress::progress_bar$new(
+            format = "[:bar] :current/:total (:percent) in :elapsedfull, eta: :eta",
+            clear = FALSE,
+            total = self$len()
+            )
+          pb_progress$tick(0)
+          on.exit(pb_progress <<- NULL)
+        }
+
         for (i in x_seq_along()) {
           if (verbose & !is.null(pb_progress)) pb_progress$tick()
           if (verbose & !is.null(pb_progressor)) pb_progressor()
@@ -145,6 +155,15 @@ Plan <- R6::R6Class(
         }
       } else {
         # running in parallel
+        if (verbose & is.null(pb_progress) & is.null(pb_progressor)) {
+          progressr::handlers(progressr::progress_handler(
+            format = "[:bar] :current/:total (:percent) in :elapsedfull, eta: :eta",
+            clear = FALSE
+          ))
+          pb_progressor <<- progressr::progressor(steps = self$len())
+          on.exit(pb_progressor <<- NULL)
+        }
+
         y <- foreach(i = x_seq_along(), .options.future = list(chunk.size = chunk_size)) %dopar% {
           if (verbose & !is.null(pb_progress)) pb_progress$tick()
           if (verbose & !is.null(pb_progressor)) pb_progressor()
@@ -154,17 +173,10 @@ Plan <- R6::R6Class(
     },
     run_all_progress = function(...) {
       progressr::with_progress({
-        if (verbose & is.null(p)) {
-          progressr::handlers(progressr::progress_handler(
-            format = "[:bar] :current/:total (:percent) in :elapsedfull, eta: :eta",
-            clear = FALSE
-          ))
-          p <<- progressr::progressor(along = x_seq_along())
-          on.exit(p <<- NULL)
-        }
-
         run_all(...)
-      })
+      },
+      delay_stdout=F
+      )
     }
   )
 )

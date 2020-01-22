@@ -50,18 +50,18 @@ test_that("test len()", {
     3
   }, name = "ok")
 
-  analyses <- data.frame(x = c(1:5), y = c(11:15))
+  analyses <- data.frame(x = c(1:50), y = c(1:50))
 
   fn <- function(data, argset) {
-    # Sys.sleep(1)
+     #Sys.sleep(1)
     return(1)
   }
 
   p$add_analysis_from_df(fn = fn, df = analyses)
-
+  #p$run_all_progress()
   testthat::expect_equal(
     p$len(),
-    5
+    50
   )
 })
 
