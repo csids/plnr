@@ -143,7 +143,7 @@ Plan <- R6::R6Class(
             format = "[:bar] :current/:total (:percent) in :elapsedfull, eta: :eta",
             clear = FALSE,
             total = self$len()
-            )
+          )
           pb_progress$tick(0)
           on.exit(pb_progress <<- NULL)
         }
@@ -172,10 +172,11 @@ Plan <- R6::R6Class(
       }
     },
     run_all_progress = function(...) {
-      progressr::with_progress({
-        run_all(...)
-      },
-      delay_stdout=F
+      progressr::with_progress(
+        {
+          run_all(...)
+        },
+        delay_stdout = F
       )
     }
   )
