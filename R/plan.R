@@ -25,7 +25,8 @@ Plan <- R6::R6Class(
     analyses = list(),
     argset_name = "argset",
     verbose = FALSE,
-    p = NULL,
+    pb_progress = NULL,
+    pb_progressor = NULL,
     initialize = function(argset_name = "argset", verbose = interactive()) {
       argset_name <<- argset_name
       verbose <<- verbose
@@ -76,8 +77,11 @@ Plan <- R6::R6Class(
     x_seq_along = function() {
       base::seq_along(analyses)
     },
-    set_progress = function(p) {
-      p <<- p
+    set_progress = function(pb) {
+      pb_progress <<- pb
+    },
+    set_progressor = function(pb) {
+      pb_progressor <<- pb
     },
     get_data = function() {
       retval <- list()
@@ -131,32 +135,34 @@ Plan <- R6::R6Class(
         chunk_size <- 1
       }
       data <- get_data()
-      if (verbose & is.null(p)) {
-        progressr::handlers(progressr::progress_handler(
-          format = "[:bar] :current/:total (:percent) in :elapsedfull, eta: :eta",
-          clear = FALSE
-        ))
-        p <<- progressr::progressor(along = x_seq_along())
-        on.exit(p <<- NULL)
-      }
 
       if (foreach::getDoParWorkers() == 1) {
         # running not in parallel
-        print("NOT PARALLEL")
         for (i in x_seq_along()) {
-          if (verbose & !is.null(p)) p()
+          if (verbose & !is.null(pb_progress)) pb_progress$tick()
+          if (verbose & !is.null(pb_progressor)) pb_progressor()
           run_one_with_data(index_analysis = i, data = data, ...)
         }
       } else {
         # running in parallel
         y <- foreach(i = x_seq_along(), .options.future = list(chunk.size = chunk_size), .errorhandling = "stop") %dopar% {
-          if (verbose & !is.null(p)) p()
+          if (verbose & !is.null(pb_progress)) pb_progress$tick()
+          if (verbose & !is.null(pb_progressor)) pb_progressor()
           run_one_with_data(index_analysis = i, data = data, ...)
         }
       }
     },
     run_all_progress = function(...) {
       progressr::with_progress({
+        if (verbose & is.null(p)) {
+          progressr::handlers(progressr::progress_handler(
+            format = "[:bar] :current/:total (:percent) in :elapsedfull, eta: :eta",
+            clear = FALSE
+          ))
+          p <<- progressr::progressor(along = x_seq_along())
+          on.exit(p <<- NULL)
+        }
+
         run_all(...)
       })
     }
