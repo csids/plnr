@@ -10,11 +10,11 @@ LazyData: true
 Imports: data.table,
   methods,
   R6,
-  progressr,
   uuid,
   foreach
 Suggests: testthat,
   knitr,
-  rmarkdown
+  rmarkdown,
+  progressr
 RoxygenNote: 6.1.1
 VignetteBuilder: knitr

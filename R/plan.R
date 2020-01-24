@@ -136,7 +136,8 @@ Plan <- R6::R6Class(
       }
       data <- get_data()
 
-      if (foreach::getDoParWorkers() == 1) {
+      retval <- vector("list", length = self$len())
+      if (foreach::getDoParWorkers() == 1 | !requireNamespace("progressr", quietly = TRUE)) {
         # running not in parallel
         if (verbose & is.null(pb_progress) & is.null(pb_progressor)) {
           pb_progress <<- progress::progress_bar$new(
@@ -151,7 +152,7 @@ Plan <- R6::R6Class(
         for (i in x_seq_along()) {
           if (verbose & !is.null(pb_progress)) pb_progress$tick()
           if (verbose & !is.null(pb_progressor)) pb_progressor()
-          run_one_with_data(index_analysis = i, data = data, ...)
+          retval[[i]] <- run_one_with_data(index_analysis = i, data = data, ...)
         }
       } else {
         # running in parallel
@@ -164,12 +165,14 @@ Plan <- R6::R6Class(
           on.exit(pb_progressor <<- NULL)
         }
 
-        y <- foreach(i = x_seq_along(), .options.future = list(chunk.size = chunk_size)) %dopar% {
+        retval <- foreach(i = x_seq_along(), .options.future = list(chunk.size = chunk_size)) %dopar% {
           if (verbose & !is.null(pb_progress)) pb_progress$tick()
           if (verbose & !is.null(pb_progressor)) pb_progressor()
           run_one_with_data(index_analysis = i, data = data, ...)
         }
       }
+
+      invisible(return(retval))
     },
     run_all_progress = function(...) {
       progressr::with_progress(
