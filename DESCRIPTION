@@ -15,6 +15,10 @@ Imports: data.table,
 Suggests: testthat,
   knitr,
   rmarkdown,
-  progressr
+  progressr,
+  huxtable,
+  ggplot2,
+  glue,
+  readxl
 RoxygenNote: 6.1.1
 VignetteBuilder: knitr
