@@ -131,11 +131,11 @@ Plan <- R6::R6Class(
       data <- get_data()
       run_one_with_data(index_analysis = index_analysis, data = data, ...)
     },
-    use_foreach_decision = function(){
-      if(!is.null(self$use_foreach)){
+    use_foreach_decision = function() {
+      if (!is.null(self$use_foreach)) {
         return(self$use_foreach)
       } else {
-        if (foreach::getDoParWorkers() == 1 | !requireNamespace("progressr", quietly = TRUE)){
+        if (foreach::getDoParWorkers() == 1 | !requireNamespace("progressr", quietly = TRUE)) {
           return(FALSE)
         } else {
           return(TRUE)
