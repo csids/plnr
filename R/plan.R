@@ -25,11 +25,16 @@ Plan <- R6::R6Class(
     analyses = list(),
     argset_name = "argset",
     verbose = FALSE,
+    use_foreach = FALSE,
     pb_progress = NULL,
     pb_progressor = NULL,
-    initialize = function(argset_name = "argset", verbose = interactive()) {
+    initialize = function(argset_name = "argset", verbose = interactive(), use_foreach = FALSE) {
       argset_name <<- argset_name
       verbose <<- verbose
+      # null = program decides
+      # false = use loop
+      # true = use foreach
+      use_foreach <<- use_foreach
     },
     add_data = function(name, fn = NULL, direct = NULL) {
       data[[length(data) + 1]] <<- list(
@@ -126,6 +131,17 @@ Plan <- R6::R6Class(
       data <- get_data()
       run_one_with_data(index_analysis = index_analysis, data = data, ...)
     },
+    use_foreach_decision = function(){
+      if(!is.null(self$use_foreach)){
+        return(self$use_foreach)
+      } else {
+        if (foreach::getDoParWorkers() == 1 | !requireNamespace("progressr", quietly = TRUE)){
+          return(FALSE)
+        } else {
+          return(TRUE)
+        }
+      }
+    },
     run_all = function(...) {
       # try to deparse important arguments
       dots <- list(...)
@@ -137,7 +153,7 @@ Plan <- R6::R6Class(
       data <- get_data()
 
       retval <- vector("list", length = self$len())
-      if (foreach::getDoParWorkers() == 1 | !requireNamespace("progressr", quietly = TRUE)) {
+      if (!use_foreach_decision()) {
         # running not in parallel
         if (verbose & is.null(pb_progress) & is.null(pb_progressor)) {
           pb_progress <<- progress::progress_bar$new(
