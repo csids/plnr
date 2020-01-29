@@ -169,6 +169,7 @@ Plan <- R6::R6Class(
           if (verbose & !is.null(pb_progress)) pb_progress$tick()
           if (verbose & !is.null(pb_progressor)) pb_progressor()
           retval[[i]] <- run_one_with_data(index_analysis = i, data = data, ...)
+          gc(FALSE)
         }
       } else {
         # running in parallel
@@ -185,6 +186,7 @@ Plan <- R6::R6Class(
           if (verbose & !is.null(pb_progress)) pb_progress$tick()
           if (verbose & !is.null(pb_progressor)) pb_progressor()
           run_one_with_data(index_analysis = i, data = data, ...)
+          gc(FALSE)
         }
       }
 
