@@ -11,14 +11,17 @@ Imports: data.table,
   methods,
   R6,
   uuid,
-  foreach
+  foreach,
+  fs,
+  glue,
+  org (>= 2020.2.18),
+  huxtable
 Suggests: testthat,
   knitr,
   rmarkdown,
   progressr,
   huxtable,
   ggplot2,
-  glue,
   readxl
 RoxygenNote: 6.1.1
 VignetteBuilder: knitr

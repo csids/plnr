@@ -36,9 +36,13 @@ Plan <- R6::R6Class(
       # true = use foreach
       use_foreach <<- use_foreach
     },
-    add_data = function(name, fn = NULL, direct = NULL) {
+    add_data = function(name, fn = NULL, fn_name=NULL, direct = NULL) {
+      stopifnot(is.null(fn) | is.function(fn))
+      stopifnot(is.null(fn_name) | is.character(fn_name))
+
       data[[length(data) + 1]] <<- list(
         fn = fn,
+        fn_name = fn_name,
         direct = direct,
         name = name
       )
@@ -56,24 +60,35 @@ Plan <- R6::R6Class(
         do.call(add_argset, argset)
       }
     },
-    add_analysis = function(name = uuid::UUIDgenerate(), fn = NULL, ...) {
+    add_analysis = function(name = uuid::UUIDgenerate(), fn = NULL, fn_name = NULL, ...) {
+      stopifnot(is.null(fn) | is.function(fn))
+      stopifnot(is.null(fn_name) | is.character(fn_name))
+
       if (is.null(analyses[[name]])) analyses[[name]] <- list()
 
       dots <- list(...)
-      analyses[[name]] <<- list(fn = fn)
+      analyses[[name]] <<- list(fn = fn, fn_name = fn_name)
       analyses[[name]][[argset_name]] <<- dots
     },
-    add_analysis_from_df = function(fn = NULL, df) {
+    add_analysis_from_df = function(fn = NULL, fn_name=NULL, df) {
+      stopifnot(is.null(fn) | is.function(fn))
+      stopifnot(is.null(fn_name) | is.character(fn_name))
+
       df <- as.data.frame(df)
       for (i in 1:nrow(df)) {
         argset <- df[i, ]
         argset$fn <- fn
+        argset$fn_name <- fn_name
         do.call(add_analysis, argset)
       }
     },
-    apply_analysis_fn_to_all = function(fn) {
+    apply_analysis_fn_to_all = function(fn=NULL, fn_name=NULL) {
+      stopifnot(is.null(fn) | is.function(fn))
+      stopifnot(is.null(fn_name) | is.character(fn_name))
+
       for (i in seq_along(analyses)) {
         analyses[[i]]$fn <<- fn
+        analyses[[i]]$fn_name <<- fn_name
       }
     },
     len = function() {
@@ -95,6 +110,9 @@ Plan <- R6::R6Class(
         if (!is.null(x$fn)) {
           retval[[x$name]] <- x$fn()
         }
+        if (!is.null(x$fn_name)) {
+          retval[[x$name]] <- do.call(x$fn_name)
+        }
         if (!is.null(x$direct)) {
           retval[[x$name]] <- x$direct
         }
@@ -112,20 +130,47 @@ Plan <- R6::R6Class(
     },
     run_one_with_data = function(index_analysis, data, ...) {
       p <- get_analysis(index_analysis)
-      if (length(formals(p$fn)) < 2) {
+
+      if(!is.null(p$fn) & is.null(p$fn_name)){
+        # use fn
+        num_args <- length(formals(p$fn))
+      } else if(is.null(p$fn) & !is.null(p$fn_name)){
+        # use fn_name
+        num_args <- length(formals(p$fn_name))
+      }
+
+      args <- list()
+      args[["data"]] <- data
+      args[[argset_name]] <- p[[argset_name]]
+
+      if (num_args < 2) {
         stop("fn must have at least two arguments")
-      } else if (length(formals(p$fn)) == 2) {
-        p$fn(
+      } else if (num_args == 2) {
+        # dont do anything
+      } else {
+        dots <- list(...)
+        for(i in seq_along(dots)){
+          n <- names(dots)[i]
+          args[[n]] <- dots[[i]]
+        }
+      }
+
+      # actually run it
+      if(!is.null(p$fn) & is.null(p$fn_name)){
+        # use fn
+        retval <- p$fn(
           data = data,
           p[[argset_name]]
         )
-      } else {
-        p$fn(
-          data = data,
-          p[[argset_name]],
-          ...
+      } else if(is.null(p$fn) & !is.null(p$fn_name)){
+        # use fn_name
+        retval <- do.call(
+          what = p$fn_name,
+          args = args
         )
       }
+
+      return(retval)
     },
     run_one = function(index_analysis, ...) {
       data <- get_data()
@@ -190,7 +235,7 @@ Plan <- R6::R6Class(
         }
       }
 
-      invisible(return(retval))
+      invisible(retval)
     },
     run_all_progress = function(...) {
       progressr::with_progress(
