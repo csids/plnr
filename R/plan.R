@@ -36,7 +36,7 @@ Plan <- R6::R6Class(
       # true = use foreach
       use_foreach <<- use_foreach
     },
-    add_data = function(name, fn = NULL, fn_name=NULL, direct = NULL) {
+    add_data = function(name, fn = NULL, fn_name = NULL, direct = NULL) {
       stopifnot(is.null(fn) | is.function(fn))
       stopifnot(is.null(fn_name) | is.character(fn_name))
 
@@ -70,7 +70,7 @@ Plan <- R6::R6Class(
       analyses[[name]] <<- list(fn = fn, fn_name = fn_name)
       analyses[[name]][[argset_name]] <<- dots
     },
-    add_analysis_from_df = function(fn = NULL, fn_name=NULL, df) {
+    add_analysis_from_df = function(fn = NULL, fn_name = NULL, df) {
       stopifnot(is.null(fn) | is.function(fn))
       stopifnot(is.null(fn_name) | is.character(fn_name))
 
@@ -82,7 +82,7 @@ Plan <- R6::R6Class(
         do.call(add_analysis, argset)
       }
     },
-    apply_analysis_fn_to_all = function(fn=NULL, fn_name=NULL) {
+    apply_analysis_fn_to_all = function(fn = NULL, fn_name = NULL) {
       stopifnot(is.null(fn) | is.function(fn))
       stopifnot(is.null(fn_name) | is.character(fn_name))
 
@@ -131,10 +131,10 @@ Plan <- R6::R6Class(
     run_one_with_data = function(index_analysis, data, ...) {
       p <- get_analysis(index_analysis)
 
-      if(!is.null(p$fn) & is.null(p$fn_name)){
+      if (!is.null(p$fn) & is.null(p$fn_name)) {
         # use fn
         num_args <- length(formals(p$fn))
-      } else if(is.null(p$fn) & !is.null(p$fn_name)){
+      } else if (is.null(p$fn) & !is.null(p$fn_name)) {
         # use fn_name
         num_args <- length(formals(p$fn_name))
       }
@@ -149,21 +149,21 @@ Plan <- R6::R6Class(
         # dont do anything
       } else {
         dots <- list(...)
-        for(i in seq_along(dots)){
+        for (i in seq_along(dots)) {
           n <- names(dots)[i]
           args[[n]] <- dots[[i]]
         }
       }
 
       # actually run it
-      if(!is.null(p$fn) & is.null(p$fn_name)){
+      if (!is.null(p$fn) & is.null(p$fn_name)) {
         # use fn
         retval <- p$fn(
           data = data,
           p[[argset_name]],
           ...
         )
-      } else if(is.null(p$fn) & !is.null(p$fn_name)){
+      } else if (is.null(p$fn) & !is.null(p$fn_name)) {
         # use fn_name
         retval <- do.call(
           what = p$fn_name,

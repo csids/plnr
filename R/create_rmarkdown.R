@@ -1,12 +1,12 @@
 create_rmarkdown <- function(home) {
   fs::dir_create(fs::path(home))
-  fs::dir_create(fs::path(home,"R"))
-  fs::dir_create(fs::path(home,"results"))
-  fs::dir_create(fs::path(home,"paper"))
-  fs::dir_create(fs::path(home,"raw"))
+  fs::dir_create(fs::path(home, "R"))
+  fs::dir_create(fs::path(home, "results"))
+  fs::dir_create(fs::path(home, "paper"))
+  fs::dir_create(fs::path(home, "raw"))
 
   # delete some files if not needed
-  unlink(fs::dir_ls(home,regexp="*Rproj$"))
+  unlink(fs::dir_ls(home, regexp = "*Rproj$"))
 
   ############
   # run.R
@@ -80,10 +80,9 @@ table_death <- function(data, argset){{
   ht <- huxtable::theme_article(ht)
   ht
 }}
-'
-  )
+')
 
-  org::write_text(txt, file = fs::path(home, "R", "figure_death.R"), header=NULL)
+  org::write_text(txt, file = fs::path(home, "R", "figure_death.R"), header = NULL)
 
   ############
   # R/figure_death.R
@@ -101,10 +100,9 @@ figure_death <- function(data, argset){{
   q <- q + labs(title = glue::glue("Deaths from 2001 until {{argset$year_max}}"))
   q
 }}
-'
-  )
+')
 
-  org::write_text(txt, file = fs::path(home, "R", "figure_death.R"), header=NULL)
+  org::write_text(txt, file = fs::path(home, "R", "figure_death.R"), header = NULL)
 
   ############
   # paper/paper.Rmd
@@ -137,12 +135,9 @@ Here is a plot:
 p$run_one("fig_1")
 ```
 
-  '
-  )
+  ')
 
-  org::write_text(txt, file = fs::path(home, "paper", "paper.Rmd"), header=NULL)
+  org::write_text(txt, file = fs::path(home, "paper", "paper.Rmd"), header = NULL)
 
   usethis::create_project(home)
 }
-
-
