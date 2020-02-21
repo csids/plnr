@@ -1,0 +1,102 @@
+h1.title, h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+    font-family: font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    line-height: 2;
+    font-weight: 200;
+    margin-bottom: 8px;
+    margin-top: 16px;
+    padding-top: 0px;
+    clear: both;
+}
+
+.page-header {
+margin-top: 0px;
+margin-bottom: 0px;
+}
+
+.list-item {
+    margin-bottom: 16px;
+}
+
+body, p, dt {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 1.7;
+}
+
+#sidebar {
+  margin-top: 16px;
+}
+
+p, dt {
+    margin-top: 16px;
+    margin-bottom: 16px;
+
+}
+
+dt {
+    font-weight: 400;
+    margin-right: 16px;
+
+}
+
+.dl-horizontal > dt{
+  width: 260px;
+}
+
+th{
+  padding-top: 16px;
+}
+
+.navbar-default, .navbar-link {
+    color: #408AB4;
+    font-size: 16px;
+    font-weight: 200;
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+
+.h1, h1 {
+    font-size: 26px;
+    font-weight: 400;
+    padding-top: 8px;
+}
+.h2, h2, h2.author, h2.hasAnchor  {
+    font-size: 24px;
+    font-weight: 400;
+    padding-top: 8px;
+
+}
+
+h1.hasAnchor, h2.hasAnchor, h3.hasAnchor, h4.hasAnchor {
+  padding-top: 48px;
+  margin-top: -24px;
+}
+
+.h3, h3, h3.author  {
+    font-size: 19px;
+    font-weight: 400;
+    padding-top: 0px;
+    margin-top: 8px;
+
+}
+.h4, h4, h4.author, h4.date {
+    font-size: 16px;
+    font-weight: 400;
+    padding-top: 0px;
+    margin-top: 8px;
+}
+
+h4.author, h4.date {
+  padding-top: 0px;
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+
+
+
+p+h2, p+h3, p+h4 {
+    margin-top: 0;}
+

@@ -1,6 +1,7 @@
 ^CRAN-RELEASE$
 .travis.yml
 travis/
+pkgdown/
 project.Rproj
 ^.*\.Rproj$
 ^\.Rproj\.user$

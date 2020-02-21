@@ -160,7 +160,8 @@ Plan <- R6::R6Class(
         # use fn
         retval <- p$fn(
           data = data,
-          p[[argset_name]]
+          p[[argset_name]],
+          ...
         )
       } else if(is.null(p$fn) & !is.null(p$fn_name)){
         # use fn_name
