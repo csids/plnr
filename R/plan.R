@@ -78,7 +78,7 @@ Plan <- R6::R6Class(
       for (i in 1:nrow(df)) {
         argset <- df[i, ]
         argset$fn <- fn
-        if(!"fn_name" %in% names(df)) argset$fn_name <- fn_name
+        if (!"fn_name" %in% names(df)) argset$fn_name <- fn_name
         print(argset)
         do.call(add_analysis, argset)
       }

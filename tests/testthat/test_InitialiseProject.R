@@ -133,9 +133,9 @@ test_that("parallel", {
 })
 
 test_that("fn_name in data.frame", {
-  df <- data.frame(a=c(1:2),fn_name="fn_test",stringsAsFactors = FALSE)
+  df <- data.frame(a = c(1:2), fn_name = "fn_test", stringsAsFactors = FALSE)
   p <- Plan$new()
-  p$add_analysis_from_df(df=df)
+  p$add_analysis_from_df(df = df)
   x <- p$run_all()
 
   testthat::expect_equal(
