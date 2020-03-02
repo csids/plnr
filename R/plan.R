@@ -71,14 +71,15 @@ Plan <- R6::R6Class(
       analyses[[name]][[argset_name]] <<- dots
     },
     add_analysis_from_df = function(fn = NULL, fn_name = NULL, df) {
-      stopifnot(is.null(fn) | is.function(fn))
+      stopifnot(is.null(fn) | is.function(fn) | "fn_name" %in% names(df))
       stopifnot(is.null(fn_name) | is.character(fn_name))
 
       df <- as.data.frame(df)
       for (i in 1:nrow(df)) {
         argset <- df[i, ]
         argset$fn <- fn
-        argset$fn_name <- fn_name
+        if(!"fn_name" %in% names(df)) argset$fn_name <- fn_name
+        print(argset)
         do.call(add_analysis, argset)
       }
     },

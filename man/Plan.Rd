@@ -4,7 +4,7 @@
 \name{Plan}
 \alias{Plan}
 \title{plan class description}
-\format{An object of class \code{R6ClassGenerator} of length 25.}
+\format{An object of class \code{R6ClassGenerator} of length 24.}
 \usage{
 Plan
 }

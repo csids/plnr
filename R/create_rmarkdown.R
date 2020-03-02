@@ -1,3 +1,6 @@
+#' Create rmarkdown project
+#' @param home Location of the 'home' directory
+#' @export
 create_rmarkdown <- function(home) {
   fs::dir_create(fs::path(home))
   fs::dir_create(fs::path(home, "R"))

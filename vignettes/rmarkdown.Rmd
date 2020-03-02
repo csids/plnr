@@ -11,17 +11,7 @@ editor_options:
   chunk_output_type: console
 ---
 
-## Philosophy
-
-```{r echo=FALSE, results='asis'}
-d <- readxl::read_excel(system.file("extdata","tab_definitions.xlsx", package="plnr"))
-d <- huxtable::huxtable(d, add_colnames = T)
-d <- huxtable::theme_blue(d)
-huxtable::wrap(d) <- TRUE
-huxtable::width(d) <- 1
-huxtable::print_html(d)
-```
-
+When working with other pack
 In brief, we work within the mental model where we have one (or more) datasets and we want to run multiple analyses on these datasets. These multiple analyses can take the form of:
 
 - one function (e.g. `table_1`) called multiple times with different argsets (e.g. `year=2019`, `year=2020`)
