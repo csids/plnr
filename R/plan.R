@@ -28,7 +28,7 @@ Plan <- R6::R6Class(
     use_foreach = FALSE,
     pb_progress = NULL,
     pb_progressor = NULL,
-    initialize = function(argset_name = "argset", verbose = interactive(), use_foreach = FALSE) {
+    initialize = function(argset_name = "argset", verbose = interactive() | config$force_verbose, use_foreach = FALSE) {
       argset_name <<- argset_name
       verbose <<- verbose
       # null = program decides

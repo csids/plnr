@@ -3,6 +3,7 @@
 export(Plan)
 export(create_rmarkdown)
 export(fn_test)
+export(set_opts)
 exportClasses(Plan)
 import(R6)
 import(data.table)
