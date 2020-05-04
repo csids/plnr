@@ -4,5 +4,5 @@
 #' or if it is being run directly
 #' @export
 is_run_directly <- function() {
-  sys.nframe()==1
+  sys.nframe() == 1
 }
