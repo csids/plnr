@@ -112,7 +112,7 @@ Plan <- R6::R6Class(
           retval[[x$name]] <- x$fn()
         }
         if (!is.null(x$fn_name)) {
-          retval[[x$name]] <- do.call(x$fn_name)
+          retval[[x$name]] <- do.call(get_anything(x$fn_name))
         }
         if (!is.null(x$direct)) {
           retval[[x$name]] <- x$direct
@@ -137,7 +137,7 @@ Plan <- R6::R6Class(
         num_args <- length(formals(p$fn))
       } else if (is.null(p$fn) & !is.null(p$fn_name)) {
         # use fn_name
-        num_args <- length(formals(p$fn_name))
+        num_args <- length(formals(get_anything(p$fn_name)))
       }
 
       args <- list()
@@ -167,7 +167,7 @@ Plan <- R6::R6Class(
       } else if (is.null(p$fn) & !is.null(p$fn_name)) {
         # use fn_name
         retval <- do.call(
-          what = p$fn_name,
+          what = get_anything(p$fn_name),
           args = args
         )
       }

@@ -1,3 +1,7 @@
+# plnr 2020.5.11
+
+- fn_name can now take package::function_name arguments
+
 # plnr 2020.5.4
 
 - is_run_directly function created, allowing the user to see if their code is being run directly or from within a function
