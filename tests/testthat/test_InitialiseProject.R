@@ -40,7 +40,7 @@ test_that("test add_analysis_from_l", {
     3
   }, name = "ok")
 
-  analyses <- expand_list(x = c(1:5), y = c(1:5), z=list(1:2))
+  analyses <- expand_list(x = c(1:5), y = c(1:5), z = list(1:2))
 
   fn <- function(data, argset) {
     # Sys.sleep(1)
@@ -133,5 +133,3 @@ test_that("fn_name in data.frame", {
     2
   )
 })
-
-
