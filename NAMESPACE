@@ -2,6 +2,7 @@
 
 export(Plan)
 export(create_rmarkdown)
+export(expand_list)
 export(fn_test)
 export(get_anything)
 export(is_run_directly)

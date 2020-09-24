@@ -18,12 +18,13 @@ Imports: data.table,
   glue,
   org (>= 2020.2.18),
   usethis,
-  huxtable
+  huxtable,
+  purrr
 Suggests: testthat,
   knitr,
   rmarkdown,
   progressr,
   ggplot2,
   readxl
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.1
 VignetteBuilder: knitr

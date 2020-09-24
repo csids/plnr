@@ -1,34 +1,3 @@
-context("InitialiseProject")
-#
-# test_that("x1", {
-#   fn <- function(data, argset) {
-#     return(1)
-#   }
-#
-#   p <- Plan$new()
-#   p$data_add(df = cars, name = "ok")
-#   p$analysis_add(fn = fn, r = 4, g = 5)
-#   p$analysis_add(fn = fn, r = 2, gg = 9)
-#
-#   p$list_analysis[[1]]$args
-#
-#   ps <- Plans$new()
-#   ps$plan_add(p)
-#
-#   ps$list_plan[[1]]$list_analysis[[1]]$args
-#   ps$list_plan[[1]]$list_analysis[[2]]$args
-#
-#   testthat::expect_equal(
-#     p$analysis_get(index_analysis = 1),
-#     ps$analysis_get(index_plan = 1, index_analysis = 1)
-#   )
-#
-#   testthat::expect_equal(
-#     p$data_get(),
-#     ps$data_get(index_plan = 1)
-#   )
-# })
-
 test_that("testing error if <2 arguments", {
   p <- Plan$new()
   p$add_data(fn = function() {
@@ -62,6 +31,27 @@ test_that("test len()", {
   testthat::expect_equal(
     p$len(),
     50
+  )
+})
+
+test_that("test add_analysis_from_l", {
+  p <- Plan$new()
+  p$add_data(fn = function() {
+    3
+  }, name = "ok")
+
+  analyses <- expand_list(x = c(1:5), y = c(1:5), z=list(1:2))
+
+  fn <- function(data, argset) {
+    # Sys.sleep(1)
+    return(1)
+  }
+
+  p$add_analysis_from_list(fn = fn, l = analyses)
+  # p$run_all_progress()
+  testthat::expect_equal(
+    p$len(),
+    25
   )
 })
 
@@ -143,3 +133,5 @@ test_that("fn_name in data.frame", {
     2
   )
 })
+
+

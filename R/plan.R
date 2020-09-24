@@ -60,6 +60,13 @@ Plan <- R6::R6Class(
         do.call(add_argset, argset)
       }
     },
+    add_argset_from_list = function(l) {
+      for (i in seq_along(l)) {
+        argset <- l[[i]]
+        do.call(add_argset, argset)
+      }
+      # message(glue::glue("Added {length(l)} argsets to the plan"))
+    },
     add_analysis = function(name = uuid::UUIDgenerate(), fn = NULL, fn_name = NULL, ...) {
       stopifnot(is.null(fn) | is.function(fn))
       stopifnot(is.null(fn_name) | is.character(fn_name))
@@ -82,6 +89,19 @@ Plan <- R6::R6Class(
         print(argset)
         do.call(add_analysis, argset)
       }
+    },
+    add_analysis_from_list = function(fn = NULL, fn_name = NULL, l) {
+      stopifnot(is.null(fn) | is.function(fn))
+      stopifnot(is.null(fn_name) | is.character(fn_name))
+
+      for (i in seq_along(l)) {
+        argset <- l[[i]]
+        argset$fn <- fn
+        if (!"fn_name" %in% names(df)) argset$fn_name <- fn_name
+        # message(i)
+        do.call(add_analysis, argset)
+      }
+      # message(glue::glue("Added {length(l)} analyses to the plan"))
     },
     apply_analysis_fn_to_all = function(fn = NULL, fn_name = NULL) {
       stopifnot(is.null(fn) | is.function(fn))

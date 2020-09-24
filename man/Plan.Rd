@@ -23,8 +23,10 @@ A plan is:
 \item \href{#method-add_data}{\code{Plan$add_data()}}
 \item \href{#method-add_argset}{\code{Plan$add_argset()}}
 \item \href{#method-add_argset_from_df}{\code{Plan$add_argset_from_df()}}
+\item \href{#method-add_argset_from_list}{\code{Plan$add_argset_from_list()}}
 \item \href{#method-add_analysis}{\code{Plan$add_analysis()}}
 \item \href{#method-add_analysis_from_df}{\code{Plan$add_analysis_from_df()}}
+\item \href{#method-add_analysis_from_list}{\code{Plan$add_analysis_from_list()}}
 \item \href{#method-apply_analysis_fn_to_all}{\code{Plan$apply_analysis_fn_to_all()}}
 \item \href{#method-len}{\code{Plan$len()}}
 \item \href{#method-x_seq_along}{\code{Plan$x_seq_along()}}
@@ -82,6 +84,15 @@ A plan is:
 
 }
 \if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-add_argset_from_list"></a>}}
+\if{latex}{\out{\hypertarget{method-add_argset_from_list}{}}}
+\subsection{Method \code{add_argset_from_list()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Plan$add_argset_from_list(l)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-add_analysis"></a>}}
 \if{latex}{\out{\hypertarget{method-add_analysis}{}}}
 \subsection{Method \code{add_analysis()}}{
@@ -96,6 +107,15 @@ A plan is:
 \subsection{Method \code{add_analysis_from_df()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Plan$add_analysis_from_df(fn = NULL, fn_name = NULL, df)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-add_analysis_from_list"></a>}}
+\if{latex}{\out{\hypertarget{method-add_analysis_from_list}{}}}
+\subsection{Method \code{add_analysis_from_list()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Plan$add_analysis_from_list(fn = NULL, fn_name = NULL, l)}\if{html}{\out{</div>}}
 }
 
 }
