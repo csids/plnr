@@ -1,31 +1,29 @@
 language: r
+cache:
+- packages
 
-repos:
-  CRAN: https://cloud.r-project.org
-  folkehelseinstituttet: https://folkehelseinstituttet.github.io/drat/
-  euromomo: https://euromomonetwork.github.io/drat/
-  raubreywhite: https://raubreywhite.github.io/drat/
+addons:
+  apt:
+    packages:
+      - libharfbuzz-dev
+      - libfribidi-dev
+      - libgit2-dev
 
 r_packages:
-- covr
 - drat
-- pkgdown
 - styler
 - devtools
+- pkgdown
 
+before_cache:
+- Rscript -e 'remotes::install_cran("pkgdown")'
 before_install:
-- Rscript -e 'install.packages("devtools");devtools::install_github("HenrikBengtsson/progressr")'
 - bash travis/make.sh
-
 after_success:
-- Rscript -e 'library(covr); codecov()'
 - test $TRAVIS_PULL_REQUEST == "false" && test $TRAVIS_BRANCH == "master" && bash
   travis/drat.sh
-- test $TRAVIS_PULL_REQUEST == "false" && test $TRAVIS_BRANCH == "master" && bash
-  travis/styler.sh
 - test $TRAVIS_PULL_REQUEST == "false" && test $TRAVIS_BRANCH == "master" && Rscript
-  -e 'Sys.sleep(30);install.packages("plnr",repos="https://folkehelseinstituttet.github.io/drat/");pkgdown::build_site()'
-  
+  -e 'devtools::install(); pkgdown::build_site()'
 deploy:
   provider: pages
   skip-cleanup: true

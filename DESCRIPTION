@@ -1,9 +1,11 @@
 Package: plnr
-Title: Organising Projects
+Title: A System To Help You Plan Analyses.
 Version: 2020.9.24
-Authors@R: person("Richard", "White", email = "w@rwhite.no", role = c("aut", "cre"))
-Description: A system to help you organize projects. Most analyses have three (or more) main sections: code, results, and data, each with different requirements (version control/sharing/encryption). You provide folder locations and 'org' helps you take care of the details.
-License: GPL-3
+Authors@R: person(c("Richard","Aubrey"), "White", email = "hello@rwhite.no", role = c("aut", "cre"),
+    comment = c(ORCID = "0000-0002-6747-1726")
+  )
+Description: A system to help you plan analyses.
+License: MIT
 URL: https://folkehelseinstituttet.github.io/plnr, https://github.com/folkehelseinstituttet/plnr
 BugReports: https://github.com/folkehelseinstituttet/plnr/issues
 Encoding: UTF-8

@@ -138,6 +138,11 @@ Plan <- R6::R6Class(
           retval[[x$name]] <- x$direct
         }
       }
+      if(length(retval)==1){
+        if("data__________go_up_one_level" %in% names(retval)){
+          retval <- retval$data__________go_up_one_level
+        }
+      }
       return(retval)
     },
     get_analysis = function(index_analysis) {
