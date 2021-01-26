@@ -21,7 +21,8 @@ Imports: data.table,
   org (>= 2020.2.18),
   usethis,
   huxtable,
-  purrr
+  purrr,
+  utils
 Suggests: testthat,
   knitr,
   rmarkdown,
