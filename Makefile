@@ -37,8 +37,8 @@ drat_update:
 .ONESHELL:
 drat_insert:
 	PKGREPO=$$PWD
-	PKGNAMEDOCKER := $(shell sed -n "s/Package: *\([^ ]*\)/\1/p" DESCRIPTION)
-	PKGVERSDOCKER := $(shell sed -n "s/Version: *\([^ ]*\)/\1/p" DESCRIPTION)
+	export PKGNAMEDOCKER := $(shell sed -n "s/Package: *\([^ ]*\)/\1/p" DESCRIPTION)
+	export PKGVERSDOCKER := $(shell sed -n "s/Version: *\([^ ]*\)/\1/p" DESCRIPTION)
 	cd /drat
 	Rscript -e "drat::insertPackage('$(PKGREPO)/$(PKGNAMEDOCKER)', repodir = '.')"
 	sed -i "/## News/a $(DATETIME) Inserted $(PKGNAMEDOCKER) $(PKGVERSDOCKER)" README.md
