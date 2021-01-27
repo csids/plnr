@@ -4,6 +4,8 @@
 # https://cran.r-project.org/doc/manuals/r-release/R-exts.html#Writing-portable-packages
 export PKGNAME=`sed -n "s/Package: *\([^ ]*\)/\1/p" DESCRIPTION`
 export PKGVERS=`sed -n "s/Version: *\([^ ]*\)/\1/p" DESCRIPTION`
+export PKGNAMEDOCKER=$(shell sed -n "s/Package: *\([^ ]*\)/\1/p" DESCRIPTION)
+export PKGVERSDOCKER=$(shell sed -n "s/Version: *\([^ ]*\)/\1/p" DESCRIPTION)
 export PKGTARBALL=$(PKGNAME)_$(PKGVERS).tar.gz
 export DATETIME=`date --rfc-3339=seconds`
 
@@ -37,8 +39,6 @@ drat_update:
 .ONESHELL:
 drat_insert:
 	PKGREPO=$$PWD
-	export PKGNAMEDOCKER := $(shell sed -n "s/Package: *\([^ ]*\)/\1/p" DESCRIPTION)
-	export PKGVERSDOCKER := $(shell sed -n "s/Version: *\([^ ]*\)/\1/p" DESCRIPTION)
 	cd /drat
 	Rscript -e "drat::insertPackage('$(PKGREPO)/$(PKGNAMEDOCKER)', repodir = '.')"
 	sed -i "/## News/a $(DATETIME) Inserted $(PKGNAMEDOCKER) $(PKGVERSDOCKER)" README.md
