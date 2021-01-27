@@ -3,6 +3,7 @@ pipeline {
     stages {
       stage('Build') {
         steps {
+          echo $WORKSPACE
           sudo podman run --rm \
             -v $WORKSPACE:/rpkg \
             fhix/dr:latest /bin/bash -c \
