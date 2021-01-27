@@ -2,10 +2,10 @@
 # https://github.com/yihui/knitr/blob/dc5ead7bcfc0ebd2789fe99c527c7d91afb3de4a/Makefile#L1-L4
 # Note the portability change as suggested in the manual:
 # https://cran.r-project.org/doc/manuals/r-release/R-exts.html#Writing-portable-packages
-PKGNAME = `sed -n "s/Package: *\([^ ]*\)/\1/p" DESCRIPTION`
-PKGVERS = `sed -n "s/Version: *\([^ ]*\)/\1/p" DESCRIPTION`
-PKGTARBALL = $(PKGNAME)_$(PKGVERS).tar.gz
-DATETIME = `date --rfc-3339=seconds`
+export PKGNAME=`sed -n "s/Package: *\([^ ]*\)/\1/p" DESCRIPTION`
+export PKGVERS=`sed -n "s/Version: *\([^ ]*\)/\1/p" DESCRIPTION`
+export PKGTARBALL=$(PKGNAME)_$(PKGVERS).tar.gz
+export DATETIME=`date --rfc-3339=seconds`
 
 all: check
 
@@ -23,17 +23,21 @@ install_deps:
 install: install_deps build
 	R CMD INSTALL $(PKGNAME)_$(PKGVERS).tar.gz
 
-# this happens inside docker
+# this happens outside docker
 .ONESHELL:
-drat_insert:
-	PKGREPO=$PWD
-	cd /drat
+drat_update:
+	cd /mnt/n/sykdomspulsen_config/drat
 	git config user.name "Sykdomspulsen"
 	git config user.email "sykdomspulsen@fhi.no"
 	git config push.default simple
 	git checkout gh-pages
 	git pull
 
+# this happens inside docker
+.ONESHELL:
+drat_insert:
+	PKGREPO=$PWD
+	cd /drat
 	Rscript -e "drat::insertPackage('$PKGREPO/PKGTARBALL', repodir = '.')"
 	sed -i "/## News/a $DATETIME Inserted $PKGNAME $PKGVERS" README.md
 	git add -A

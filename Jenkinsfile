@@ -21,6 +21,13 @@ pipeline {
         """
       }
     }
+    stage('drat update') {
+      steps {
+        sh """
+          make drat_update
+        """
+      }
+    }
     stage('drat insert') {
       steps {
         sh """
