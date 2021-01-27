@@ -10,3 +10,5 @@ deploy.sh
 make.sh
 cran-comments.md
 ^.*\.Rcheck
+^Makefile$
+^Jenkinsfile$
