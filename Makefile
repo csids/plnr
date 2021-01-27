@@ -39,7 +39,7 @@ drat_insert:
 	PKGREPO=$$PWD
 	cd /drat
 	Rscript -e "drat::insertPackage('$$PKGREPO/$$PKGTARBALL', repodir = '.')"
-	sed -i "/## News/a $DATETIME Inserted $PKGNAME $$PKGVERS" README.md
+	sed -i "/## News/a $$DATETIME Inserted $$PKGNAME $$PKGVERS" README.md
 	git add -A
 	git commit -am "Jenkins $$PKGNAME $$PKGVERS" #Committing the changes
 
