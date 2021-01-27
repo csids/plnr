@@ -38,7 +38,7 @@ drat_update:
 # this happens inside docker
 .ONESHELL:
 drat_insert:
-	PKGREPO=$(PWD)
+	export PKGREPO=$(PWD)
 	cd /drat
 	Rscript -e "drat::insertPackage('$(PKGREPO)/$(PKGNAMEDOCKER)', repodir = '.')"
 	sed -i "/## News/a $(DATETIME) Inserted $(PKGNAMEDOCKER) $(PKGVERSDOCKER)" README.md
