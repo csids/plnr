@@ -37,11 +37,13 @@ drat_update:
 .ONESHELL:
 drat_insert:
 	PKGREPO=$$PWD
+	PKGNAMEDOCKER := $(shell sed -n "s/Package: *\([^ ]*\)/\1/p" DESCRIPTION)
+	PKGVERSDOCKER := $(shell sed -n "s/Version: *\([^ ]*\)/\1/p" DESCRIPTION)
 	cd /drat
-	Rscript -e "drat::insertPackage('$$PKGREPO/$(PKGTARBALL)', repodir = '.')"
-	sed -i "/## News/a $$DATETIME Inserted $(PKGNAME) $(PKGVERS)" README.md
+	Rscript -e "drat::insertPackage('$(PKGREPO)/$(PKGNAMEDOCKER)', repodir = '.')"
+	sed -i "/## News/a $(DATETIME) Inserted $(PKGNAMEDOCKER) $(PKGVERSDOCKER)" README.md
 	git add -A
-	git commit -am "Jenkins $(PKGNAME) $(PKGVERS)" #Committing the changes
+	git commit -am "Jenkins $(PKGNAMEDOCKER) $(PKGVERSDOCKER)" #Committing the changes
 
 	cd $(PKGREPO)
 
