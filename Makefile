@@ -12,8 +12,9 @@ export DATE=`date +%Y.%-m.%-d`
 all: check
 
 fix_description_date:
-	sed -i "s/^Version: .*$/Version: $DATE/" DESCRIPTION
+	sed -i "s/^Version: .*\$/Version: $(DATE)/" DESCRIPTION
 	echo "Date/Publication: $DATETIMEUTC" >> DESCRIPTION
+	cat DESCRIPTION
 
 build:
 	R CMD build .
