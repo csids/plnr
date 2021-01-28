@@ -43,7 +43,7 @@ drat_insert:
 # this happens outside of docker
 .ONESHELL:
 drat_push:
-	sed -i "/## News/a $(DATETIME) Inserted $(PKGNAME) $(PKGVERS)" /mnt/n/sykdomspulsen_config/drat/README.md
+	sed -i "/## News/a $(DATETIME) Inserted $(PKGNAME) $(PKGVERS)\n" /mnt/n/sykdomspulsen_config/drat/README.md
 	git -C /mnt/n/sykdomspulsen_config/drat add -A
 	git -C /mnt/n/sykdomspulsen_config/drat commit -am "Jenkins $(PKGNAME) $(PKGVERS)" #Committing the changes
 	git -C /mnt/n/sykdomspulsen_config/drat push -f origin gh-pages #pushes to master branch
