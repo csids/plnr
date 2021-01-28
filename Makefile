@@ -38,7 +38,7 @@ drat_update:
 # this happens inside docker
 .ONESHELL:
 drat_insert:
-	Rscript -e "drat::insertPackage(fs::dir_ls('/rpkg/', regexp='.tar.gz\$'), repodir = '/drat')"
+	Rscript -e "drat::insertPackage(fs::dir_ls('/rpkg/', regexp='.tar.gz\\$'), repodir = '/drat')"
 
 # this happens outside of docker
 .ONESHELL:
