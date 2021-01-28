@@ -6,14 +6,14 @@ export PKGNAME=`sed -n "s/Package: *\([^ ]*\)/\1/p" DESCRIPTION`
 export PKGVERS=`sed -n "s/Version: *\([^ ]*\)/\1/p" DESCRIPTION`
 export PKGTARBALL=$(PKGNAME)_$(PKGVERS).tar.gz
 export DATETIME=`date --rfc-3339=seconds`
-export DATETIMEUTC=`date -u +%Y.%m.%d\ %H:%M:%s UTC`
+export DATETIMEUTC=`date -u +%Y.%m.%d\ %H:%M:%s`
 export DATE=`date +%Y.%-m.%-d`
 
 all: check
 
 fix_description_date:
-	sed -i "s/^Version: .*\\$/Version: $(DATE)/" DESCRIPTION
-	echo "Date/Publication: $(DATETIMEUTC)" >> DESCRIPTION
+	sed -i "s/^Version: .*/Version: $(DATE)/" DESCRIPTION
+	echo "Date/Publication: $(DATETIMEUTC) UTC" >> DESCRIPTION
 	cat DESCRIPTION
 
 build:
