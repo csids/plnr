@@ -71,5 +71,14 @@ drat_prune_history:
 	git branch -m gh-pages #renaming branch as master
 	git -C /tmp/drat push -f origin gh-pages #pushes to master branch
 
+# this happens inside of docker
+.ONESHELL:
+pkgdown_build:
+	Rscript -e 'devtools::install("/rpkg"); pkgdown::build_site("/rpkg")
+
+# this happens outside of docker:
+pkgdown_deploy:
+	git subtree push --prefix docs origin gh-pages
+
 clean:
 	@rm -rf $(PKGNAME)_$(PKGVERS).tar.gz $(PKGNAME).Rcheck

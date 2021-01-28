@@ -53,6 +53,24 @@ pipeline {
         """
       }
     }
+    stage('pkgdown build') {
+      steps {
+        sh """
+          sudo podman run --rm \
+            -v $WORKSPACE:/rpkg \
+            -v /mnt/n/sykdomspulsen_config/drat:/drat \
+            fhix/dr:latest /bin/bash -c \
+            'cd /rpkg; make pkgdown_build'
+        """
+      }
+    }
+    stage('pkgdown deploy') {
+      steps {
+        sh """
+          make pkgdown_deploy
+        """
+      }
+    }
     stage('Clean') {
       steps {
         sh """
