@@ -1,6 +1,13 @@
 pipeline {
   agent any
   stages {
+    stage('Fix DESCRIPTION version') {
+      steps {
+        sh """
+          make fix_description_date
+        """
+      }
+    }
     stage('Build') {
       steps {
         sh """
@@ -34,7 +41,6 @@ pipeline {
           sudo podman run --rm \
             -v $WORKSPACE:/rpkg \
             -v /mnt/n/sykdomspulsen_config/drat:/drat \
-            -e PKGREPO='/rpkg' \
             fhix/dr:latest /bin/bash -c \
             'cd /rpkg; make drat_insert'
         """

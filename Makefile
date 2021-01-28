@@ -4,12 +4,16 @@
 # https://cran.r-project.org/doc/manuals/r-release/R-exts.html#Writing-portable-packages
 export PKGNAME=`sed -n "s/Package: *\([^ ]*\)/\1/p" DESCRIPTION`
 export PKGVERS=`sed -n "s/Version: *\([^ ]*\)/\1/p" DESCRIPTION`
-export PKGNAMEDOCKER=$(shell sed -n "s/Package: *\([^ ]*\)/\1/p" DESCRIPTION)
-export PKGVERSDOCKER=$(shell sed -n "s/Version: *\([^ ]*\)/\1/p" DESCRIPTION)
 export PKGTARBALL=$(PKGNAME)_$(PKGVERS).tar.gz
 export DATETIME=`date --rfc-3339=seconds`
+export DATETIMEUTC=`date -u +%Y.%m.%d\ %H:%M:%s UTC`
+export DATE=`date +%Y.%-m.%-d`
 
 all: check
+
+fix_description_date:
+	sed -i "s/^Version: .*$/Version: $DATE/" DESCRIPTION
+	echo "Date/Publication: $DATETIMEUTC" >> DESCRIPTION
 
 build:
 	R CMD build .
@@ -43,7 +47,7 @@ drat_insert:
 # this happens outside of docker
 .ONESHELL:
 drat_push:
-	sed -i "/## News/a $(DATETIME) Inserted $(PKGNAME) $(PKGVERS)\n" /mnt/n/sykdomspulsen_config/drat/README.md
+	sed -i "/## News/a - $(DATETIME) Inserted **$(PKGNAME) $(PKGVERS)**\n" /mnt/n/sykdomspulsen_config/drat/README.md
 	git -C /mnt/n/sykdomspulsen_config/drat add -A
 	git -C /mnt/n/sykdomspulsen_config/drat commit -am "Jenkins $(PKGNAME) $(PKGVERS)" #Committing the changes
 	git -C /mnt/n/sykdomspulsen_config/drat push -f origin gh-pages #pushes to master branch
