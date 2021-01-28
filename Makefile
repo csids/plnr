@@ -80,7 +80,7 @@ pkgdown_build:
 pkgdown_deploy:
 	git add .
 	git commit -am "Pkgdown built"
-	/usr/lib/git-core/git-subtree push --prefix docs origin gh-pages
+	git subtree push --prefix docs origin gh-pages
 
 clean:
 	@rm -rf $(PKGNAME)_$(PKGVERS).tar.gz $(PKGNAME).Rcheck
