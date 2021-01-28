@@ -5,8 +5,8 @@
 export PKGNAME=`sed -n "s/Package: *\([^ ]*\)/\1/p" DESCRIPTION`
 export PKGVERS=`sed -n "s/Version: *\([^ ]*\)/\1/p" DESCRIPTION`
 export PKGTARBALL=$(PKGNAME)_$(PKGVERS).tar.gz
-export DATETIME=`date +%Y.%m.%d\ %H:%M:%S`
-export DATETIMEUTC=`date -u +%Y.%m.%d\ %H:%M:%S`
+export DATETIME=`date +%Y-%m-%d\ %H:%M:%S`
+export DATETIMEUTC=`date -u +%Y-%m-%d\ %H:%M:%S`
 export DATE=`date +%Y.%-m.%-d`
 
 all: check
@@ -21,11 +21,39 @@ install_deps:
 	-e 'if (!requireNamespace("remotes")) install.packages("remotes")' \
 	-e 'remotes::install_deps(dependencies = TRUE, upgrade = "never")'
 
+.ONESHELL:
 build:
+	Rscript \
+		-e 'if (!requireNamespace("remotes")) install.packages("remotes")' \
+		-e 'remotes::install_deps(dependencies = TRUE, upgrade = "never")'
 	R CMD build .
 
-check: build
+.ONESHELL:
+check:
+	Rscript \
+		-e 'if (!requireNamespace("remotes")) install.packages("remotes")' \
+		-e 'remotes::install_deps(dependencies = TRUE, upgrade = "never")'
 	R CMD check --no-manual $(PKGNAME)_$(PKGVERS).tar.gz
+
+	cd *.Rcheck
+
+	if grep -Fq "WARNING" 00check.log
+	then
+		# code if found
+		exit 1
+	else
+		# code if not found
+		echo "NO WARNINGs"
+	fi
+
+	if grep -Fq "ERROR" 00check.log
+	then
+		# code if found
+		exit 1
+	else
+		# code if not found
+		echo "NO ERRORs"
+	fi
 
 install: install_deps build
 	R CMD INSTALL $(PKGNAME)_$(PKGVERS).tar.gz
@@ -74,7 +102,7 @@ drat_prune_history:
 # this happens inside of docker
 .ONESHELL:
 pkgdown_build:
-	Rscript -e 'devtools::install("/rpkg", upgrade = FALSE); pkgdown::build_site("/rpkg")'
+	Rscript -e 'devtools::install("/rpkg", dependences = TRUE, upgrade = FALSE); pkgdown::build_site("/rpkg")'
 
 # this happens outside of docker:
 pkgdown_deploy:
