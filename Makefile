@@ -5,7 +5,7 @@
 export PKGNAME=`sed -n "s/Package: *\([^ ]*\)/\1/p" DESCRIPTION`
 export PKGVERS=`sed -n "s/Version: *\([^ ]*\)/\1/p" DESCRIPTION`
 export PKGTARBALL=$(PKGNAME)_$(PKGVERS).tar.gz
-export DATETIME=`date --rfc-3339=seconds`
+export DATETIME=`date +%Y.%m.%d\ %H:%M:%S`
 export DATETIMEUTC=`date -u +%Y.%m.%d\ %H:%M:%S`
 export DATE=`date +%Y.%-m.%-d`
 
@@ -48,7 +48,7 @@ drat_insert:
 # this happens outside of docker
 .ONESHELL:
 drat_push:
-	sed -i "/## News/a - $(DATETIME) Inserted **$(PKGNAME) $(PKGVERS)**\n" /mnt/n/sykdomspulsen_config/drat/README.md
+	sed -i "/## News/a - **$(PKGNAME) $(PKGVERS)** inserted at $(DATETIME)\n" /mnt/n/sykdomspulsen_config/drat/README.md
 	sed -i '1001,$ d' /mnt/n/sykdomspulsen_config/drat/README.md # only keep first 1000 lines of readme
 	git -C /mnt/n/sykdomspulsen_config/drat add -A
 	git -C /mnt/n/sykdomspulsen_config/drat commit -am "Jenkins $(PKGNAME) $(PKGVERS)" #Committing the changes
@@ -78,6 +78,8 @@ pkgdown_build:
 
 # this happens outside of docker:
 pkgdown_deploy:
+	git add .
+	git commit -am "Pkgdown built"
 	git subtree push --prefix docs origin gh-pages
 
 clean:
