@@ -38,16 +38,14 @@ drat_update:
 # this happens inside docker
 .ONESHELL:
 drat_insert:
-	cd /drat
-	Rscript -e "drat::insertPackage('$(PKGREPO)/$(PKGNAMEDOCKER)', repodir = '.')"
-	sed -i "/## News/a $(DATETIME) Inserted $(PKGNAMEDOCKER) $(PKGVERSDOCKER)" README.md
-	git add -A
-	git commit -am "Jenkins $(PKGNAMEDOCKER) $(PKGVERSDOCKER)" #Committing the changes
-
-	cd $(PKGREPO)
+	Rscript -e \"drat::insertPackage("/rpkg/$(PKGTARBALL)"", repodir = '/drat')\"
 
 # this happens outside of docker
+.ONESHELL:
 drat_push:
+	sed -i "/## News/a $(DATETIME) Inserted $(PKGNAME) $(PKGVERS)" /mnt/n/sykdomspulsen_config/drat/README.md
+	git -C /mnt/n/sykdomspulsen_config/drat add -A
+	git -C /mnt/n/sykdomspulsen_config/drat commit -am "Jenkins $(PKGNAME) $(PKGVERS)" #Committing the changes
 	git -C /mnt/n/sykdomspulsen_config/drat push -f origin gh-pages #pushes to master branch
 
 .ONESHELL:
