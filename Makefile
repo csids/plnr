@@ -49,6 +49,7 @@ drat_insert:
 .ONESHELL:
 drat_push:
 	sed -i "/## News/a - $(DATETIME) Inserted **$(PKGNAME) $(PKGVERS)**\n" /mnt/n/sykdomspulsen_config/drat/README.md
+	sed -i '1001,$ d' /mnt/n/sykdomspulsen_config/drat/README.md # only keep first 1000 lines of readme
 	git -C /mnt/n/sykdomspulsen_config/drat add -A
 	git -C /mnt/n/sykdomspulsen_config/drat commit -am "Jenkins $(PKGNAME) $(PKGVERS)" #Committing the changes
 	git -C /mnt/n/sykdomspulsen_config/drat push -f origin gh-pages #pushes to master branch
