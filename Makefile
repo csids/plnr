@@ -38,7 +38,7 @@ drat_update:
 # this happens inside docker
 .ONESHELL:
 drat_insert:
-	Rscript -e \"drat::insertPackage("/rpkg/$(PKGTARBALL)"", repodir = '/drat')\"
+	Rscript -e \"drat::insertPackage("/rpkg/$(PKGTARBALL)", repodir = '/drat')\"
 
 # this happens outside of docker
 .ONESHELL:
