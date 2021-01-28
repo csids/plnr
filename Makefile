@@ -48,7 +48,7 @@ drat_insert:
 # this happens outside of docker
 .ONESHELL:
 drat_push:
-	sed -i "/## News/a - **$(PKGNAME) $(PKGVERS)** inserted at $(DATETIME)" /mnt/n/sykdomspulsen_config/drat/README.md
+	sed -i "/## News/a - **$(PKGNAME) $(PKGVERS)** (linux) inserted at $(DATETIME)" /mnt/n/sykdomspulsen_config/drat/README.md
 	sed -i '1001,$ d' /mnt/n/sykdomspulsen_config/drat/README.md # only keep first 1000 lines of readme
 	git -C /mnt/n/sykdomspulsen_config/drat add -A
 	git -C /mnt/n/sykdomspulsen_config/drat commit -am "Jenkins $(PKGNAME) $(PKGVERS)" #Committing the changes
