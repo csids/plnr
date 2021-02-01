@@ -1,4 +1,7 @@
 *.Rcheck
+*.tar.gz
+*.[rR][dD][sS]
+*.[rR][dD][aA][tT][aA]
 
 # Windows image file caches
 Thumbs.db
@@ -35,3 +38,5 @@ Temporary Items
 .Rproj.user
 .Rhistory
 inst/doc
+doc
+Meta
