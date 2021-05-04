@@ -246,8 +246,8 @@ Plan <- R6::R6Class(
       } else {
         # running in parallel
         if (verbose & is.null(pb_progress) & is.null(pb_progressor)) {
-          progressr::handlers(progressr::progress_handler(
-            format = "[:bar] :current/:total (:percent) in :elapsedfull, eta: :eta",
+          progressr::handlers(progressr::handler_progress(
+            format = "[:bar] :current/:total (:percent) in :elapsedfull, eta: :eta\n",
             clear = FALSE
           ))
           pb_progressor <<- progressr::progressor(steps = self$len())
