@@ -242,7 +242,7 @@ Plan <- R6::R6Class(
           if (verbose & !is.null(pb_progressor)) if(interactive()){
             pb_progressor()
           } else {
-            pb_progressor(".", class = "sticky")
+            pb_progressor()
           }
           retval[[i]] <- run_one_with_data(index_analysis = i, data = data, ...)
           gc(FALSE)
@@ -263,7 +263,7 @@ Plan <- R6::R6Class(
           if (verbose & !is.null(pb_progressor)) if(interactive()){
             pb_progressor()
           } else {
-            pb_progressor(".", class = "sticky")
+            pb_progressor()
           }
           run_one_with_data(index_analysis = i, data = data, ...)
           gc(FALSE)
