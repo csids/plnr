@@ -239,7 +239,11 @@ Plan <- R6::R6Class(
 
         for (i in x_seq_along()) {
           if (verbose & !is.null(pb_progress)) pb_progress$tick()
-          if (verbose & !is.null(pb_progressor)) pb_progressor()
+          if (verbose & !is.null(pb_progressor)) if(interactive()){
+            pb_progressor()
+          } else {
+            pb_progressor(".", class = "sticky")
+          }
           retval[[i]] <- run_one_with_data(index_analysis = i, data = data, ...)
           gc(FALSE)
         }
@@ -256,7 +260,11 @@ Plan <- R6::R6Class(
 
         retval <- foreach(i = x_seq_along(), .options.future = list(chunk.size = chunk_size)) %dopar% {
           if (verbose & !is.null(pb_progress)) pb_progress$tick()
-          if (verbose & !is.null(pb_progressor)) pb_progressor()
+          if (verbose & !is.null(pb_progressor)) if(interactive()){
+            pb_progressor()
+          } else {
+            pb_progressor(".", class = "sticky")
+          }
           run_one_with_data(index_analysis = i, data = data, ...)
           gc(FALSE)
         }
