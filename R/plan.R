@@ -124,6 +124,9 @@ Plan <- R6::R6Class(
     set_progressor = function(pb) {
       pb_progressor <<- pb
     },
+    set_verbose = function(x) {
+      verbose <<- x
+    },
     get_data = function() {
       retval <- list()
       for (i in seq_along(data)) {
