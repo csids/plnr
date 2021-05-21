@@ -232,7 +232,7 @@ Plan <- R6::R6Class(
         # running not in parallel
         if (verbose & is.null(pb_progress) & is.null(pb_progressor)) {
           pb_progress <<- progress::progress_bar$new(
-            format = "[:bar] :current/:total (:percent) in :elapsedfull, eta: :eta",
+            format = paste0("[:bar] :current/:total (:percent) in :elapsedfull, eta: :eta", ifelse(is.interactive(), "", "\n")),
             clear = FALSE,
             total = self$len()
           )
