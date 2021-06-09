@@ -7,9 +7,11 @@
 easy_split(x, size_of_each_group = NULL, number_of_groups = NULL)
 }
 \arguments{
-\item{x}{a}
+\item{x}{The variable to be split}
 
-\item{size}{a}
+\item{size_of_each_group}{If you want to split `x` into a number of groups, each of `size_of_each_group` size}
+
+\item{number_of_groups}{How many equally sized groups do you want?}
 }
 \description{
 easy_split

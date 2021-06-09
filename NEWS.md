@@ -1,3 +1,7 @@
+# plnr 2021.6.9
+
+- Inclusion of easy_split
+
 # plnr 2020.5.11
 
 - fn_name can now take package::function_name arguments

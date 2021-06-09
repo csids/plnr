@@ -1,6 +1,7 @@
 #' easy_split
-#' @param x a
-#' @param size a
+#' @param x The variable to be split
+#' @param size_of_each_group If you want to split `x` into a number of groups, each of `size_of_each_group` size
+#' @param number_of_groups How many equally sized groups do you want?
 #' @examples
 #' easy_split(letters[1:20], size_of_each_group = 3)
 #' easy_split(letters[1:20], number_of_groups = 3)
