@@ -2,12 +2,12 @@
 
 export(Plan)
 export(create_rmarkdown)
+export(easy_split)
 export(expand_list)
 export(fn_test)
 export(get_anything)
 export(is_run_directly)
 export(set_opts)
-export(split_equal)
 exportClasses(Plan)
 import(R6)
 import(data.table)
