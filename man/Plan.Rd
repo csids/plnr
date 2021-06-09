@@ -32,6 +32,7 @@ A plan is:
 \item \href{#method-x_seq_along}{\code{Plan$x_seq_along()}}
 \item \href{#method-set_progress}{\code{Plan$set_progress()}}
 \item \href{#method-set_progressor}{\code{Plan$set_progressor()}}
+\item \href{#method-set_verbose}{\code{Plan$set_verbose()}}
 \item \href{#method-get_data}{\code{Plan$get_data()}}
 \item \href{#method-get_analysis}{\code{Plan$get_analysis()}}
 \item \href{#method-get_argset}{\code{Plan$get_argset()}}
@@ -161,6 +162,15 @@ A plan is:
 \subsection{Method \code{set_progressor()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Plan$set_progressor(pb)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-set_verbose"></a>}}
+\if{latex}{\out{\hypertarget{method-set_verbose}{}}}
+\subsection{Method \code{set_verbose()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Plan$set_verbose(x)}\if{html}{\out{</div>}}
 }
 
 }
