@@ -76,6 +76,7 @@ check_package:
 
 .ONESHELL:
 drat:
+  git -C .. clone git@github.com:folkehelseinstituttet/drat.git --branch gh-pages
 	sudo podman run --rm --privileged \
 		-v $(shell pwd):/rpkg \
 		-v $(shell pwd)/../built:/built \
