@@ -15,7 +15,6 @@
 #' @import R6
 #' @import foreach
 #' @export
-#' @exportClass Plan
 Plan <- R6::R6Class(
   "Plan",
   portable = FALSE,
