@@ -1,10 +1,10 @@
 ---
-title: "Introduction"
+title: "Introduction to plnr"
 author: "Richard White"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{intro}
+  %\VignetteIndexEntry{Introduction to plnr}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options: 
