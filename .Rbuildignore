@@ -12,3 +12,4 @@ cran-comments.md
 ^.*\.Rcheck
 ^Makefile$
 ^Jenkinsfile$
+pkgdown.yml
