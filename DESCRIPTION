@@ -1,8 +1,9 @@
 Package: plnr
 Title: A System To Help You Plan Analyses.
 Version: 2021.5.4
-Authors@R: person(c("Richard","Aubrey"), "White", email = "hello@rwhite.no", role = c("aut", "cre"),
-    comment = c(ORCID = "0000-0002-6747-1726")
+Authors@R: c(
+  person(c("Richard","Aubrey"), "White", email = "hello@rwhite.no", role = c("aut", "cre"),comment = c(ORCID = "0000-0002-6747-1726")),
+  person(given = "Folkehelseinstituttet", role = c("cph"))
   )
 Description: A system to help you plan analyses.
 License: MIT
