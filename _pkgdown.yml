@@ -1,6 +1,5 @@
 url: https://docs.sykdomspulsen.no/plnr
 
-
 template:
   bootstrap: 5
   bslib:
@@ -18,7 +17,7 @@ authors:
     href: "https://www.fhi.no"
     html: "<img src='man/figures/fhi.png' width=72>"
   footer:
-    roles: [cre]
+    roles: [cre, aut]
     text: "Crafted by"
   sidebar:
     roles: [aut, ctb, cph]
