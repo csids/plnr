@@ -23,7 +23,8 @@ Imports: data.table,
   usethis,
   huxtable,
   purrr,
-  utils
+  utils,
+  digests
 Suggests: testthat,
   knitr,
   rmarkdown,

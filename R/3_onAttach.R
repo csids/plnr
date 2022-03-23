@@ -1,7 +1,7 @@
 .onAttach <- function(libname, pkgname) {
   version <- tryCatch(
     utils::packageDescription("plnr", fields = "Version"),
-    warning = function(w){
+    warning = function(w) {
       1
     }
   )

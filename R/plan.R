@@ -140,9 +140,11 @@ Plan <- R6::R6Class(
           retval[[x$name]] <- x$direct
         }
       }
-      if(length(retval)==1){
-        if("data__________go_up_one_level" %in% names(retval)){
+      if (length(retval) == 1) {
+        if ("data__________go_up_one_level" %in% names(retval)) {
+          # this is what happens in sc/sykdomspulsen core
           retval <- retval$data__________go_up_one_level
+          retval$hash <- digest::sha1(retval)
         }
       }
       return(retval)
@@ -241,10 +243,12 @@ Plan <- R6::R6Class(
 
         for (i in x_seq_along()) {
           if (verbose & !is.null(pb_progress)) pb_progress$tick()
-          if (verbose & !is.null(pb_progressor)) if(interactive()){
-            pb_progressor()
-          } else {
-            pb_progressor()
+          if (verbose & !is.null(pb_progressor)) {
+            if (interactive()) {
+              pb_progressor()
+            } else {
+              pb_progressor()
+            }
           }
           retval[[i]] <- run_one_with_data(index_analysis = i, data = data, ...)
           gc(FALSE)
@@ -262,10 +266,12 @@ Plan <- R6::R6Class(
 
         retval <- foreach(i = x_seq_along(), .options.future = list(chunk.size = chunk_size)) %dopar% {
           if (verbose & !is.null(pb_progress)) pb_progress$tick()
-          if (verbose & !is.null(pb_progressor)) if(interactive()){
-            pb_progressor()
-          } else {
-            pb_progressor()
+          if (verbose & !is.null(pb_progressor)) {
+            if (interactive()) {
+              pb_progressor()
+            } else {
+              pb_progressor()
+            }
           }
           run_one_with_data(index_analysis = i, data = data, ...)
           gc(FALSE)
