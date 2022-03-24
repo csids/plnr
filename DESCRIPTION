@@ -24,7 +24,7 @@ Imports: data.table,
   huxtable,
   purrr,
   utils,
-  digests
+  digest
 Suggests: testthat,
   knitr,
   rmarkdown,
