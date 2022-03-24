@@ -144,7 +144,7 @@ Plan <- R6::R6Class(
         if ("data__________go_up_one_level" %in% names(retval)) {
           # this is what happens in sc/sykdomspulsen core
           retval <- retval$data__________go_up_one_level
-          retval$hash <- digest::sha1(retval)
+          retval$hash_current <- digest::sha1(retval)
         }
       }
       return(retval)
@@ -218,7 +218,7 @@ Plan <- R6::R6Class(
         }
       }
     },
-    run_all = function(...) {
+    run_all_with_data = function(data, ...) {
       # try to deparse important arguments
       dots <- list(...)
       if (".plnr.options" %in% names(dots)) {
@@ -226,7 +226,6 @@ Plan <- R6::R6Class(
       } else {
         chunk_size <- 1
       }
-      data <- get_data()
 
       retval <- vector("list", length = self$len())
       if (!use_foreach_decision()) {
@@ -279,6 +278,10 @@ Plan <- R6::R6Class(
       }
 
       invisible(retval)
+    },
+    run_all = function(...) {
+      data <- get_data()
+      run_all_with_data(data = data, ...)
     },
     run_all_progress = function(...) {
       progressr::with_progress(
