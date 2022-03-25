@@ -1,12 +1,12 @@
 #' try again
+#' Adapted from function try_again from package testthat.
 #' @param x code
 #' @param times Number of times to try
 #' @param delay_seconds_min Number of seconds to delay on failure
 #' @param delay_seconds_max Number of seconds to delay on failure
 #' @param verbose Boolean. Do you want information?
 #' @export
-#' Adapted from function try_again from package testthat.
-try_again <- function (x, times = 1, delay_seconds_min = 1, delay_seconds_max = delay_seconds_min, verbose = FALSE) {
+try_again <- function (x, times = 2, delay_seconds_min = 5, delay_seconds_max = 10, verbose = FALSE) {
   i <- 1
   while (i <= times) {
     err <- tryCatch(withCallingHandlers({

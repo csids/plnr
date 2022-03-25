@@ -2,13 +2,14 @@
 % Please edit documentation in R/try_again.R
 \name{try_again}
 \alias{try_again}
-\title{try again}
+\title{try again
+Adapted from function try_again from package testthat.}
 \usage{
 try_again(
   x,
-  times = 1,
-  delay_seconds_min = 1,
-  delay_seconds_max = delay_seconds_min,
+  times = 2,
+  delay_seconds_min = 5,
+  delay_seconds_max = 10,
   verbose = FALSE
 )
 }
@@ -25,4 +26,5 @@ try_again(
 }
 \description{
 try again
+Adapted from function try_again from package testthat.
 }
