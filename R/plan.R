@@ -142,7 +142,7 @@ Plan <- R6::R6Class(
       }
       if (length(retval) == 1) {
         if ("data__________go_up_one_level" %in% names(retval)) {
-          if(is.list(retval$data__________go_up_one_level)){
+          if(is.list(retval$data__________go_up_one_level) & !is.null(names(retval$data__________go_up_one_level))){
             # this is what happens in sc/sykdomspulsen core
             retval <- retval$data__________go_up_one_level
             hash_current <- digest::sha1(retval)
