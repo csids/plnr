@@ -39,6 +39,7 @@ A plan is:
 \item \href{#method-run_one_with_data}{\code{Plan$run_one_with_data()}}
 \item \href{#method-run_one}{\code{Plan$run_one()}}
 \item \href{#method-use_foreach_decision}{\code{Plan$use_foreach_decision()}}
+\item \href{#method-run_all_with_data}{\code{Plan$run_all_with_data()}}
 \item \href{#method-run_all}{\code{Plan$run_all()}}
 \item \href{#method-run_all_progress}{\code{Plan$run_all_progress()}}
 \item \href{#method-clone}{\code{Plan$clone()}}
@@ -225,6 +226,15 @@ A plan is:
 \subsection{Method \code{use_foreach_decision()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Plan$use_foreach_decision()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-run_all_with_data"></a>}}
+\if{latex}{\out{\hypertarget{method-run_all_with_data}{}}}
+\subsection{Method \code{run_all_with_data()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Plan$run_all_with_data(data, ...)}\if{html}{\out{</div>}}
 }
 
 }
