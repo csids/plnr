@@ -142,11 +142,15 @@ Plan <- R6::R6Class(
       }
       if (length(retval) == 1) {
         if ("data__________go_up_one_level" %in% names(retval)) {
-          # this is what happens in sc/sykdomspulsen core
-          retval <- retval$data__________go_up_one_level
-          hash_current <- digest::sha1(retval)
-          retval$hash <- list()
-          retval$hash$current <- hash_current
+          if(is.list(retval$data__________go_up_one_level)){
+            # this is what happens in sc/sykdomspulsen core
+            retval <- retval$data__________go_up_one_level
+            hash_current <- digest::sha1(retval)
+            retval$hash <- list()
+            retval$hash$current <- hash_current
+          } else {
+            stop("you are not passing a named list as the return from the data function")
+          }
         }
       }
       return(retval)
