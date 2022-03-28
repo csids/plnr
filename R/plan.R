@@ -145,8 +145,8 @@ Plan <- R6::R6Class(
         if ("data__________go_up_one_level" %in% names(retval)) {
           # make sure it's a list
           if(inherits(retval$data__________go_up_one_level, "list")){
-            print(retval)
-            if(!is.null(names(retval$data__________go_up_one_level) | length(retval$data__________go_up_one_level)==0)){
+            # check that if it has content, it is named
+            if(!is.null(names(retval$data__________go_up_one_level)) | length(retval$data__________go_up_one_level)==0){
               # this is what happens in sc/sykdomspulsen core
               retval <- retval$data__________go_up_one_level
               hash_current <- digest::digest(retval, algo = "spookyhash")
