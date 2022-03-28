@@ -145,6 +145,7 @@ Plan <- R6::R6Class(
         if ("data__________go_up_one_level" %in% names(retval)) {
           # make sure it's a list
           if(inherits(retval$data__________go_up_one_level, "list")){
+            print(retval)
             if(!is.null(names(retval$data__________go_up_one_level) | length(retval$data__________go_up_one_level)==0)){
               # this is what happens in sc/sykdomspulsen core
               retval <- retval$data__________go_up_one_level
@@ -154,6 +155,8 @@ Plan <- R6::R6Class(
             } else {
               stop("you are not passing a named list as the return from the data function")
             }
+          } else {
+            stop("you are not passing a named list as the return from the data function")
           }
         }
       }
