@@ -140,16 +140,20 @@ Plan <- R6::R6Class(
           retval[[x$name]] <- x$direct
         }
       }
+      # trying to pull out what happens in sc/sykdomspulsen core
       if (length(retval) == 1) {
         if ("data__________go_up_one_level" %in% names(retval)) {
-          if(inherits(retval$data__________go_up_one_level, "list") & (!is.null(names(retval$data__________go_up_one_level) | length(retval$data__________go_up_one_level)==0))){
-            # this is what happens in sc/sykdomspulsen core
-            retval <- retval$data__________go_up_one_level
-            hash_current <- digest::digest(retval, algo = "spookyhash")
-            retval$hash <- list()
-            retval$hash$current <- hash_current
-          } else {
-            stop("you are not passing a named list as the return from the data function")
+          # make sure it's a list
+          if(inherits(retval$data__________go_up_one_level, "list")){
+            if(!is.null(names(retval$data__________go_up_one_level) | length(retval$data__________go_up_one_level)==0)){
+              # this is what happens in sc/sykdomspulsen core
+              retval <- retval$data__________go_up_one_level
+              hash_current <- digest::digest(retval, algo = "spookyhash")
+              retval$hash <- list()
+              retval$hash$current <- hash_current
+            } else {
+              stop("you are not passing a named list as the return from the data function")
+            }
           }
         }
       }
