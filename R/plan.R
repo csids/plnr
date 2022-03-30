@@ -149,9 +149,6 @@ Plan <- R6::R6Class(
             if(!is.null(names(retval$data__________go_up_one_level)) | length(retval$data__________go_up_one_level)==0){
               # this is what happens in sc/sykdomspulsen core
               retval <- retval$data__________go_up_one_level
-              hash_current <- digest::digest(retval, algo = "spookyhash")
-              retval$hash <- list()
-              retval$hash$current <- hash_current
             } else {
               stop("you are not passing a named list as the return from the data function")
             }
@@ -160,6 +157,9 @@ Plan <- R6::R6Class(
           }
         }
       }
+      hash_current <- digest::digest(retval, algo = "spookyhash")
+      retval$hash <- list()
+      retval$hash$current <- hash_current
       return(retval)
     },
     get_analysis = function(index_analysis) {
