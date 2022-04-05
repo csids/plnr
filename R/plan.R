@@ -157,9 +157,13 @@ Plan <- R6::R6Class(
           }
         }
       }
-      hash_current <- digest::digest(retval, algo = "spookyhash")
-      retval$hash <- list()
-      retval$hash$current <- hash_current
+      hash <- list()
+      hash$current <- digest::digest(retval, algo = "spookyhash")
+      hash$current_elements <- list()
+      for(i in names(retval)){
+        hash$current_elements[[i]] <- digest::digest(retval[[i]], algo = "spookyhash")
+      }
+      retval$hash <- hash
       return(retval)
     },
     get_analysis = function(index_analysis) {
