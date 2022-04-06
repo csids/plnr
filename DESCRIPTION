@@ -31,5 +31,6 @@ Suggests: testthat,
   progressr,
   ggplot2,
   readxl
+Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.2
 VignetteBuilder: knitr

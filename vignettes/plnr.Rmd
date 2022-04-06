@@ -175,5 +175,41 @@ The difference is that with `fn_name` we provide the name of the function (e.g. 
 
 It is recommended to use `fn_name` because `fn_name` calls the function via `do.call` which means that [RStudio debugging](https://support.rstudio.com/hc/en-us/articles/205612627-Debugging-with-RStudio) will work properly. The only reason you would use `fn` is when you are using [function factories](https://adv-r.hadley.nz/function-factories.html).
 
+## Hash
+
+A hash function is used to map data of arbitrary size to fixed-size values. We can use this to uniquely identify datasets.
+
+The function `get_data` will automatically compute the [spookyhash](https://github.com/k0dai/spookyhash) via digest::digest for:
+
+- The entire named list ('current')
+- Each element in the named list ('current_elements')
+
+```{r, collapse=FALSE}
+library(data.table)
+
+# We begin by defining a new plan and adding data
+p1 <- plnr::Plan$new()
+p1$add_data(direct = data.table(deaths=1:4, year=2001:2004), name = "deaths")
+p1$add_data(direct = data.table(deaths=1:4, year=2001:2004), name = "deaths2")
+p1$add_data(direct = data.table(deaths=1:5, year=2001:2005), name = "deaths3")
+
+# The hash for 'deaths' and 'deaths2' is the same.
+# The hash is different for 'deaths3' (different data).
+p1$get_data()$hash
+
+# We begin by defining a new plan and adding data
+p2 <- plnr::Plan$new()
+p2$add_data(direct = data.table(deaths=1:4, year=2001:2004), name = "deaths")
+p2$add_data(direct = data.table(deaths=1:4, year=2001:2004), name = "deaths2")
+
+# The hash for the entire named list ('current') is different for p1 vs p2
+# because p1 has 3 datasets while p2 only has 2.
+#
+# The hashes for p1 'deaths', p1 'deaths2', p2 'deaths', and p2 'deaths2'
+# are all identical, because the content is the same.
+p2$get_data()$hash
+```
+
+
 
 

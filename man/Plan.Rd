@@ -10,15 +10,21 @@ plan class description
 }
 \details{
 An argset is:
-- a set of arguments
+\itemize{
+\item a set of arguments
+}
 
 An analysis is:
-- one argset
-- one function
+\itemize{
+\item one argset
+\item one function
+}
 
 A plan is:
-- one data pull
-- a list of analyses
+\itemize{
+\item one data pull
+\item a list of analyses
+}
 }
 \section{Methods}{
 \subsection{Public methods}{
@@ -192,8 +198,10 @@ Extracts the data provided via 'add_data' and returns it as a named list
 Named list, where most elements have been added via 'add_data'.
 One extra named element is called 'hash'. 'hash' contains the data hashes of particular datasets/variables, as calculated using the 'spookyhash' algorithm via digest::digest.
 'hash' contains two named elements:
-- current (the hash of the entire named list)
-- current_elements (the hash of the named elements within the named list)
+\itemize{
+\item current (the hash of the entire named list)
+\item current_elements (the hash of the named elements within the named list)
+}
 }
 }
 \if{html}{\out{<hr>}}
