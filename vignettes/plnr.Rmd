@@ -179,7 +179,7 @@ It is recommended to use `fn_name` because `fn_name` calls the function via `do.
 
 A hash function is used to map data of arbitrary size to fixed-size values. We can use this to uniquely identify datasets.
 
-The function `get_data` will automatically compute the [spookyhash](https://github.com/k0dai/spookyhash) via digest::digest for:
+The `Plan` method `get_data` will automatically compute the [spookyhash](https://github.com/k0dai/spookyhash) via digest::digest for:
 
 - The entire named list ('current')
 - Each element in the named list ('current_elements')
