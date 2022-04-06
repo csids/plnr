@@ -196,6 +196,7 @@ Extracts the data provided via 'add_data' and returns it as a named list
 
 \subsection{Returns}{
 Named list, where most elements have been added via 'add_data'.
+
 One extra named element is called 'hash'. 'hash' contains the data hashes of particular datasets/variables, as calculated using the 'spookyhash' algorithm via digest::digest.
 'hash' contains two named elements:
 \itemize{
