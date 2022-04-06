@@ -1,3 +1,7 @@
+# plnr 2022.4.6
+
+- Inclusion of hash functions in get_data
+
 # plnr 2021.6.9
 
 - Inclusion of easy_split
