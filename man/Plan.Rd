@@ -4,10 +4,14 @@
 \alias{Plan}
 \title{plan class description}
 \description{
-An argset is:
-- a set of arguments
+plan class description
+
+plan class description
 }
 \details{
+An argset is:
+- a set of arguments
+
 An analysis is:
 - one argset
 - one function
@@ -179,10 +183,18 @@ A plan is:
 \if{html}{\out{<a id="method-get_data"></a>}}
 \if{latex}{\out{\hypertarget{method-get_data}{}}}
 \subsection{Method \code{get_data()}}{
+Extracts the data provided via 'add_data' and returns it as a named list
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Plan$get_data()}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+Named list, where most elements have been added via 'add_data'.
+One extra named element is called 'hash'. 'hash' contains the data hashes of particular datasets/variables, as calculated using the 'spookyhash' algorithm via digest::digest.
+'hash' contains two named elements:
+- current (the hash of the entire named list)
+- current_elements (the hash of the named elements within the named list)
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-get_analysis"></a>}}

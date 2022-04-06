@@ -126,6 +126,14 @@ Plan <- R6::R6Class(
     set_verbose = function(x) {
       verbose <<- x
     },
+    #' @description
+    #' Extracts the data provided via 'add_data' and returns it as a named list
+    #' @return
+    #' Named list, where most elements have been added via 'add_data'.
+    #' One extra named element is called 'hash'. 'hash' contains the data hashes of particular datasets/variables, as calculated using the 'spookyhash' algorithm via digest::digest.
+    #' 'hash' contains two named elements:
+    #' - current (the hash of the entire named list)
+    #' - current_elements (the hash of the named elements within the named list)
     get_data = function() {
       retval <- list()
       for (i in seq_along(data)) {
