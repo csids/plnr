@@ -30,7 +30,8 @@ Suggests: testthat,
   rmarkdown,
   progressr,
   ggplot2,
-  readxl
+  readxl,
+  magrittr
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.2
 VignetteBuilder: knitr

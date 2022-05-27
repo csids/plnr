@@ -1,0 +1,78 @@
+---
+title: "Adding Analyses to a Plan"
+author: "Richard Aubrey White"
+date: "2022-05-27"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Adding Analyses to a Plan}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
+---
+
+## Applying the same function multiple times with different argsets
+
+```{r, collapse=FALSE}
+library(ggplot2)
+library(data.table)
+library(magrittr)
+
+# We begin by defining a new plan
+p <- plnr::Plan$new()
+
+# Data function
+data_fn <- function(){
+  return(plnr::norway_covid19_cases_by_time_location)
+}
+
+# We add sources of data
+# We can add data directly
+p$add_data(
+  name = "covid19_cases",
+  fn_name = "data_selector_fn"
+)
+
+p$get_data()
+
+location_codes <- p$get_data()$covid19_cases$location_code %>%
+  unique() %>% 
+  print()
+
+p$add_argset_from_list(
+  plnr::expand_list(
+    location_code = location_codes,
+    granularity_time = "isoweek"
+  )
+)
+p$get_argsets_as_dt()
+
+# We can then add a simple analysis that returns a figure:
+
+# To do this, we first need to create an analysis function
+# (takes two arguments -- data and argset)
+action_fn <- function(data, argset){
+  if(plnr::is_run_directly()){
+    data <- p$get_data()
+    argset <- p$get_argset(1)
+  }
+  pd <- data$covid19_cases[
+    location_code == argset$location_code &
+    granularity_time == argset$granularity_time
+  ]
+  
+  q <- ggplot(pd, aes(x=isoyearweek, y=covid19_cases_testdate_n, group = 1))
+  q <- q + geom_line()
+  q <- q + labs(title = argset$location_code)
+  q
+}
+
+p$apply_analysis_fn_to_all(fn_name = "action_fn")
+
+p$run_one(1)
+q <- p$run_all()
+q[[1]]
+q[[2]]
+```
+
+

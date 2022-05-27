@@ -143,7 +143,7 @@ Plan <- R6::R6Class(
           retval[[x$name]] <- x$fn()
         }
         if (!is.null(x$fn_name)) {
-          retval[[x$name]] <- do.call(get_anything(x$fn_name))
+          retval[[x$name]] <- do.call(get_anything(x$fn_name), list())
         }
         if (!is.null(x$direct)) {
           retval[[x$name]] <- x$direct
@@ -184,15 +184,34 @@ Plan <- R6::R6Class(
       p <- analyses[[index_analysis]][[argset_name]]
       return(p)
     },
+    #' @description
+    #' Gets all argsets and presents them as a data.table.
+    #' @return
+    #' Data.table that contains all the argsets within a plan.
+    get_argsets_as_dt = function(){
+      retval <- lapply(analyses, function(x) {
+        data.table(t(x$argset))
+      })
+      retval <- rbindlist(retval)
+      retval[, index_analysis := 1:.N]
+      retval[, name_analysis := names(analyses)]
+
+      setcolorder(retval, c("name_analysis", "index_analysis"))
+      data.table::shouldPrint(retval)
+
+      return(retval)
+    },
     run_one_with_data = function(index_analysis, data, ...) {
       p <- get_analysis(index_analysis)
 
-      if (!is.null(p$fn) & is.null(p$fn_name)) {
+      if(is.null(p[["fn"]]) & is.null(p[["fn_name"]])){
+        stop("Both fn and fn_name are NULL")
+      } else if (!is.null(p[["fn"]]) & is.null(p[["fn_name"]])) {
         # use fn
-        num_args <- length(formals(p$fn))
-      } else if (is.null(p$fn) & !is.null(p$fn_name)) {
+        num_args <- length(formals(p[["fn"]]))
+      } else if (is.null(p[["fn"]]) & !is.null(p[["fn_name"]])) {
         # use fn_name
-        num_args <- length(formals(get_anything(p$fn_name)))
+        num_args <- length(formals(get_anything(p[["fn_name"]])))
       }
 
       args <- list()
@@ -212,14 +231,14 @@ Plan <- R6::R6Class(
       }
 
       # actually run it
-      if (!is.null(p$fn) & is.null(p$fn_name)) {
+      if (!is.null(p[["fn"]]) & is.null(p[["fn_name"]])) {
         # use fn
         retval <- p$fn(
           data = data,
           p[[argset_name]],
           ...
         )
-      } else if (is.null(p$fn) & !is.null(p$fn_name)) {
+      } else if (is.null(p[["fn"]]) & !is.null(p[["fn_name"]])) {
         # use fn_name
         retval <- do.call(
           what = get_anything(p$fn_name),

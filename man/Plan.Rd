@@ -46,6 +46,7 @@ A plan is:
 \item \href{#method-get_data}{\code{Plan$get_data()}}
 \item \href{#method-get_analysis}{\code{Plan$get_analysis()}}
 \item \href{#method-get_argset}{\code{Plan$get_argset()}}
+\item \href{#method-get_argsets_as_dt}{\code{Plan$get_argsets_as_dt()}}
 \item \href{#method-run_one_with_data}{\code{Plan$run_one_with_data()}}
 \item \href{#method-run_one}{\code{Plan$run_one()}}
 \item \href{#method-use_foreach_decision}{\code{Plan$use_foreach_decision()}}
@@ -222,6 +223,19 @@ One extra named element is called 'hash'. 'hash' contains the data hashes of par
 \if{html}{\out{<div class="r">}}\preformatted{Plan$get_argset(index_analysis)}\if{html}{\out{</div>}}
 }
 
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-get_argsets_as_dt"></a>}}
+\if{latex}{\out{\hypertarget{method-get_argsets_as_dt}{}}}
+\subsection{Method \code{get_argsets_as_dt()}}{
+Gets all argsets and presents them as a data.table.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Plan$get_argsets_as_dt()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+Data.table that contains all the argsets within a plan.
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-run_one_with_data"></a>}}
