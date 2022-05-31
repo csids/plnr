@@ -30,7 +30,7 @@ data_fn <- function(){
 # We can add data directly
 p$add_data(
   name = "covid19_cases",
-  fn_name = "data_selector_fn"
+  fn_name = "data_fn"
 )
 
 p$get_data()
