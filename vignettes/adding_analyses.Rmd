@@ -1,7 +1,7 @@
 ---
 title: "Adding Analyses to a Plan"
 author: "Richard Aubrey White"
-date: "2022-05-27"
+date: "2022-06-02"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Adding Analyses to a Plan}
@@ -11,7 +11,61 @@ editor_options:
   chunk_output_type: console
 ---
 
-## Applying the same function multiple times with different argsets
+## Definitions
+
++--------------+---------------------------------------------------------------+
+| Object       | Description                                                   |
++==============+===============================================================+
+| argset       | A named list containing a set of arguments.                   |
++--------------+---------------------------------------------------------------+
+| analysis     | These are the fundamental units that are scheduled in `plnr`: |
+|              |                                                               |
+|              | -   1 argset                                                  |
+|              | -   1 function that takes two arguments:                      |
+|              |     1.  data (named list)                                     |
+|              |                                                               |
+|              |     2.  argset (named list)                                   |
++--------------+---------------------------------------------------------------+
+| plan         | This is the overarching "scheduler":                          |
+|              |                                                               |
+|              | -   1 data pull                                               |
+|              | -   1 list of analyses                                        |
++--------------+---------------------------------------------------------------+
+
+: Table 1. A list of the broad technical terms used in `plnr`
+
++----------------------+--------------------------------------------------------------+
+| Plan Type            | Description                                                  |
++======================+==============================================================+
+| Single-function plan | Same function applied multiple times with different argsets. |
++----------------------+--------------------------------------------------------------+
+| Multi-function plan  | Different functions applied to the same datasets.            |
++----------------------+--------------------------------------------------------------+
+
+: Table 2. The different types of plans.
+
++----------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Plan Type            | Example                                                                                                                                                             |
++======================+=====================================================================================================================================================================+
+| Single-function plan | Multiple strata (e.g. locations, age groups) that you need to apply the same function to to (e.g. outbreak detection, trend detection, graphing).                   |
++----------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Single-function plan | Multiple variables (e.g. multiple outcomes, multiple exposures) that you need to apply the same statistical methods to (e.g. regression models, correlation plots). |
++----------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Multi-function plan  |                                                                                                                                                                     |
++----------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+
+: Table 3. Examples of the different types of plans.
+
+## Single-function plan
+
+This approach is generally used when you:
+
+-   Have multiple strata (e.g. locations, age groups) that you need to apply the same statistical methods to.
+-   Have multiple variables (e.g. multiple exposures, multiple outcomes) that you want to apply the same statistical methods to.
+
+When we apply the same function multiple times, it is preferable to add the argsets first, and then apply the analysis function just before running the analyses.
+
+### Analysis within multiple strata
 
 ```{r, collapse=FALSE}
 library(ggplot2)
@@ -51,7 +105,7 @@ p$get_argsets_as_dt()
 
 # To do this, we first need to create an analysis function
 # (takes two arguments -- data and argset)
-action_fn <- function(data, argset){
+analysis_fn <- function(data, argset){
   if(plnr::is_run_directly()){
     data <- p$get_data()
     argset <- p$get_argset(1)
@@ -67,7 +121,7 @@ action_fn <- function(data, argset){
   q
 }
 
-p$apply_analysis_fn_to_all(fn_name = "action_fn")
+p$apply_analysis_fn_to_all(fn_name = "analysis_fn")
 
 p$run_one(1)
 q <- p$run_all()
@@ -75,4 +129,4 @@ q[[1]]
 q[[2]]
 ```
 
-
+## Applying different functions to the same dataset.
