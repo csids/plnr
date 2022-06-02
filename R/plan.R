@@ -190,11 +190,15 @@ Plan <- R6::R6Class(
     #' Data.table that contains all the argsets within a plan.
     get_argsets_as_dt = function(){
       retval <- lapply(analyses, function(x) {
-        data.table(t(x$argset))
+        if(is.indentical(x$argset,list())){
+          return(data.table(index_analysis=1))
+        } else {
+          return(data.table(t(x$argset)))
+        }
       })
       retval <- rbindlist(retval)
-      retval[, index_analysis := 1:.N]
       retval[, name_analysis := names(analyses)]
+      retval[, index_analysis := 1:.N]
 
       setcolorder(retval, c("name_analysis", "index_analysis"))
       data.table::shouldPrint(retval)

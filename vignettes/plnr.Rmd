@@ -23,7 +23,6 @@ editor_options:
 |              | -   1 argset                                                  |
 |              | -   1 function that takes two arguments:                      |
 |              |     1.  data (named list)                                     |
-|              |                                                               |
 |              |     2.  argset (named list)                                   |
 +--------------+---------------------------------------------------------------+
 | plan         | This is the overarching "scheduler":                          |
@@ -34,13 +33,13 @@ editor_options:
 
 : Table 1. A list of the broad technical terms used in `plnr`
 
-+----------------------+--------------------------------------------------------------+
-| Plan Type            | Description                                                  |
-+======================+==============================================================+
-| Single-function plan | Same function applied multiple times with different argsets. |
-+----------------------+--------------------------------------------------------------+
-| Multi-function plan  | Different functions applied to the same datasets.            |
-+----------------------+--------------------------------------------------------------+
++----------------------+-------------------------------------------------------------------------------------------+
+| Plan Type            | Description                                                                               |
++======================+===========================================================================================+
+| Single-function plan | Same function applied multiple times with different argsets applied to the same datasets. |
++----------------------+-------------------------------------------------------------------------------------------+
+| Multi-function plan  | Different functions applied to the same datasets.                                         |
++----------------------+-------------------------------------------------------------------------------------------+
 
 : Table 2. The different types of plans.
 
@@ -51,7 +50,7 @@ editor_options:
 +----------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | Single-function plan | Multiple variables (e.g. multiple outcomes, multiple exposures) that you need to apply the same statistical methods to (e.g. regression models, correlation plots). |
 +----------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| Multi-function plan  |                                                                                                                                                                     |
+| Multi-function plan  | Creating the output for a report (e.g. multiple different tables and graphs).                                                                                       |
 +----------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 
 : Table 3. Examples of the different types of plans.
@@ -78,7 +77,7 @@ By including all of this in one `Plan` class, we can easily maintain a good over
 
 ## Examples
 
-We now provide a simple example of a single-function plan that shows how a person can develop code to provide graphs for multiple years. More examples are provided inside the vignette [Adding Analyses to a Plan](http://docs.sykdomspulsen.no/plnr/articles/plnr.html).
+We now provide a simple example of a single-function plan that shows how a person can develop code to provide graphs for multiple years. More examples are provided inside the vignette [Adding Analyses to a Plan](http://docs.sykdomspulsen.no/plnr/articles/adding_analyses.html).
 
 ```{r, collapse=FALSE}
 library(ggplot2)
@@ -119,7 +118,7 @@ p$add_argset(
 
 # And another argset
 # (don't need to provide a name if you refer to it via index)
-p$add_analysis(
+p$add_argset(
   year_max = 2004
 )
 

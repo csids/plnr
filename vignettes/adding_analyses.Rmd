@@ -23,7 +23,6 @@ editor_options:
 |              | -   1 argset                                                  |
 |              | -   1 function that takes two arguments:                      |
 |              |     1.  data (named list)                                     |
-|              |                                                               |
 |              |     2.  argset (named list)                                   |
 +--------------+---------------------------------------------------------------+
 | plan         | This is the overarching "scheduler":                          |
@@ -34,13 +33,13 @@ editor_options:
 
 : Table 1. A list of the broad technical terms used in `plnr`
 
-+----------------------+--------------------------------------------------------------+
-| Plan Type            | Description                                                  |
-+======================+==============================================================+
-| Single-function plan | Same function applied multiple times with different argsets. |
-+----------------------+--------------------------------------------------------------+
-| Multi-function plan  | Different functions applied to the same datasets.            |
-+----------------------+--------------------------------------------------------------+
++----------------------+-------------------------------------------------------------------------------------------+
+| Plan Type            | Description                                                                               |
++======================+===========================================================================================+
+| Single-function plan | Same function applied multiple times with different argsets applied to the same datasets. |
++----------------------+-------------------------------------------------------------------------------------------+
+| Multi-function plan  | Different functions applied to the same datasets.                                         |
++----------------------+-------------------------------------------------------------------------------------------+
 
 : Table 2. The different types of plans.
 
@@ -51,7 +50,7 @@ editor_options:
 +----------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | Single-function plan | Multiple variables (e.g. multiple outcomes, multiple exposures) that you need to apply the same statistical methods to (e.g. regression models, correlation plots). |
 +----------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| Multi-function plan  |                                                                                                                                                                     |
+| Multi-function plan  | Creating the output for a report (e.g. multiple different tables and graphs).                                                                                       |
 +----------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 
 : Table 3. Examples of the different types of plans.
@@ -65,7 +64,7 @@ This approach is generally used when you:
 
 When we apply the same function multiple times, it is preferable to add the argsets first, and then apply the analysis function just before running the analyses.
 
-### Analysis within multiple strata
+### Multiple strata
 
 ```{r, collapse=FALSE}
 library(ggplot2)
@@ -99,6 +98,7 @@ p$add_argset_from_list(
     granularity_time = "isoweek"
   )
 )
+# Examine the argsets that are available
 p$get_argsets_as_dt()
 
 # We can then add a simple analysis that returns a figure:
@@ -115,7 +115,7 @@ analysis_fn <- function(data, argset){
     granularity_time == argset$granularity_time
   ]
   
-  q <- ggplot(pd, aes(x=isoyearweek, y=covid19_cases_testdate_n, group = 1))
+  q <- ggplot(pd, aes(x=date, y=covid19_cases_testdate_n))
   q <- q + geom_line()
   q <- q + labs(title = argset$location_code)
   q
@@ -129,4 +129,146 @@ q[[1]]
 q[[2]]
 ```
 
-## Applying different functions to the same dataset.
+### Multiple variables
+
+```{r, collapse=FALSE}
+library(ggplot2)
+library(data.table)
+library(magrittr)
+
+# We begin by defining a new plan
+p <- plnr::Plan$new()
+
+# Data function
+data_fn <- function(){
+  return(plnr::norway_covid19_cases_by_time_location[location_code=="norge"])
+}
+
+# We add sources of data
+# We can add data directly
+p$add_data(
+  name = "covid19_cases",
+  fn_name = "data_fn"
+)
+
+p$get_data()
+
+p$add_argset_from_list(
+  plnr::expand_list(
+    variable = c("covid19_cases_testdate_n", "covid19_cases_testdate_pr100000"),
+    granularity_time = c("isoweek","day")
+  )
+)
+# Examine the argsets that are available
+p$get_argsets_as_dt()
+
+# We can then add a simple analysis that returns a figure:
+
+# To do this, we first need to create an analysis function
+# (takes two arguments -- data and argset)
+analysis_fn <- function(data, argset){
+  if(plnr::is_run_directly()){
+    data <- p$get_data()
+    argset <- p$get_argset(1)
+  }
+  pd <- data$covid19_cases[
+    granularity_time == argset$granularity_time
+  ]
+  
+  q <- ggplot(pd, aes_string(x="date", y=argset$variable))
+  q <- q + geom_line()
+  q <- q + labs(title = argset$granularity_time)
+  q
+}
+
+p$apply_analysis_fn_to_all(fn_name = "analysis_fn")
+
+p$run_one(1)
+p$run_one(2)
+p$run_one(3)
+p$run_one(4)
+```
+
+## Multi-function plan
+
+This approach is generally used when you are creating the output for a report, and you need multiple different tables and graphs.
+
+```{r, collapse=FALSE}
+library(ggplot2)
+library(data.table)
+library(magrittr)
+
+# We begin by defining a new plan
+p <- plnr::Plan$new()
+
+# Data function
+data_fn <- function(){
+  return(plnr::norway_covid19_cases_by_time_location)
+}
+
+# We add sources of data
+# We can add data directly
+p$add_data(
+  name = "covid19_cases",
+  fn_name = "data_fn"
+)
+
+p$get_data()
+
+# Completely unique function for figure 1
+p$add_analysis(
+  name = "figure_1",
+  fn_name = "figure_1"
+)
+
+figure_1 <- function(data, argset){
+  if(plnr::is_run_directly()){
+    data <- p$get_data()
+    argset <- p$get_argset("figure_1")
+  }
+  pd <- data$covid19_cases[
+    granularity_time == "isoweek"
+  ]
+  
+  q <- ggplot(pd, aes_string(x="date", y="covid19_cases_testdate_pr100000"))
+  q <- q + geom_line()
+  q <- q + facet_wrap(~location_code)
+  q <- q + labs(title = "Weekly covid-19 cases per 100 000 population")
+  q
+}
+
+# Reusing a function for figures 2 and 3
+p$add_analysis(
+  name = "figure_2",
+  fn_name = "plot_epicurve_by_location",
+  location_code = "norge"
+)
+
+# Reusing a function for figures 2 and 3
+p$add_analysis(
+  name = "figure_3",
+  fn_name = "plot_epicurve_by_location",
+  location_code = "county03"
+)
+
+plot_epicurve_by_location <- function(data, argset){
+  if(plnr::is_run_directly()){
+    data <- p$get_data()
+    argset <- p$get_argset("figure_2")
+    argset <- p$get_argset("figure_3")
+  }
+  pd <- data$covid19_cases[
+    granularity_time == "isoweek" & 
+    location_code == argset$location_code
+  ]
+  
+  q <- ggplot(pd, aes_string(x="date", y="covid19_cases_testdate_n"))
+  q <- q + geom_line()
+  q <- q + labs(title = argset$location_code)
+  q
+}
+
+p$run_one("figure_1")
+p$run_one("figure_2")
+p$run_one("figure_3")
+```
