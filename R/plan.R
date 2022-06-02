@@ -190,13 +190,14 @@ Plan <- R6::R6Class(
     #' Data.table that contains all the argsets within a plan.
     get_argsets_as_dt = function(){
       retval <- lapply(analyses, function(x) {
-        if(is.indentical(x$argset,list())){
-          return(data.table(index_analysis=1))
+        if(identical(x$argset,list())){
+          return(data.frame(index_analysis=1))
         } else {
-          return(data.table(t(x$argset)))
+          return(data.frame(t(x$argset)))
         }
       })
-      retval <- rbindlist(retval)
+      names(retval) <- NULL
+      retval <- rbindlist(retval, use.names = T, fill=TRUE)
       retval[, name_analysis := names(analyses)]
       retval[, index_analysis := 1:.N]
 
