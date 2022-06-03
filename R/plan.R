@@ -1,5 +1,6 @@
-#' plan class description
+#' R6 Class representing a Plan
 #'
+#' @description
 #' An argset is:
 #' - a set of arguments
 #'
@@ -20,49 +21,66 @@ Plan <- R6::R6Class(
   portable = FALSE,
   cloneable = TRUE,
   public = list(
-    data = list(),
     analyses = list(),
-    argset_name = "argset",
     verbose = FALSE,
     use_foreach = FALSE,
     pb_progress = NULL,
     pb_progressor = NULL,
-    initialize = function(argset_name = "argset", verbose = interactive() | config$force_verbose, use_foreach = FALSE) {
-      argset_name <<- argset_name
-      verbose <<- verbose
+    initialize = function(verbose = interactive() | config$force_verbose, use_foreach = FALSE) {
+      self$verbose <- verbose
       # null = program decides
       # false = use loop
       # true = use foreach
-      use_foreach <<- use_foreach
+      self$use_foreach <- use_foreach
     },
+    #' @description Add a new data set
+    #' @param name Name of the data set
+    #' @param fn A function that returns the data set
+    #' @param fn_name A character string containing the name of a function that returns the data set
+    #' @param direct A direct data set
+    #' @examples
+    #' p <- plnr::Plan$new()
+    #' data_fn <- function(){return(plnr::norway_covid19_cases_by_time_location)}
+    #' p$add_data("data_1", fn = data_fn)
+    #' p$add_data("data_2", fn_name = "data_fn")
+    #' p$add_data("data_3", direct = plnr::norway_covid19_cases_by_time_location)
+    #' p$get_data()
     add_data = function(name, fn = NULL, fn_name = NULL, direct = NULL) {
       stopifnot(is.null(fn) | is.function(fn))
       stopifnot(is.null(fn_name) | is.character(fn_name))
 
-      data[[length(data) + 1]] <<- list(
+      private$data[[length(private$data) + 1]] <<- list(
         fn = fn,
         fn_name = fn_name,
         direct = direct,
         name = name
       )
     },
+    #' @description Add a new argset
+    #' @param name Name of the argset
+    #' @param ... Named arguments that will comprise the argset
+    #' @examples
+    #' p <- plnr::Plan$new()
+    #' p$add_argset("argset_1", var_1 = 3, var_b = "hello")
+    #' p$add_argset("argset_1", var_1 = 8, var_c = "hello2")
+    #' p$get_argsets_as_dt()
     add_argset = function(name = uuid::UUIDgenerate(), ...) {
       if (is.null(analyses[[name]])) analyses[[name]] <- list()
 
       dots <- list(...)
-      analyses[[name]][[argset_name]] <<- dots
+      analyses[[name]][["argset"]] <<- dots
     },
     add_argset_from_df = function(df) {
       df <- as.data.frame(df)
       for (i in 1:nrow(df)) {
         argset <- df[i, ]
-        do.call(add_argset, argset)
+        do.call(self$add_argset, argset)
       }
     },
     add_argset_from_list = function(l) {
       for (i in seq_along(l)) {
         argset <- l[[i]]
-        do.call(add_argset, argset)
+        do.call(self$add_argset, argset)
       }
       # message(glue::glue("Added {length(l)} argsets to the plan"))
     },
@@ -74,7 +92,7 @@ Plan <- R6::R6Class(
 
       dots <- list(...)
       analyses[[name]] <<- list(fn = fn, fn_name = fn_name)
-      analyses[[name]][[argset_name]] <<- dots
+      analyses[[name]][["argset"]] <<- dots
     },
     add_analysis_from_df = function(fn = NULL, fn_name = NULL, df) {
       stopifnot(is.null(fn) | is.function(fn) | "fn_name" %in% names(df))
@@ -137,8 +155,8 @@ Plan <- R6::R6Class(
     #' - current_elements (the hash of the named elements within the named list)
     get_data = function() {
       retval <- list()
-      for (i in seq_along(data)) {
-        x <- data[[i]]
+      for (i in seq_along(private$data)) {
+        x <- private$data[[i]]
         if (!is.null(x$fn)) {
           retval[[x$name]] <- x$fn()
         }
@@ -177,11 +195,11 @@ Plan <- R6::R6Class(
     },
     get_analysis = function(index_analysis) {
       p <- analyses[[index_analysis]]
-      p[[argset_name]]$index_analysis <- index_analysis
+      p[["argset"]]$index_analysis <- index_analysis
       return(p)
     },
     get_argset = function(index_analysis) {
-      p <- analyses[[index_analysis]][[argset_name]]
+      p <- analyses[[index_analysis]][["argset"]]
       return(p)
     },
     #' @description
@@ -221,7 +239,7 @@ Plan <- R6::R6Class(
 
       args <- list()
       args[["data"]] <- data
-      args[[argset_name]] <- p[[argset_name]]
+      args[["argset"]] <- p[["argset"]]
 
       if (num_args < 2) {
         stop("fn must have at least two arguments")
@@ -240,7 +258,7 @@ Plan <- R6::R6Class(
         # use fn
         retval <- p$fn(
           data = data,
-          p[[argset_name]],
+          p[["argset"]],
           ...
         )
       } else if (is.null(p[["fn"]]) & !is.null(p[["fn_name"]])) {
@@ -341,6 +359,9 @@ Plan <- R6::R6Class(
         delay_stdout = F
       )
     }
+  ),
+  private = list(
+    data = list()
   )
 )
 

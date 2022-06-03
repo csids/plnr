@@ -2,13 +2,8 @@
 % Please edit documentation in R/plan.R
 \name{Plan}
 \alias{Plan}
-\title{plan class description}
+\title{R6 Class representing a Plan}
 \description{
-plan class description
-
-plan class description
-}
-\details{
 An argset is:
 \itemize{
 \item a set of arguments
@@ -25,6 +20,28 @@ A plan is:
 \item one data pull
 \item a list of analyses
 }
+}
+\examples{
+
+## ------------------------------------------------
+## Method `Plan$add_data`
+## ------------------------------------------------
+
+p <- plnr::Plan$new()
+data_fn <- function(){return(plnr::norway_covid19_cases_by_time_location)}
+p$add_data("data_1", fn = data_fn)
+p$add_data("data_2", fn_name = "data_fn")
+p$add_data("data_3", direct = plnr::norway_covid19_cases_by_time_location)
+p$get_data()
+
+## ------------------------------------------------
+## Method `Plan$add_argset`
+## ------------------------------------------------
+
+p <- plnr::Plan$new()
+p$add_argset("argset_1", var_1 = 3, var_b = "hello")
+p$add_argset("argset_1", var_1 = 8, var_c = "hello2")
+p$get_argsets_as_dt()
 }
 \section{Methods}{
 \subsection{Public methods}{
@@ -61,11 +78,7 @@ A plan is:
 \if{latex}{\out{\hypertarget{method-new}{}}}
 \subsection{Method \code{new()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Plan$new(
-  argset_name = "argset",
-  verbose = interactive() | config$force_verbose,
-  use_foreach = FALSE
-)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Plan$new(verbose = interactive() | config$force_verbose, use_foreach = FALSE)}\if{html}{\out{</div>}}
 }
 
 }
@@ -73,8 +86,35 @@ A plan is:
 \if{html}{\out{<a id="method-add_data"></a>}}
 \if{latex}{\out{\hypertarget{method-add_data}{}}}
 \subsection{Method \code{add_data()}}{
+Add a new data set
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Plan$add_data(name, fn = NULL, fn_name = NULL, direct = NULL)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{name}}{Name of the data set}
+
+\item{\code{fn}}{A function that returns the data set}
+
+\item{\code{fn_name}}{A character string containing the name of a function that returns the data set}
+
+\item{\code{direct}}{A direct data set}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{p <- plnr::Plan$new()
+data_fn <- function(){return(plnr::norway_covid19_cases_by_time_location)}
+p$add_data("data_1", fn = data_fn)
+p$add_data("data_2", fn_name = "data_fn")
+p$add_data("data_3", direct = plnr::norway_covid19_cases_by_time_location)
+p$get_data()
+}
+\if{html}{\out{</div>}}
+
 }
 
 }
@@ -82,8 +122,29 @@ A plan is:
 \if{html}{\out{<a id="method-add_argset"></a>}}
 \if{latex}{\out{\hypertarget{method-add_argset}{}}}
 \subsection{Method \code{add_argset()}}{
+Add a new argset
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Plan$add_argset(name = uuid::UUIDgenerate(), ...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{name}}{Name of the argset}
+
+\item{\code{...}}{Named arguments that will comprise the argset}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{p <- plnr::Plan$new()
+p$add_argset("argset_1", var_1 = 3, var_b = "hello")
+p$add_argset("argset_1", var_1 = 8, var_c = "hello2")
+p$get_argsets_as_dt()
+}
+\if{html}{\out{</div>}}
+
 }
 
 }
