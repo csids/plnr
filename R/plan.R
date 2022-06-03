@@ -1,6 +1,20 @@
 #' An example action_fn for an analysis
 #' @param data Named list.
 #' @param argset Named list.
+#' @examples
+#' p <- plnr::Plan$new()
+#' p$add_data("covid_data", fn_name = "plnr::example_data_fn_norway_covid19_cases_by_time_location")
+#' batch_argset_list <- list(
+#'   list(name = "analysis_1", var_1 = 1, var_2 = "i"),
+#'   list(name = "analysis_2", var_1 = 2, var_2 = "j"),
+#'   list(name = "analysis_3", var_1 = 3, var_2 = "k")
+#' )
+#' p$add_analysis_from_list(
+#'   fn_name = "plnr::example_action_fn",
+#'   l = batch_argset_list
+#' )
+#' p$get_argsets_as_dt()
+#' p$run_one("analysis_1")
 #' @export
 example_action_fn <- function(data, argset){
   print("Data given:")
@@ -12,6 +26,20 @@ example_action_fn <- function(data, argset){
 #' R6 Class representing a Plan
 #'
 #' @description
+#' We work within the mental model where we have one (or more) datasets and we want to run multiple analyses on these datasets.
+#'
+#' By demanding that all analyses use the same data sources we can:
+#' - Be efficient with requiring the minimal amount of data-pulling (this only happens once at the start).
+#' - Better enforce the concept that data-cleaning and analysis should be completely separate.
+#'
+#' By demanding that all analysis functions only use two arguments (data and argset) we can:
+#' - Reduce mental fatigue by working within the same mental model for each analysis.
+#' - Make it easier for analyses to be exchanged with each other and iterated on.
+#' - Easily schedule the running of each analysis.
+#'
+#' By including all of this in one `Plan` class, we can easily maintain a good overview of all the analyses (i.e. outputs) that need to be run.
+#'
+#' @details
 #' An argset is:
 #' - a set of arguments
 #'
@@ -37,6 +65,7 @@ Plan <- R6::R6Class(
     use_foreach = FALSE,
     pb_progress = NULL,
     pb_progressor = NULL,
+
     #' @description Create a new Plan instance.
     #' @param verbose Should this plan be verbose?
     #' @param use_foreach ???
@@ -47,6 +76,7 @@ Plan <- R6::R6Class(
       # true = use foreach
       self$use_foreach <- use_foreach
     },
+
     #' @description Add a new data set.
     #' @param name Name of the data set.
     #' @param fn A function that returns the data set.
@@ -70,6 +100,7 @@ Plan <- R6::R6Class(
         name = name
       )
     },
+
     #' @description Add a new argset.
     #' @param name Name of the (eventual) analysis that this argset will be connected to.
     #' @param ... Named arguments that will comprise the argset.
@@ -84,6 +115,7 @@ Plan <- R6::R6Class(
       dots <- list(...)
       analyses[[name]][["argset"]] <<- dots
     },
+
     #' @description Add a batch of argsets from a data.frame.
     #' @param df A data.frame where each row is a new argset, and each column will be a named element in the argset.
     #' @examples
@@ -98,16 +130,17 @@ Plan <- R6::R6Class(
         do.call(self$add_argset, argset)
       }
     },
+
     #' @description Add a batch of argsets from a list.
     #' @param l A list of lists with named elements where each outermost element is a new argset, and each internal named element named element in the argset.
     #' @examples
     #' p <- plnr::Plan$new()
-    #' batch_argset_list_1 <- list(
+    #' batch_argset_list <- list(
     #'   list(name = "a", var_1 = 1, var_2 = "i"),
     #'   list(name = "b", var_1 = 2, var_2 = "j"),
     #'   list(name = "c", var_1 = 3, var_2 = "k")
     #' )
-    #' p$add_argset_from_list(batch_argset_list_1)
+    #' p$add_argset_from_list(batch_argset_list)
     #' p$get_argsets_as_dt()
     add_argset_from_list = function(l) {
       for (i in seq_along(l)) {
@@ -116,6 +149,7 @@ Plan <- R6::R6Class(
       }
       # message(glue::glue("Added {length(l)} argsets to the plan"))
     },
+
     #' @description Add a new analysis.
     #' @param name Name of the analysis.
     #' @param fn Action function.
@@ -140,6 +174,21 @@ Plan <- R6::R6Class(
       analyses[[name]] <<- list(fn = fn, fn_name = fn_name)
       analyses[[name]][["argset"]] <<- dots
     },
+
+    #' @description Add a batch of analyses from a data.frame.
+    #' @param fn Action function.
+    #' @param fn_name Action function name.
+    #' @param df A data.frame where each row is a new argset, and each column will be a named element in the argset.
+    #' @examples
+    #' p <- plnr::Plan$new()
+    #' p$add_data("covid_data", fn_name = "plnr::example_data_fn_norway_covid19_cases_by_time_location")
+    #' batch_argset_df <- data.frame(name = c("a", "b", "c"), var_1 = c(1, 2, 3), var_2 = c("i", "j", "k"))
+    #' p$add_analysis_from_df(
+    #'   fn_name = "plnr::example_action_fn",
+    #'   df = batch_argset_df
+    #'  )
+    #' p$get_argsets_as_dt()
+    #' p$run_one(1)
     add_analysis_from_df = function(fn = NULL, fn_name = NULL, df) {
       stopifnot(is.null(fn) | is.function(fn) | "fn_name" %in% names(df))
       stopifnot(is.null(fn_name) | is.character(fn_name))
@@ -153,6 +202,23 @@ Plan <- R6::R6Class(
         do.call(add_analysis, argset)
       }
     },
+
+    #' @description Add a batch of argsets from a list.
+    #' @param l A list of lists with named elements where each outermost element is a new argset, and each internal named element named element in the argset.
+    #' @examples
+    #' p <- plnr::Plan$new()
+    #' p$add_data("covid_data", fn_name = "plnr::example_data_fn_norway_covid19_cases_by_time_location")
+    #' batch_argset_list <- list(
+    #'   list(name = "analysis_1", var_1 = 1, var_2 = "i"),
+    #'   list(name = "analysis_2", var_1 = 2, var_2 = "j"),
+    #'   list(name = "analysis_3", var_1 = 3, var_2 = "k")
+    #' )
+    #' p$add_analysis_from_list(
+    #'   fn_name = "plnr::example_action_fn",
+    #'   l = batch_argset_list
+    #' )
+    #' p$get_argsets_as_dt()
+    #' p$run_one("analysis_1")
     add_analysis_from_list = function(fn = NULL, fn_name = NULL, l) {
       stopifnot(is.null(fn) | is.function(fn))
       stopifnot(is.null(fn_name) | is.character(fn_name))
@@ -166,6 +232,24 @@ Plan <- R6::R6Class(
       }
       # message(glue::glue("Added {length(l)} analyses to the plan"))
     },
+
+    #' @description Applies an action function to all the argsets
+    #' @param fn Action function.
+    #' @param fn_name Action function name.
+    #' p <- plnr::Plan$new()
+    #' p$add_data("covid_data", fn_name = "plnr::example_data_fn_norway_covid19_cases_by_time_location")
+    #' batch_argset_list <- list(
+    #'   list(name = "analysis_1", var_1 = 1, var_2 = "i"),
+    #'   list(name = "analysis_2", var_1 = 2, var_2 = "j"),
+    #'   list(name = "analysis_3", var_1 = 3, var_2 = "k")
+    #' )
+    #' p$add_argset_from_list(
+    #'   fn_name = "plnr::example_action_fn",
+    #'   l = batch_argset_list
+    #' )
+    #' p$get_argsets_as_dt()
+    #' p$apply_action_fn_to_all_argsets(fn_name = "plnr::example_action_fn")
+    #' p$run_one("analysis_1")
     apply_action_fn_to_all_argsets = function(fn = NULL, fn_name = NULL) {
       stopifnot(is.null(fn) | is.function(fn))
       stopifnot(is.null(fn_name) | is.character(fn_name))
@@ -175,6 +259,7 @@ Plan <- R6::R6Class(
         analyses[[i]]$fn_name <<- fn_name
       }
     },
+    #' @description Deprecated. Use apply_action_fn_to_all_argsets.
     apply_analysis_fn_to_all = function(fn = NULL, fn_name = NULL) {
       .Deprecated("apply_action_fn_to_all_argsets")
       self$apply_action_fn_to_all_argsets(fn = fn, fn_name = fn_name)
@@ -186,23 +271,28 @@ Plan <- R6::R6Class(
       base::seq_along(analyses)
     },
     set_progress = function(pb) {
-      pb_progress <<- pb
+      self$pb_progress <- pb
     },
     set_progressor = function(pb) {
-      pb_progressor <<- pb
+      self$pb_progressor <- pb
     },
     set_verbose = function(x) {
-      verbose <<- x
+      self$verbose <- x
     },
+
     #' @description
-    #' Extracts the data provided via 'add_data' and returns it as a named list
+    #' Extracts the data provided via 'add_data' and returns it as a named list.
     #' @return
-    #' Named list, where most elements have been added via 'add_data'.
+    #' Named list, where most elements have been added via `add_data`.
     #'
     #' One extra named element is called 'hash'. 'hash' contains the data hashes of particular datasets/variables, as calculated using the 'spookyhash' algorithm via digest::digest.
     #' 'hash' contains two named elements:
     #' - current (the hash of the entire named list)
     #' - current_elements (the hash of the named elements within the named list)
+    #' @examples
+    #' p <- plnr::Plan$new()
+    #' p$add_data("covid_data", fn_name = "plnr::example_data_fn_norway_covid19_cases_by_time_location")
+    #' p$get_data()
     get_data = function() {
       retval <- list()
       for (i in seq_along(private$data)) {
@@ -243,19 +333,71 @@ Plan <- R6::R6Class(
       retval$hash <- hash
       return(retval)
     },
+
+    #' @description
+    #' Extracts an analysis from the plan.
+    #' @param index_analysis Either an integer (1:length(analyses)) or a character string representing the name of the analysis.
+    #' @return
+    #' An analysis.
+    #' @examples
+    #' p <- plnr::Plan$new()
+    #' p$add_data("covid_data", fn_name = "plnr::example_data_fn_norway_covid19_cases_by_time_location")
+    #' batch_argset_list <- list(
+    #'   list(name = "analysis_1", var_1 = 1, var_2 = "i"),
+    #'   list(name = "analysis_2", var_1 = 2, var_2 = "j"),
+    #'   list(name = "analysis_3", var_1 = 3, var_2 = "k")
+    #' )
+    #' p$add_analysis_from_list(
+    #'   fn_name = "plnr::example_action_fn",
+    #'   l = batch_argset_list
+    #' )
+    #' p$get_analysis("analysis_1")
     get_analysis = function(index_analysis) {
       p <- analyses[[index_analysis]]
       p[["argset"]]$index_analysis <- index_analysis
       return(p)
     },
+
+    #' @description
+    #' Extracts an argset from the plan.
+    #' @param index_analysis Either an integer (1:length(analyses)) or a character string representing the name of the analysis.
+    #' @return
+    #' An argset
+    #' @examples
+    #' p <- plnr::Plan$new()
+    #' p$add_data("covid_data", fn_name = "plnr::example_data_fn_norway_covid19_cases_by_time_location")
+    #' batch_argset_list <- list(
+    #'   list(name = "analysis_1", var_1 = 1, var_2 = "i"),
+    #'   list(name = "analysis_2", var_1 = 2, var_2 = "j"),
+    #'   list(name = "analysis_3", var_1 = 3, var_2 = "k")
+    #' )
+    #' p$add_analysis_from_list(
+    #'   fn_name = "plnr::example_action_fn",
+    #'   l = batch_argset_list
+    #' )
+    #' p$get_argset("analysis_1")
     get_argset = function(index_analysis) {
       p <- analyses[[index_analysis]][["argset"]]
       return(p)
     },
+
     #' @description
     #' Gets all argsets and presents them as a data.table.
     #' @return
     #' Data.table that contains all the argsets within a plan.
+    #' @examples
+    #' p <- plnr::Plan$new()
+    #' p$add_data("covid_data", fn_name = "plnr::example_data_fn_norway_covid19_cases_by_time_location")
+    #' batch_argset_list <- list(
+    #'   list(name = "analysis_1", var_1 = 1, var_2 = "i"),
+    #'   list(name = "analysis_2", var_1 = 2, var_2 = "j"),
+    #'   list(name = "analysis_3", var_1 = 3, var_2 = "k")
+    #' )
+    #' p$add_analysis_from_list(
+    #'   fn_name = "plnr::example_action_fn",
+    #'   l = batch_argset_list
+    #' )
+    #' p$get_argsets_as_dt()
     get_argsets_as_dt = function(){
       retval <- lapply(analyses, function(x) {
         if(identical(x$argset,list())){
@@ -274,6 +416,28 @@ Plan <- R6::R6Class(
 
       return(retval)
     },
+
+    #' @description
+    #' Run one analysis (data is provided by user).
+    #' @param index_analysis Either an integer (1:length(analyses)) or a character string representing the name of the analysis.
+    #' @param data Named list (generally obtained from p$get_data()).
+    #' @param ... Not used.
+    #' @return
+    #' Returned value from the action function.
+    #' @examples
+    #' p <- plnr::Plan$new()
+    #' p$add_data("covid_data", fn_name = "plnr::example_data_fn_norway_covid19_cases_by_time_location")
+    #' batch_argset_list <- list(
+    #'   list(name = "analysis_1", var_1 = 1, var_2 = "i"),
+    #'   list(name = "analysis_2", var_1 = 2, var_2 = "j"),
+    #'   list(name = "analysis_3", var_1 = 3, var_2 = "k")
+    #' )
+    #' p$add_analysis_from_list(
+    #'   fn_name = "plnr::example_action_fn",
+    #'   l = batch_argset_list
+    #' )
+    #' data <- p$get_data()
+    #' p$run_one_with_data("analysis_1", data)
     run_one_with_data = function(index_analysis, data, ...) {
       p <- get_analysis(index_analysis)
 
@@ -321,10 +485,31 @@ Plan <- R6::R6Class(
 
       return(retval)
     },
+
+    #' @description
+    #' Run one analysis (data is obtained automatically from self$get_data()).
+    #' @param index_analysis Either an integer (1:length(analyses)) or a character string representing the name of the analysis.
+    #' @param ... Not used.
+    #' @return
+    #' Returned value from the action function.
+    #' @examples
+    #' p <- plnr::Plan$new()
+    #' p$add_data("covid_data", fn_name = "plnr::example_data_fn_norway_covid19_cases_by_time_location")
+    #' batch_argset_list <- list(
+    #'   list(name = "analysis_1", var_1 = 1, var_2 = "i"),
+    #'   list(name = "analysis_2", var_1 = 2, var_2 = "j"),
+    #'   list(name = "analysis_3", var_1 = 3, var_2 = "k")
+    #' )
+    #' p$add_analysis_from_list(
+    #'   fn_name = "plnr::example_action_fn",
+    #'   l = batch_argset_list
+    #' )
+    #' p$run_one("analysis_1")
     run_one = function(index_analysis, ...) {
       data <- get_data()
       run_one_with_data(index_analysis = index_analysis, data = data, ...)
     },
+
     use_foreach_decision = function() {
       if (!is.null(self$use_foreach)) {
         return(self$use_foreach)
@@ -336,6 +521,27 @@ Plan <- R6::R6Class(
         }
       }
     },
+
+    #' @description
+    #' Run all analyses (data is provided by user).
+    #' @param data Named list (generally obtained from p$get_data()).
+    #' @param ... Not used.
+    #' @return
+    #' List where each element contains the returned value from the action function.
+    #' @examples
+    #' p <- plnr::Plan$new()
+    #' p$add_data("covid_data", fn_name = "plnr::example_data_fn_norway_covid19_cases_by_time_location")
+    #' batch_argset_list <- list(
+    #'   list(name = "analysis_1", var_1 = 1, var_2 = "i"),
+    #'   list(name = "analysis_2", var_1 = 2, var_2 = "j"),
+    #'   list(name = "analysis_3", var_1 = 3, var_2 = "k")
+    #' )
+    #' p$add_analysis_from_list(
+    #'   fn_name = "plnr::example_action_fn",
+    #'   l = batch_argset_list
+    #' )
+    #' data <- p$get_data()
+    #' p$run_all_with_data(data)
     run_all_with_data = function(data, ...) {
       # try to deparse important arguments
       dots <- list(...)
@@ -397,10 +603,48 @@ Plan <- R6::R6Class(
 
       invisible(retval)
     },
+
+    #' @description
+    #' Run all analyses (data is obtained automatically from self$get_data()).
+    #' @param ... Not used.
+    #' @return
+    #' List where each element contains the returned value from the action function.
+    #' @examples
+    #' p <- plnr::Plan$new()
+    #' p$add_data("covid_data", fn_name = "plnr::example_data_fn_norway_covid19_cases_by_time_location")
+    #' batch_argset_list <- list(
+    #'   list(name = "analysis_1", var_1 = 1, var_2 = "i"),
+    #'   list(name = "analysis_2", var_1 = 2, var_2 = "j"),
+    #'   list(name = "analysis_3", var_1 = 3, var_2 = "k")
+    #' )
+    #' p$add_analysis_from_list(
+    #'   fn_name = "plnr::example_action_fn",
+    #'   l = batch_argset_list
+    #' )
+    #' p$run_all()
     run_all = function(...) {
       data <- get_data()
       run_all_with_data(data = data, ...)
     },
+
+    #' @description
+    #' Run all analyses with a progress bar (data is obtained automatically from self$get_data()).
+    #' @param ... Not used.
+    #' @return
+    #' List where each element contains the returned value from the action function.
+    #' @examples
+    #' p <- plnr::Plan$new()
+    #' p$add_data("covid_data", fn_name = "plnr::example_data_fn_norway_covid19_cases_by_time_location")
+    #' batch_argset_list <- list(
+    #'   list(name = "analysis_1", var_1 = 1, var_2 = "i"),
+    #'   list(name = "analysis_2", var_1 = 2, var_2 = "j"),
+    #'   list(name = "analysis_3", var_1 = 3, var_2 = "k")
+    #' )
+    #' p$add_analysis_from_list(
+    #'   fn_name = "plnr::example_action_fn",
+    #'   l = batch_argset_list
+    #' )
+    #' p$run_all_progress()
     run_all_progress = function(...) {
       progressr::with_progress(
         {

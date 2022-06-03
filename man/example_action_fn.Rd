@@ -14,3 +14,18 @@ example_action_fn(data, argset)
 \description{
 An example action_fn for an analysis
 }
+\examples{
+p <- plnr::Plan$new()
+p$add_data("covid_data", fn_name = "plnr::example_data_fn_norway_covid19_cases_by_time_location")
+batch_argset_list <- list(
+  list(name = "analysis_1", var_1 = 1, var_2 = "i"),
+  list(name = "analysis_2", var_1 = 2, var_2 = "j"),
+  list(name = "analysis_3", var_1 = 3, var_2 = "k")
+)
+p$add_analysis_from_list(
+  fn_name = "plnr::example_action_fn",
+  l = batch_argset_list
+)
+p$get_argsets_as_dt()
+p$run_one("analysis_1")
+}

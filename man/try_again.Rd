@@ -2,8 +2,7 @@
 % Please edit documentation in R/try_again.R
 \name{try_again}
 \alias{try_again}
-\title{try again
-Adapted from function try_again from package testthat.}
+\title{Try a code snipped multiple times.}
 \usage{
 try_again(
   x,
@@ -25,6 +24,5 @@ try_again(
 \item{verbose}{Boolean. Do you want information?}
 }
 \description{
-try again
 Adapted from function try_again from package testthat.
 }

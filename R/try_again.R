@@ -1,4 +1,5 @@
-#' try again
+#' Try a code snipped multiple times.
+#'
 #' Adapted from function try_again from package testthat.
 #' @param x code
 #' @param times Number of times to try
