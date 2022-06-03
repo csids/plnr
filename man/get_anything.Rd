@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_anything.R
 \name{get_anything}
 \alias{get_anything}
-\title{Gets anything}
+\title{Gets anything (including with package scoping)}
 \usage{
 get_anything(x)
 }
@@ -10,5 +10,9 @@ get_anything(x)
 \item{x}{the string that we are getting}
 }
 \description{
-Gets anything
+base::get does not work with package scoping (e.g. get("pkg::var")).
+plnr::get_anything works with package scoping.
+}
+\examples{
+plnr::get_anything("plnr::norway_covid19_cases_by_time_location")
 }

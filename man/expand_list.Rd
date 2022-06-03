@@ -2,8 +2,7 @@
 % Please edit documentation in R/expand_list.R
 \name{expand_list}
 \alias{expand_list}
-\title{Expand (cross) lists
-The same as purrr::cross, but doesn't require an extra list()}
+\title{Expand (cross) lists}
 \usage{
 expand_list(...)
 }
@@ -11,6 +10,11 @@ expand_list(...)
 \item{...}{Dots}
 }
 \description{
-Expand (cross) lists
 The same as purrr::cross, but doesn't require an extra list()
+}
+\examples{
+plnr::expand_list(
+  a = 1:2,
+  b = c("a", "b")
+)
 }
