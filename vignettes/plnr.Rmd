@@ -21,7 +21,7 @@ editor_options:
 | analysis                               | These are the fundamental units that are scheduled in `plnr`:                                                                                                       |
 |                                        |                                                                                                                                                                     |
 |                                        | -   1 argset                                                                                                                                                        |
-|                                        | -   1 function that takes two arguments                                                                                                                             |
+|                                        | -   1 (action) function that takes two arguments                                                                                                                    |
 |                                        |     1.  data (named list)                                                                                                                                           |
 |                                        |     2.  argset (named list)                                                                                                                                         |
 +----------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------+
@@ -34,9 +34,9 @@ editor_options:
 +----------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | **Plan Type**                          | **Description**                                                                                                                                                     |
 +----------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| Single-function plan                   | Same function applied multiple times with different argsets applied to the same datasets.                                                                           |
+| Single-function plan                   | Same action function applied multiple times with different argsets applied to the same datasets.                                                                    |
 +----------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| Multi-function plan                    | Different functions applied to the same datasets.                                                                                                                   |
+| Multi-function plan                    | Different action functions applied to the same datasets.                                                                                                            |
 +----------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | [Plan Examples]{.underline}            |                                                                                                                                                                     |
 +----------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------+
@@ -53,8 +53,8 @@ editor_options:
 
 In brief, we work within the mental model where we have one (or more) datasets and we want to run multiple analyses on these datasets. These multiple analyses can take the form of:
 
--   **Single-function plans:** One function (e.g. `table_1`) called multiple times with different argsets (e.g. `year=2019`, `year=2020`).
--   **Multi-function plans:** Multiple functions (e.g. `table_1`, `table_2`) called multiple times with different argsets (e.g. `table_1`: `year=2019`, while for `table_2`: `year=2019` and `year=2020`)
+-   **Single-function plans:** One action function (e.g. `table_1`) called multiple times with different argsets (e.g. `year=2019`, `year=2020`).
+-   **Multi-function plans:** Multiple action functions (e.g. `table_1`, `table_2`) called multiple times with different argsets (e.g. `table_1`: `year=2019`, while for `table_2`: `year=2019` and `year=2020`)
 
 By demanding that all analyses use the same data sources we can:
 
@@ -129,7 +129,7 @@ fn_fig_1 <- function(data, argset){
 }
 
 # Apply the analysis function to all argsets
-p$apply_analysis_fn_to_all(fn_name = "fn_fig_1")
+p$apply_action_fn_to_all_argsets(fn_name = "fn_fig_1")
 
 # How many analyses have we created?
 p$len()
@@ -176,7 +176,7 @@ p$run_one(3)
 
 ## fn_name or fn?
 
-In the functions `add_analysis`, `add_analysis_from_df`, `apply_analysis_fn_to_all`, and `add_data` there is the option to use either `fn_name` or `fn` to add the function.
+In the functions `add_analysis`, `add_analysis_from_df`, `apply_action_fn_to_all_argsets`, and `add_data` there is the option to use either `fn_name` or `fn` to add the function.
 
 We use them as follows:
 

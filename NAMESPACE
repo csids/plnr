@@ -3,6 +3,8 @@
 export(Plan)
 export(create_rmarkdown)
 export(easy_split)
+export(example_action_fn)
+export(example_data_fn_norway_covid19_cases_by_time_location)
 export(expand_list)
 export(fn_test)
 export(get_anything)

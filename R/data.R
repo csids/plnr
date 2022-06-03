@@ -31,3 +31,9 @@
 "norway_covid19_cases_by_time_location"
 
 
+#' An example data_fn that returns a data set
+#' @export
+example_data_fn_norway_covid19_cases_by_time_location <- function(){
+  plnr::norway_covid19_cases_by_time_location
+}
+

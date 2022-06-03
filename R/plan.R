@@ -1,3 +1,14 @@
+#' An example action_fn for an analysis
+#' @param data Named list.
+#' @param argset Named list.
+#' @export
+example_action_fn <- function(data, argset){
+  print("Data given:")
+  print(names(data))
+  print("Argset given:")
+  print(names(argset))
+}
+
 #' R6 Class representing a Plan
 #'
 #' @description
@@ -6,7 +17,7 @@
 #'
 #' An analysis is:
 #' - one argset
-#' - one function
+#' - one (action) function
 #'
 #' A plan is:
 #' - one data pull
@@ -26,6 +37,9 @@ Plan <- R6::R6Class(
     use_foreach = FALSE,
     pb_progress = NULL,
     pb_progressor = NULL,
+    #' @description Create a new Plan instance.
+    #' @param verbose Should this plan be verbose?
+    #' @param use_foreach ???
     initialize = function(verbose = interactive() | config$force_verbose, use_foreach = FALSE) {
       self$verbose <- verbose
       # null = program decides
@@ -33,16 +47,16 @@ Plan <- R6::R6Class(
       # true = use foreach
       self$use_foreach <- use_foreach
     },
-    #' @description Add a new data set
-    #' @param name Name of the data set
-    #' @param fn A function that returns the data set
-    #' @param fn_name A character string containing the name of a function that returns the data set
-    #' @param direct A direct data set
+    #' @description Add a new data set.
+    #' @param name Name of the data set.
+    #' @param fn A function that returns the data set.
+    #' @param fn_name A character string containing the name of a function that returns the data set.
+    #' @param direct A direct data set.
     #' @examples
     #' p <- plnr::Plan$new()
     #' data_fn <- function(){return(plnr::norway_covid19_cases_by_time_location)}
     #' p$add_data("data_1", fn = data_fn)
-    #' p$add_data("data_2", fn_name = "data_fn")
+    #' p$add_data("data_2", fn_name = "plnr::example_data_fn_norway_covid19_cases_by_time_location")
     #' p$add_data("data_3", direct = plnr::norway_covid19_cases_by_time_location)
     #' p$get_data()
     add_data = function(name, fn = NULL, fn_name = NULL, direct = NULL) {
@@ -56,13 +70,13 @@ Plan <- R6::R6Class(
         name = name
       )
     },
-    #' @description Add a new argset
-    #' @param name Name of the argset
-    #' @param ... Named arguments that will comprise the argset
+    #' @description Add a new argset.
+    #' @param name Name of the (eventual) analysis that this argset will be connected to.
+    #' @param ... Named arguments that will comprise the argset.
     #' @examples
     #' p <- plnr::Plan$new()
     #' p$add_argset("argset_1", var_1 = 3, var_b = "hello")
-    #' p$add_argset("argset_1", var_1 = 8, var_c = "hello2")
+    #' p$add_argset("argset_2", var_1 = 8, var_c = "hello2")
     #' p$get_argsets_as_dt()
     add_argset = function(name = uuid::UUIDgenerate(), ...) {
       if (is.null(analyses[[name]])) analyses[[name]] <- list()
@@ -70,6 +84,13 @@ Plan <- R6::R6Class(
       dots <- list(...)
       analyses[[name]][["argset"]] <<- dots
     },
+    #' @description Add a batch of argsets from a data.frame.
+    #' @param df A data.frame where each row is a new argset, and each column will be a named element in the argset.
+    #' @examples
+    #' p <- plnr::Plan$new()
+    #' batch_argset_df <- data.frame(name = c("a", "b", "c"), var_1 = c(1, 2, 3), var_2 = c("i", "j", "k"))
+    #' p$add_argset_from_df(batch_argset_df)
+    #' p$get_argsets_as_dt()
     add_argset_from_df = function(df) {
       df <- as.data.frame(df)
       for (i in 1:nrow(df)) {
@@ -77,6 +98,17 @@ Plan <- R6::R6Class(
         do.call(self$add_argset, argset)
       }
     },
+    #' @description Add a batch of argsets from a list.
+    #' @param l A list of lists with named elements where each outermost element is a new argset, and each internal named element named element in the argset.
+    #' @examples
+    #' p <- plnr::Plan$new()
+    #' batch_argset_list_1 <- list(
+    #'   list(name = "a", var_1 = 1, var_2 = "i"),
+    #'   list(name = "b", var_1 = 2, var_2 = "j"),
+    #'   list(name = "c", var_1 = 3, var_2 = "k")
+    #' )
+    #' p$add_argset_from_list(batch_argset_list_1)
+    #' p$get_argsets_as_dt()
     add_argset_from_list = function(l) {
       for (i in seq_along(l)) {
         argset <- l[[i]]
@@ -84,6 +116,20 @@ Plan <- R6::R6Class(
       }
       # message(glue::glue("Added {length(l)} argsets to the plan"))
     },
+    #' @description Add a new analysis.
+    #' @param name Name of the analysis.
+    #' @param fn Action function.
+    #' @param fn_name Action function name.
+    #' @param ... Named arguments to be added to the argset.
+    #' @examples
+    #' p <- plnr::Plan$new()
+    #' p$add_data("covid_data", fn_name = "plnr::example_data_fn_norway_covid19_cases_by_time_location")
+    #' p$add_analysis(
+    #'   name = "analysis_1",
+    #'   fn_name = "plnr::example_action_fn"
+    #' )
+    #' p$get_argsets_as_dt()
+    #' p$run_one("analysis_1")
     add_analysis = function(name = uuid::UUIDgenerate(), fn = NULL, fn_name = NULL, ...) {
       stopifnot(is.null(fn) | is.function(fn))
       stopifnot(is.null(fn_name) | is.character(fn_name))
@@ -120,7 +166,7 @@ Plan <- R6::R6Class(
       }
       # message(glue::glue("Added {length(l)} analyses to the plan"))
     },
-    apply_analysis_fn_to_all = function(fn = NULL, fn_name = NULL) {
+    apply_action_fn_to_all_argsets = function(fn = NULL, fn_name = NULL) {
       stopifnot(is.null(fn) | is.function(fn))
       stopifnot(is.null(fn_name) | is.character(fn_name))
 
@@ -128,6 +174,10 @@ Plan <- R6::R6Class(
         analyses[[i]]$fn <<- fn
         analyses[[i]]$fn_name <<- fn_name
       }
+    },
+    apply_analysis_fn_to_all = function(fn = NULL, fn_name = NULL) {
+      .Deprecated("apply_action_fn_to_all_argsets")
+      self$apply_action_fn_to_all_argsets(fn = fn, fn_name = fn_name)
     },
     len = function() {
       length(analyses)

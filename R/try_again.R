@@ -32,7 +32,7 @@ try_again <- function (x, times = 2, delay_seconds_min = 5, delay_seconds_max = 
     }
 
     if(verbose) warning(i,"/",times,": Failed", call. = FALSE, immediate. = TRUE)
-    Sys.sleep(runif(1, delay_seconds_min, delay_seconds_max))
+    Sys.sleep(stats::runif(1, delay_seconds_min, delay_seconds_max))
     i <- i + 1L
   }
   stop(err)

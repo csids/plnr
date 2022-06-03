@@ -21,7 +21,7 @@ editor_options:
 | analysis                               | These are the fundamental units that are scheduled in `plnr`:                                                                                                       |
 |                                        |                                                                                                                                                                     |
 |                                        | -   1 argset                                                                                                                                                        |
-|                                        | -   1 function that takes two arguments                                                                                                                             |
+|                                        | -   1 (action) function that takes two arguments                                                                                                                    |
 |                                        |     1.  data (named list)                                                                                                                                           |
 |                                        |     2.  argset (named list)                                                                                                                                         |
 +----------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------+
@@ -34,9 +34,9 @@ editor_options:
 +----------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | **Plan Type**                          | **Description**                                                                                                                                                     |
 +----------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| Single-function plan                   | Same function applied multiple times with different argsets applied to the same datasets.                                                                           |
+| Single-function plan                   | Same action function applied multiple times with different argsets applied to the same datasets.                                                                    |
 +----------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| Multi-function plan                    | Different functions applied to the same datasets.                                                                                                                   |
+| Multi-function plan                    | Different action functions applied to the same datasets.                                                                                                            |
 +----------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | [Plan Examples]{.underline}            |                                                                                                                                                                     |
 +----------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------+
@@ -97,9 +97,9 @@ p$get_argsets_as_dt()
 
 # We can then add a simple analysis that returns a figure:
 
-# To do this, we first need to create an analysis function
+# To do this, we first need to create an action function
 # (takes two arguments -- data and argset)
-analysis_fn <- function(data, argset){
+action_fn <- function(data, argset){
   if(plnr::is_run_directly()){
     data <- p$get_data()
     argset <- p$get_argset(1)
@@ -115,7 +115,7 @@ analysis_fn <- function(data, argset){
   q
 }
 
-p$apply_analysis_fn_to_all(fn_name = "analysis_fn")
+p$apply_action_fn_to_all_argsets(fn_name = "action_fn")
 
 p$run_one(1)
 q <- p$run_all()
@@ -158,9 +158,9 @@ p$get_argsets_as_dt()
 
 # We can then add a simple analysis that returns a figure:
 
-# To do this, we first need to create an analysis function
+# To do this, we first need to create an action function
 # (takes two arguments -- data and argset)
-analysis_fn <- function(data, argset){
+action_fn <- function(data, argset){
   if(plnr::is_run_directly()){
     data <- p$get_data()
     argset <- p$get_argset(1)
@@ -175,7 +175,7 @@ analysis_fn <- function(data, argset){
   q
 }
 
-p$apply_analysis_fn_to_all(fn_name = "analysis_fn")
+p$apply_action_fn_to_all_argsets(fn_name = "action_fn")
 
 p$run_one(1)
 p$run_one(2)

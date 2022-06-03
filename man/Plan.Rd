@@ -12,7 +12,7 @@ An argset is:
 An analysis is:
 \itemize{
 \item one argset
-\item one function
+\item one (action) function
 }
 
 A plan is:
@@ -30,7 +30,7 @@ A plan is:
 p <- plnr::Plan$new()
 data_fn <- function(){return(plnr::norway_covid19_cases_by_time_location)}
 p$add_data("data_1", fn = data_fn)
-p$add_data("data_2", fn_name = "data_fn")
+p$add_data("data_2", fn_name = "plnr::example_data_fn_norway_covid19_cases_by_time_location")
 p$add_data("data_3", direct = plnr::norway_covid19_cases_by_time_location)
 p$get_data()
 
@@ -40,8 +40,43 @@ p$get_data()
 
 p <- plnr::Plan$new()
 p$add_argset("argset_1", var_1 = 3, var_b = "hello")
-p$add_argset("argset_1", var_1 = 8, var_c = "hello2")
+p$add_argset("argset_2", var_1 = 8, var_c = "hello2")
 p$get_argsets_as_dt()
+
+## ------------------------------------------------
+## Method `Plan$add_argset_from_df`
+## ------------------------------------------------
+
+p <- plnr::Plan$new()
+batch_argset_df <- data.frame(name = c("a", "b", "c"), var_1 = c(1, 2, 3), var_2 = c("i", "j", "k"))
+p$add_argset_from_df(batch_argset_df)
+p$get_argsets_as_dt()
+
+## ------------------------------------------------
+## Method `Plan$add_argset_from_list`
+## ------------------------------------------------
+
+p <- plnr::Plan$new()
+batch_argset_list_1 <- list(
+  list(name = "a", var_1 = 1, var_2 = "i"),
+  list(name = "b", var_1 = 2, var_2 = "j"),
+  list(name = "c", var_1 = 3, var_2 = "k")
+)
+p$add_argset_from_list(batch_argset_list_1)
+p$get_argsets_as_dt()
+
+## ------------------------------------------------
+## Method `Plan$add_analysis`
+## ------------------------------------------------
+
+p <- plnr::Plan$new()
+p$add_data("covid_data", fn_name = "plnr::example_data_fn_norway_covid19_cases_by_time_location")
+p$add_analysis(
+  name = "analysis_1",
+  fn_name = "plnr::example_action_fn"
+)
+p$get_argsets_as_dt()
+p$run_one("analysis_1")
 }
 \section{Methods}{
 \subsection{Public methods}{
@@ -54,6 +89,7 @@ p$get_argsets_as_dt()
 \item \href{#method-add_analysis}{\code{Plan$add_analysis()}}
 \item \href{#method-add_analysis_from_df}{\code{Plan$add_analysis_from_df()}}
 \item \href{#method-add_analysis_from_list}{\code{Plan$add_analysis_from_list()}}
+\item \href{#method-apply_action_fn_to_all_argsets}{\code{Plan$apply_action_fn_to_all_argsets()}}
 \item \href{#method-apply_analysis_fn_to_all}{\code{Plan$apply_analysis_fn_to_all()}}
 \item \href{#method-len}{\code{Plan$len()}}
 \item \href{#method-x_seq_along}{\code{Plan$x_seq_along()}}
@@ -77,16 +113,26 @@ p$get_argsets_as_dt()
 \if{html}{\out{<a id="method-new"></a>}}
 \if{latex}{\out{\hypertarget{method-new}{}}}
 \subsection{Method \code{new()}}{
+Create a new Plan instance.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Plan$new(verbose = interactive() | config$force_verbose, use_foreach = FALSE)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{verbose}}{Should this plan be verbose?}
+
+\item{\code{use_foreach}}{???}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-add_data"></a>}}
 \if{latex}{\out{\hypertarget{method-add_data}{}}}
 \subsection{Method \code{add_data()}}{
-Add a new data set
+Add a new data set.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Plan$add_data(name, fn = NULL, fn_name = NULL, direct = NULL)}\if{html}{\out{</div>}}
 }
@@ -94,13 +140,13 @@ Add a new data set
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{name}}{Name of the data set}
+\item{\code{name}}{Name of the data set.}
 
-\item{\code{fn}}{A function that returns the data set}
+\item{\code{fn}}{A function that returns the data set.}
 
-\item{\code{fn_name}}{A character string containing the name of a function that returns the data set}
+\item{\code{fn_name}}{A character string containing the name of a function that returns the data set.}
 
-\item{\code{direct}}{A direct data set}
+\item{\code{direct}}{A direct data set.}
 }
 \if{html}{\out{</div>}}
 }
@@ -109,7 +155,7 @@ Add a new data set
 \preformatted{p <- plnr::Plan$new()
 data_fn <- function(){return(plnr::norway_covid19_cases_by_time_location)}
 p$add_data("data_1", fn = data_fn)
-p$add_data("data_2", fn_name = "data_fn")
+p$add_data("data_2", fn_name = "plnr::example_data_fn_norway_covid19_cases_by_time_location")
 p$add_data("data_3", direct = plnr::norway_covid19_cases_by_time_location)
 p$get_data()
 }
@@ -122,7 +168,7 @@ p$get_data()
 \if{html}{\out{<a id="method-add_argset"></a>}}
 \if{latex}{\out{\hypertarget{method-add_argset}{}}}
 \subsection{Method \code{add_argset()}}{
-Add a new argset
+Add a new argset.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Plan$add_argset(name = uuid::UUIDgenerate(), ...)}\if{html}{\out{</div>}}
 }
@@ -130,9 +176,9 @@ Add a new argset
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{name}}{Name of the argset}
+\item{\code{name}}{Name of the (eventual) analysis that this argset will be connected to.}
 
-\item{\code{...}}{Named arguments that will comprise the argset}
+\item{\code{...}}{Named arguments that will comprise the argset.}
 }
 \if{html}{\out{</div>}}
 }
@@ -140,7 +186,7 @@ Add a new argset
 \if{html}{\out{<div class="r example copy">}}
 \preformatted{p <- plnr::Plan$new()
 p$add_argset("argset_1", var_1 = 3, var_b = "hello")
-p$add_argset("argset_1", var_1 = 8, var_c = "hello2")
+p$add_argset("argset_2", var_1 = 8, var_c = "hello2")
 p$get_argsets_as_dt()
 }
 \if{html}{\out{</div>}}
@@ -152,8 +198,27 @@ p$get_argsets_as_dt()
 \if{html}{\out{<a id="method-add_argset_from_df"></a>}}
 \if{latex}{\out{\hypertarget{method-add_argset_from_df}{}}}
 \subsection{Method \code{add_argset_from_df()}}{
+Add a batch of argsets from a data.frame.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Plan$add_argset_from_df(df)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{df}}{A data.frame where each row is a new argset, and each column will be a named element in the argset.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{p <- plnr::Plan$new()
+batch_argset_df <- data.frame(name = c("a", "b", "c"), var_1 = c(1, 2, 3), var_2 = c("i", "j", "k"))
+p$add_argset_from_df(batch_argset_df)
+p$get_argsets_as_dt()
+}
+\if{html}{\out{</div>}}
+
 }
 
 }
@@ -161,8 +226,31 @@ p$get_argsets_as_dt()
 \if{html}{\out{<a id="method-add_argset_from_list"></a>}}
 \if{latex}{\out{\hypertarget{method-add_argset_from_list}{}}}
 \subsection{Method \code{add_argset_from_list()}}{
+Add a batch of argsets from a list.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Plan$add_argset_from_list(l)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{l}}{A list of lists with named elements where each outermost element is a new argset, and each internal named element named element in the argset.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{p <- plnr::Plan$new()
+batch_argset_list_1 <- list(
+  list(name = "a", var_1 = 1, var_2 = "i"),
+  list(name = "b", var_1 = 2, var_2 = "j"),
+  list(name = "c", var_1 = 3, var_2 = "k")
+)
+p$add_argset_from_list(batch_argset_list_1)
+p$get_argsets_as_dt()
+}
+\if{html}{\out{</div>}}
+
 }
 
 }
@@ -170,8 +258,37 @@ p$get_argsets_as_dt()
 \if{html}{\out{<a id="method-add_analysis"></a>}}
 \if{latex}{\out{\hypertarget{method-add_analysis}{}}}
 \subsection{Method \code{add_analysis()}}{
+Add a new analysis.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Plan$add_analysis(name = uuid::UUIDgenerate(), fn = NULL, fn_name = NULL, ...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{name}}{Name of the analysis.}
+
+\item{\code{fn}}{Action function.}
+
+\item{\code{fn_name}}{Action function name.}
+
+\item{\code{...}}{Named arguments to be added to the argset.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{p <- plnr::Plan$new()
+p$add_data("covid_data", fn_name = "plnr::example_data_fn_norway_covid19_cases_by_time_location")
+p$add_analysis(
+  name = "analysis_1",
+  fn_name = "plnr::example_action_fn"
+)
+p$get_argsets_as_dt()
+p$run_one("analysis_1")
+}
+\if{html}{\out{</div>}}
+
 }
 
 }
@@ -190,6 +307,15 @@ p$get_argsets_as_dt()
 \subsection{Method \code{add_analysis_from_list()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Plan$add_analysis_from_list(fn = NULL, fn_name = NULL, l)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-apply_action_fn_to_all_argsets"></a>}}
+\if{latex}{\out{\hypertarget{method-apply_action_fn_to_all_argsets}{}}}
+\subsection{Method \code{apply_action_fn_to_all_argsets()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Plan$apply_action_fn_to_all_argsets(fn = NULL, fn_name = NULL)}\if{html}{\out{</div>}}
 }
 
 }
