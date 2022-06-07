@@ -274,6 +274,13 @@ p$add_analysis_from_list(
 )
 p$run_all_progress()
 }
+\section{Public fields}{
+\if{html}{\out{<div class="r6-fields">}}
+\describe{
+\item{\code{analyses}}{List of analyses.}
+}
+\if{html}{\out{</div>}}
+}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
@@ -287,7 +294,7 @@ p$run_all_progress()
 \item \href{#method-add_analysis_from_list}{\code{Plan$add_analysis_from_list()}}
 \item \href{#method-apply_action_fn_to_all_argsets}{\code{Plan$apply_action_fn_to_all_argsets()}}
 \item \href{#method-apply_analysis_fn_to_all}{\code{Plan$apply_analysis_fn_to_all()}}
-\item \href{#method-len}{\code{Plan$len()}}
+\item \href{#method-x_length}{\code{Plan$x_length()}}
 \item \href{#method-x_seq_along}{\code{Plan$x_seq_along()}}
 \item \href{#method-set_progress}{\code{Plan$set_progress()}}
 \item \href{#method-set_progressor}{\code{Plan$set_progressor()}}
@@ -298,7 +305,6 @@ p$run_all_progress()
 \item \href{#method-get_argsets_as_dt}{\code{Plan$get_argsets_as_dt()}}
 \item \href{#method-run_one_with_data}{\code{Plan$run_one_with_data()}}
 \item \href{#method-run_one}{\code{Plan$run_one()}}
-\item \href{#method-use_foreach_decision}{\code{Plan$use_foreach_decision()}}
 \item \href{#method-run_all_with_data}{\code{Plan$run_all_with_data()}}
 \item \href{#method-run_all}{\code{Plan$run_all()}}
 \item \href{#method-run_all_progress}{\code{Plan$run_all_progress()}}
@@ -537,6 +543,10 @@ Add a batch of argsets from a list.
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
+\item{\code{fn}}{Action function.}
+
+\item{\code{fn_name}}{Action function name.}
+
 \item{\code{l}}{A list of lists with named elements where each outermost element is a new argset, and each internal named element named element in the argset.}
 }
 \if{html}{\out{</div>}}
@@ -604,13 +614,23 @@ Deprecated. Use apply_action_fn_to_all_argsets.
 \if{html}{\out{<div class="r">}}\preformatted{Plan$apply_analysis_fn_to_all(fn = NULL, fn_name = NULL)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{fn}}{Action function.}
+
+\item{\code{fn_name}}{Action function name.}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-len"></a>}}
-\if{latex}{\out{\hypertarget{method-len}{}}}
-\subsection{Method \code{len()}}{
+\if{html}{\out{<a id="method-x_length"></a>}}
+\if{latex}{\out{\hypertarget{method-x_length}{}}}
+\subsection{Method \code{x_length()}}{
+Number of analyses in the plan.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Plan$len()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Plan$x_length()}\if{html}{\out{</div>}}
 }
 
 }
@@ -618,6 +638,7 @@ Deprecated. Use apply_action_fn_to_all_argsets.
 \if{html}{\out{<a id="method-x_seq_along"></a>}}
 \if{latex}{\out{\hypertarget{method-x_seq_along}{}}}
 \subsection{Method \code{x_seq_along()}}{
+Generate a regular sequence from 1 to the length of the analyses in the plan.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Plan$x_seq_along()}\if{html}{\out{</div>}}
 }
@@ -627,28 +648,52 @@ Deprecated. Use apply_action_fn_to_all_argsets.
 \if{html}{\out{<a id="method-set_progress"></a>}}
 \if{latex}{\out{\hypertarget{method-set_progress}{}}}
 \subsection{Method \code{set_progress()}}{
+Set an internal progress bar
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Plan$set_progress(pb)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{pb}}{Progress bar.}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-set_progressor"></a>}}
 \if{latex}{\out{\hypertarget{method-set_progressor}{}}}
 \subsection{Method \code{set_progressor()}}{
+Set an internal progressor progress bar
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Plan$set_progressor(pb)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{pb}}{progressor progress bar.}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-set_verbose"></a>}}
 \if{latex}{\out{\hypertarget{method-set_verbose}{}}}
 \subsection{Method \code{set_verbose()}}{
+Set verbose flag
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Plan$set_verbose(x)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{x}}{Boolean.}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-get_data"></a>}}
@@ -872,15 +917,6 @@ p$run_one("analysis_1")
 }
 \if{html}{\out{</div>}}
 
-}
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-use_foreach_decision"></a>}}
-\if{latex}{\out{\hypertarget{method-use_foreach_decision}{}}}
-\subsection{Method \code{use_foreach_decision()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Plan$use_foreach_decision()}\if{html}{\out{</div>}}
 }
 
 }

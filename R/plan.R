@@ -23,6 +23,23 @@ example_action_fn <- function(data, argset){
   print(names(argset))
 }
 
+#' A test action_fn for an analysis that returns the value 1
+#' @param data Data
+#' @param argset argset
+#' @export
+test_action_fn <- function(data, argset) {
+  return(1)
+}
+
+uuid_generator <- function(){
+  uuid::UUIDgenerate()
+}
+
+hash_it <- function(x){
+  digest::digest(x)
+}
+
+
 #' R6 Class representing a Plan
 #'
 #' @description
@@ -60,21 +77,18 @@ Plan <- R6::R6Class(
   portable = FALSE,
   cloneable = TRUE,
   public = list(
+    #' @field analyses List of analyses.
     analyses = list(),
-    verbose = FALSE,
-    use_foreach = FALSE,
-    pb_progress = NULL,
-    pb_progressor = NULL,
 
     #' @description Create a new Plan instance.
     #' @param verbose Should this plan be verbose?
     #' @param use_foreach ???
     initialize = function(verbose = interactive() | config$force_verbose, use_foreach = FALSE) {
-      self$verbose <- verbose
+      private$verbose <- verbose
       # null = program decides
       # false = use loop
       # true = use foreach
-      self$use_foreach <- use_foreach
+      private$use_foreach <- use_foreach
     },
 
     #' @description Add a new data set.
@@ -204,6 +218,8 @@ Plan <- R6::R6Class(
     },
 
     #' @description Add a batch of argsets from a list.
+    #' @param fn Action function.
+    #' @param fn_name Action function name.
     #' @param l A list of lists with named elements where each outermost element is a new argset, and each internal named element named element in the argset.
     #' @examples
     #' p <- plnr::Plan$new()
@@ -260,24 +276,44 @@ Plan <- R6::R6Class(
       }
     },
     #' @description Deprecated. Use apply_action_fn_to_all_argsets.
+    #' @param fn Action function.
+    #' @param fn_name Action function name.
     apply_analysis_fn_to_all = function(fn = NULL, fn_name = NULL) {
       .Deprecated("apply_action_fn_to_all_argsets")
       self$apply_action_fn_to_all_argsets(fn = fn, fn_name = fn_name)
     },
-    len = function() {
-      length(analyses)
+
+    #' @description
+    #' Number of analyses in the plan.
+    x_length = function() {
+      length(self$analyses)
     },
+
+    #' @description
+    #' Generate a regular sequence from 1 to the length of the analyses in the plan.
     x_seq_along = function() {
-      base::seq_along(analyses)
+      base::seq_along(self$analyses)
     },
+
+    #' @description
+    #' Set an internal progress bar
+    #' @param pb Progress bar.
     set_progress = function(pb) {
-      self$pb_progress <- pb
+      private$pb_progress <- pb
     },
+
+    #' @description
+    #' Set an internal progressor progress bar
+    #' @param pb progressor progress bar.
     set_progressor = function(pb) {
-      self$pb_progressor <- pb
+      private$pb_progressor <- pb
     },
+
+    #' @description
+    #' Set verbose flag
+    #' @param x Boolean.
     set_verbose = function(x) {
-      self$verbose <- x
+      private$verbose <- x
     },
 
     #' @description
@@ -510,18 +546,6 @@ Plan <- R6::R6Class(
       run_one_with_data(index_analysis = index_analysis, data = data, ...)
     },
 
-    use_foreach_decision = function() {
-      if (!is.null(self$use_foreach)) {
-        return(self$use_foreach)
-      } else {
-        if (foreach::getDoParWorkers() == 1 | !requireNamespace("progressr", quietly = TRUE)) {
-          return(FALSE)
-        } else {
-          return(TRUE)
-        }
-      }
-    },
-
     #' @description
     #' Run all analyses (data is provided by user).
     #' @param data Named list (generally obtained from p$get_data()).
@@ -551,26 +575,26 @@ Plan <- R6::R6Class(
         chunk_size <- 1
       }
 
-      retval <- vector("list", length = self$len())
-      if (!use_foreach_decision()) {
+      retval <- vector("list", length = self$x_length())
+      if (!private$use_foreach_decision()) {
         # running not in parallel
-        if (verbose & is.null(pb_progress) & is.null(pb_progressor)) {
-          pb_progress <<- progress::progress_bar$new(
+        if (private$verbose & is.null(private$pb_progress) & is.null(private$pb_progressor)) {
+          private$pb_progress <- progress::progress_bar$new(
             format = paste0("[:bar] :current/:total (:percent) in :elapsedfull, eta: :eta", ifelse(interactive(), "", "\n")),
             clear = FALSE,
-            total = self$len()
+            total = self$x_length()
           )
-          pb_progress$tick(0)
-          on.exit(pb_progress <<- NULL)
+          private$pb_progress$tick(0)
+          on.exit(private$pb_progress <- NULL)
         }
 
-        for (i in x_seq_along()) {
-          if (verbose & !is.null(pb_progress)) pb_progress$tick()
-          if (verbose & !is.null(pb_progressor)) {
+        for (i in self$x_seq_along()) {
+          if (private$verbose & !is.null(private$pb_progress)) private$pb_progress$tick()
+          if (private$verbose & !is.null(private$pb_progressor)) {
             if (interactive()) {
-              pb_progressor()
+              private$pb_progressor()
             } else {
-              pb_progressor()
+              private$pb_progressor()
             }
           }
           retval[[i]] <- run_one_with_data(index_analysis = i, data = data, ...)
@@ -578,22 +602,22 @@ Plan <- R6::R6Class(
         }
       } else {
         # running in parallel
-        if (verbose & is.null(pb_progress) & is.null(pb_progressor)) {
+        if (private$verbose & is.null(private$pb_progress) & is.null(private$pb_progressor)) {
           progressr::handlers(progressr::handler_progress(
             format = "[:bar] :current/:total (:percent) in :elapsedfull, eta: :eta\n",
             clear = FALSE
           ))
-          pb_progressor <<- progressr::progressor(steps = self$len())
-          on.exit(pb_progressor <<- NULL)
+          private$pb_progressor <- progressr::progressor(steps = self$x_length())
+          on.exit(private$pb_progressor <- NULL)
         }
 
-        retval <- foreach(i = x_seq_along(), .options.future = list(chunk.size = chunk_size)) %dopar% {
-          if (verbose & !is.null(pb_progress)) pb_progress$tick()
-          if (verbose & !is.null(pb_progressor)) {
+        retval <- foreach(i = self$x_seq_along(), .options.future = list(chunk.size = chunk_size)) %dopar% {
+          if (private$verbose & !is.null(private$pb_progress)) private$pb_progress$tick()
+          if (private$verbose & !is.null(private$pb_progressor)) {
             if (interactive()) {
-              pb_progressor()
+              private$pb_progressor()
             } else {
-              pb_progressor()
+              private$pb_progressor()
             }
           }
           run_one_with_data(index_analysis = i, data = data, ...)
@@ -655,7 +679,24 @@ Plan <- R6::R6Class(
     }
   ),
   private = list(
-    data = list()
+    verbose = FALSE,
+    use_foreach = FALSE,
+    pb_progress = NULL,
+    pb_progressor = NULL,
+
+    data = list(),
+
+    use_foreach_decision = function() {
+      if (!is.null(private$use_foreach)) {
+        return(private$use_foreach)
+      } else {
+        if (foreach::getDoParWorkers() == 1 | !requireNamespace("progressr", quietly = TRUE)) {
+          return(FALSE)
+        } else {
+          return(TRUE)
+        }
+      }
+    }
   )
 )
 
@@ -686,10 +727,10 @@ Plan <- R6::R6Class(
 #     ))
 #
 #   y <- progressr::with_progress({
-#     pb <- progressr::progressor(along = plan$x_seq_along())
+#     pb <- progressr::progressor(along = plan$seq_along())
 #     data <- plan$get_data()
 #
-#     future.apply::future_lapply(plan$x_seq_along(), function(x) {
+#     future.apply::future_lapply(plan$seq_along(), function(x) {
 #       pb(sprintf("x=%g", x))
 #       plan$run_one_with_data(index_arg = x, data = data)
 #     }, future.chunk.size = future.chunk.size)

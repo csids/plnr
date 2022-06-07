@@ -1,27 +1,24 @@
 Package: plnr
-Title: A System To Help You Plan Analyses.
-Version: 2021.5.4
+Title: A System to Help You Plan Analyses
+Version: 2022.6.7
 Authors@R: c(
   person(c("Richard","Aubrey"), "White", email = "hello@rwhite.no", role = c("aut", "cre"),comment = c(ORCID = "0000-0002-6747-1726")),
   person(given = "Folkehelseinstituttet", role = c("cph"))
   )
 Description: A system to help you plan analyses.
-License: MIT
-URL: https://folkehelseinstituttet.github.io/plnr, https://github.com/folkehelseinstituttet/plnr
-BugReports: https://github.com/folkehelseinstituttet/plnr/issues
+License: MIT + file LICENSE
+URL: https://docs.sykdomspulsen.no/plnr/, https://github.com/sykdomspulsen-org/plnr
+BugReports: https://github.com/sykdomspulsen-org/plnr/issues
 Encoding: UTF-8
 LazyData: true
 Depends: R (>= 3.3.0)
 Imports: data.table,
-  methods,
   R6,
   uuid,
   foreach,
   fs,
   glue,
-  org (>= 2020.2.18),
   usethis,
-  huxtable,
   purrr,
   utils,
   digest,

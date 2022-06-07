@@ -71,7 +71,7 @@ By including all of this in one `Plan` class, we can easily maintain a good over
 
 ## Examples
 
-We now provide a simple example of a single-function plan that shows how a person can develop code to provide graphs for multiple years. More examples are provided inside the vignette [Adding Analyses to a Plan](http://docs.sykdomspulsen.no/plnr/articles/adding_analyses.html).
+We now provide a simple example of a single-function plan that shows how a person can develop code to provide graphs for multiple years. More examples are provided inside the vignette [Adding Analyses to a Plan](https://docs.sykdomspulsen.no/plnr/articles/adding_analyses.html).
 
 ```{r, collapse=FALSE}
 library(ggplot2)
@@ -132,7 +132,7 @@ fn_fig_1 <- function(data, argset){
 p$apply_action_fn_to_all_argsets(fn_name = "fn_fig_1")
 
 # How many analyses have we created?
-p$len()
+p$x_length()
 
 # Examine the argsets that are available
 p$get_argsets_as_dt()
@@ -208,7 +208,7 @@ p$run_one("fig_1_2003")
 
 The difference is that with `fn_name` we provide the name of the function (e.g. `fn_name = "fn_fig_1"`) while with `fn` we provide the actual function (e.g. `fn = fn_fig_1`).
 
-It is recommended to use `fn_name` because `fn_name` calls the function via `do.call` which means that [RStudio debugging](https://support.rstudio.com/hc/en-us/articles/205612627-Debugging-with-RStudio) will work properly. The only reason you would use `fn` is when you are using [function factories](https://adv-r.hadley.nz/function-factories.html).
+It is recommended to use `fn_name` because `fn_name` calls the function via `do.call` which means that RStudio debugging will work properly. The only reason you would use `fn` is when you are using [function factories](https://adv-r.hadley.nz/function-factories.html).
 
 ## Hash
 

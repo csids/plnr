@@ -29,7 +29,7 @@ test_that("test len()", {
   p$add_analysis_from_df(fn = fn, df = analyses)
   # p$run_all_progress()
   testthat::expect_equal(
-    p$len(),
+    p$x_length(),
     50
   )
 })
@@ -50,7 +50,7 @@ test_that("test add_analysis_from_l", {
   p$add_analysis_from_list(fn = fn, l = analyses)
   # p$run_all_progress()
   testthat::expect_equal(
-    p$len(),
+    p$x_length(),
     25
   )
 })
@@ -123,7 +123,7 @@ test_that("parallel", {
 })
 
 test_that("fn_name in data.frame", {
-  df <- data.frame(a = c(1:2), fn_name = "fn_test", stringsAsFactors = FALSE)
+  df <- data.frame(a = c(1:2), fn_name = "test_action_fn", stringsAsFactors = FALSE)
   p <- Plan$new()
   p$add_analysis_from_df(df = df)
   x <- p$run_all()

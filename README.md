@@ -1,10 +1,10 @@
-# plnr <a href="https://docs.sykdomspulsen.no/plnr"><img src="man/figures/logo.png" align="right" width="120" /></a>
+# plnr <a href="https://docs.sykdomspulsen.no/plnr/"><img src="man/figures/logo.png" align="right" width="120" /></a>
 
 ## Overview 
 
-[plnr](https://docs.sykdomspulsen.no/plnr) is a system to help you plan analyses.
+[plnr](https://docs.sykdomspulsen.no/plnr/) is a system to help you plan analyses.
 
-Read the introduction vignette [here](http://docs.sykdomspulsen.no/plnr/articles/plnr.html) or run `help(package="plnr")`.
+Read the introduction vignette [here](https://docs.sykdomspulsen.no/plnr/articles/plnr.html) or run `help(package="plnr")`.
 
 ## splverse
 
@@ -27,7 +27,7 @@ options(
 
 Save the file and restart R.
 
-You can now install [splverse](https://docs.sykdomspulsen.no/packages) packages from our [drat repository](https://docs.sykdomspulsen.no/drat).
+You can now install [splverse](https://docs.sykdomspulsen.no/packages) packages from our [drat repository](https://docs.sykdomspulsen.no/drat/).
 
 ```
 install.packages("plnr")

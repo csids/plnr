@@ -60,6 +60,8 @@ When we apply the same function multiple times, it is preferable to add the args
 
 ### Multiple strata
 
+In this example, we loop through multiple geographical locations and apply a graphing function to the data from each of these geographical locations.
+
 ```{r, collapse=FALSE}
 library(ggplot2)
 library(data.table)
@@ -124,6 +126,8 @@ q[[2]]
 ```
 
 ### Multiple variables
+
+In this example, we loop through multiple variable combinations (1. raw numbers of Covid-19 cases vs Covid-19 cases per 100 000 population, and 2. aggregating over isoweek vs day) and apply a graphing function to the data according to each of these variable combinations.
 
 ```{r, collapse=FALSE}
 library(ggplot2)

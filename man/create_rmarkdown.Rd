@@ -2,7 +2,7 @@
 % Please edit documentation in R/create_rmarkdown.R
 \name{create_rmarkdown}
 \alias{create_rmarkdown}
-\title{Create rmarkdown project}
+\title{Create example rmarkdown project}
 \usage{
 create_rmarkdown(home)
 }
@@ -10,5 +10,5 @@ create_rmarkdown(home)
 \item{home}{Location of the 'home' directory}
 }
 \description{
-Create rmarkdown project
+Create example rmarkdown project
 }

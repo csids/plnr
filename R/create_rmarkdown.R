@@ -1,4 +1,4 @@
-#' Create rmarkdown project
+#' Create example rmarkdown project
 #' @param home Location of the 'home' directory
 #' @export
 create_rmarkdown <- function(home) {
@@ -69,7 +69,7 @@ rmarkdown::render(
     home = home
   )
 
-  org::write_text(txt, file = fs::path(home, "run.R"), header = NULL)
+  cat(txt, file = fs::path(home, "run.R"))
 
   ############
   # R/table_death.R
@@ -85,7 +85,7 @@ table_death <- function(data, argset){{
 }}
 ')
 
-  org::write_text(txt, file = fs::path(home, "R", "figure_death.R"), header = NULL)
+  cat(txt, file = fs::path(home, "R", "figure_death.R"))
 
   ############
   # R/figure_death.R
@@ -105,7 +105,7 @@ figure_death <- function(data, argset){{
 }}
 ')
 
-  org::write_text(txt, file = fs::path(home, "R", "figure_death.R"), header = NULL)
+  cat(txt, file = fs::path(home, "R", "figure_death.R"))
 
   ############
   # paper/paper.Rmd
@@ -140,7 +140,7 @@ p$run_one("fig_1")
 
   ')
 
-  org::write_text(txt, file = fs::path(home, "paper", "paper.Rmd"), header = NULL)
+  cat(txt, file = fs::path(home, "paper", "paper.Rmd"))
 
   usethis::create_project(home)
 }
