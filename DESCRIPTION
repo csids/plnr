@@ -1,11 +1,18 @@
 Package: plnr
-Title: A System to Help You Plan Analyses
-Version: 2022.6.7
+Title: A System for Planing Analyses
+Version: 2022.6.8
 Authors@R: c(
   person(c("Richard","Aubrey"), "White", email = "hello@rwhite.no", role = c("aut", "cre"),comment = c(ORCID = "0000-0002-6747-1726")),
   person(given = "Folkehelseinstituttet", role = c("cph"))
   )
-Description: A system to help you plan analyses.
+Description: A system to plan analyses within the mental model
+    where you have one (or more) datasets and want to run either A) the same 
+    function multiple times with different arguments, or B) multiple functions. 
+    This is appropriate when you have multiple strata (e.g. locations, age groups)
+    that you want to apply the same function to, or you have multiple variables 
+    (e.g. exposures) that you want to apply the same statistical method to, or
+    when you are creating the output for a report and you need multiple different
+    tables or graphs.
 License: MIT + file LICENSE
 URL: https://docs.sykdomspulsen.no/plnr/, https://github.com/sykdomspulsen-org/plnr
 BugReports: https://github.com/sykdomspulsen-org/plnr/issues
