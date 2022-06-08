@@ -1,3 +1,13 @@
+# plnr 2022.6.8
+
+- plan$set_use_foreach public method created
+
+# plnr 2022.6.7
+
+- CRAN submission
+- Additional documentation
+- Moving some plan public fields into private
+
 # plnr 2022.5.27
 
 - Including new vignette explaining how to add analyses to a plan.

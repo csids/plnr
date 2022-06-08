@@ -317,6 +317,13 @@ Plan <- R6::R6Class(
     },
 
     #' @description
+    #' Set use_foreach flag
+    #' @param x Boolean.
+    set_use_foreach = function(x) {
+      private$use_foreach <- x
+    },
+
+    #' @description
     #' Extracts the data provided via 'add_data' and returns it as a named list.
     #' @return
     #' Named list, where most elements have been added via `add_data`.

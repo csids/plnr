@@ -299,6 +299,7 @@ p$run_all_progress()
 \item \href{#method-set_progress}{\code{Plan$set_progress()}}
 \item \href{#method-set_progressor}{\code{Plan$set_progressor()}}
 \item \href{#method-set_verbose}{\code{Plan$set_verbose()}}
+\item \href{#method-set_use_foreach}{\code{Plan$set_use_foreach()}}
 \item \href{#method-get_data}{\code{Plan$get_data()}}
 \item \href{#method-get_analysis}{\code{Plan$get_analysis()}}
 \item \href{#method-get_argset}{\code{Plan$get_argset()}}
@@ -685,6 +686,23 @@ Set an internal progressor progress bar
 Set verbose flag
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Plan$set_verbose(x)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{x}}{Boolean.}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-set_use_foreach"></a>}}
+\if{latex}{\out{\hypertarget{method-set_use_foreach}{}}}
+\subsection{Method \code{set_use_foreach()}}{
+Set use_foreach flag
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Plan$set_use_foreach(x)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
