@@ -2,8 +2,7 @@ Package: plnr
 Title: A System for Planing Analyses
 Version: 2022.6.8
 Authors@R: c(
-  person(c("Richard","Aubrey"), "White", email = "hello@rwhite.no", role = c("aut", "cre"),comment = c(ORCID = "0000-0002-6747-1726")),
-  person(given = "Folkehelseinstituttet", role = c("cph"))
+  person(c("Richard","Aubrey"), "White", email = "hello@rwhite.no", role = c("aut", "cre"),comment = c(ORCID = "0000-0002-6747-1726"))
   )
 Description: A system to plan analyses within the mental model
     where you have one (or more) datasets and want to run either A) the same 
@@ -14,8 +13,8 @@ Description: A system to plan analyses within the mental model
     when you are creating the output for a report and you need multiple different
     tables or graphs.
 License: MIT + file LICENSE
-URL: https://docs.sykdomspulsen.no/plnr/, https://github.com/sykdomspulsen-org/plnr
-BugReports: https://github.com/sykdomspulsen-org/plnr/issues
+URL: https://www.csids.no/plnr/, https://github.com/csids/plnr
+BugReports: https://github.com/csids/plnr/issues
 Encoding: UTF-8
 LazyData: true
 Depends: R (>= 3.3.0)

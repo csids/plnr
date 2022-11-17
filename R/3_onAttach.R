@@ -10,6 +10,6 @@
     "plnr ",
     version,
     "\n",
-    "https://docs.sykdomspulsen.no/plnr"
+    "https://www.csids.no/plnr/"
   ))
 }

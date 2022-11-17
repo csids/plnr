@@ -1,4 +1,4 @@
-url: https://docs.sykdomspulsen.no/plnr
+url: https://www.csids.no/plnr/
 
 template:
   bootstrap: 5
@@ -13,13 +13,10 @@ template:
 #   bg: "#393c61"
 
 authors:
-  Folkehelseinstituttet:
-    href: "https://www.fhi.no"
-    html: "<img src='man/figures/fhi.png' width=72>"
   footer:
     roles: [cre, aut]
     text: "Crafted by"
   sidebar:
-    roles: [aut, ctb, cph]
+    roles: [cre, aut, ctb]
   before: "This package is proudly brought to you by:"
   after: "See the [changelog](news/index.html) for other contributors. :pray:"
