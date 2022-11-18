@@ -34,7 +34,7 @@ build_package:
 	docker run --rm --privileged \
 		-v /Volumes/homes/raw996/dev/containers/csids-hub/agent-pipelines/$(PKGNAME)/rpkg:/rpkg \
 		-v /Volumes/homes/raw996/dev/containers/csids-hub/agent-pipelines/$(PKGNAME)/built:/built \
-		csids/sc8-csverse:latest /bin/bash -c \
+		localhost/sc8-su-csverse:latest /bin/bash -c \
 		' \
 		cd /; \
 		R CMD build /rpkg; \
@@ -47,7 +47,7 @@ check_package:
 	docker run --rm --privileged \
 		-v /Volumes/homes/raw996/dev/containers/csids-hub/agent-pipelines/$(PKGNAME)/rpkg:/rpkg \
 		-v /Volumes/homes/raw996/dev/containers/csids-hub/agent-pipelines/$(PKGNAME)/built:/built \
-		csids/sc8-csverse:latest /bin/bash -c \
+		localhost/sc8-su-csverse:latest /bin/bash -c \
 		' \
 		R CMD check --no-manual /built/*.tar.gz; \
 		mv *.Rcheck /built/; \
@@ -80,7 +80,7 @@ drat:
 		-v /Volumes/homes/raw996/dev/containers/csids-hub/agent-pipelines/$(PKGNAME)/rpkg:/rpkg \
 		-v /Volumes/homes/raw996/dev/containers/csids-hub/agent-pipelines/$(PKGNAME)/built:/built \
 		-v /Volumes/homes/raw996/dev/git/drat:/drat \
-		csids/sc8-csverse:latest /bin/bash -c 'Rscript -e "drat::insertPackage(fs::dir_ls(\"/built/\", regexp=\".tar.gz\$\"), repodir = \"/drat\", action=\"prune\")"'
+		localhost/sc8-su-csverse:latest /bin/bash -c 'Rscript -e "drat::insertPackage(fs::dir_ls(\"/built/\", regexp=\".tar.gz\$\"), repodir = \"/drat\", action=\"prune\")"'
 
 	# sed -i "/## News/a - **$(PKGNAME) $(PKGVERS)** (linux) inserted at $(DATETIME)" ../drat/README.md
 	# sed -i '1001,\\\$ d' ../drat_sp/README.md # only keep first 1000 lines of readme
@@ -99,7 +99,7 @@ pkgdown:
 		-v /Volumes/homes/raw996/dev/containers/csids-hub/agent-pipelines/$(PKGNAME)/rpkg:/rpkg \
 		-v /Volumes/homes/raw996/dev/containers/csids-hub/agent-pipelines/$(PKGNAME)/built:/built \
 		-v /Volumes/homes/raw996/dev/git/drat:/drat \
-		csids/sc8-csverse:latest /bin/bash -c 'Rscript -e "devtools::install(\"/rpkg\", dependencies = TRUE, upgrade = FALSE); pkgdown::build_site(\"/rpkg\")"'
+		localhost/sc8-su-csverse:latest /bin/bash -c 'Rscript -e "devtools::install(\"/rpkg\", dependencies = TRUE, upgrade = FALSE); pkgdown::build_site(\"/rpkg\")"'
 
 	if [ -d "docs" ]
 	then
