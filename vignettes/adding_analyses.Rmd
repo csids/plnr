@@ -139,7 +139,7 @@ p <- plnr::Plan$new()
 
 # Data function
 data_fn <- function(){
-  return(plnr::nor_covid19_cases_by_time_location[location_code=="norge"])
+  return(plnr::nor_covid19_cases_by_time_location[location_code=="nation_nor"])
 }
 
 # We add sources of data
@@ -239,14 +239,14 @@ figure_1 <- function(data, argset){
 p$add_analysis(
   name = "figure_2",
   fn_name = "plot_epicurve_by_location",
-  location_code = "norge"
+  location_code = "nation_nor"
 )
 
 # Reusing a function for figures 2 and 3
 p$add_analysis(
   name = "figure_3",
   fn_name = "plot_epicurve_by_location",
-  location_code = "county03"
+  location_code = "county_nor03"
 )
 
 plot_epicurve_by_location <- function(data, argset){
