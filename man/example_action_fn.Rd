@@ -16,7 +16,7 @@ An example action_fn for an analysis
 }
 \examples{
 p <- plnr::Plan$new()
-p$add_data("covid_data", fn_name = "plnr::example_data_fn_norway_covid19_cases_by_time_location")
+p$add_data("covid_data", fn_name = "plnr::example_data_fn_nor_covid19_cases_by_time_location")
 batch_argset_list <- list(
   list(name = "analysis_1", var_1 = 1, var_2 = "i"),
   list(name = "analysis_2", var_1 = 2, var_2 = "j"),

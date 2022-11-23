@@ -7,7 +7,7 @@
 #'
 #' This data was extracted on 2022-05-04.
 #'
-#' @format A splfmt_rts_data_v1 with 11028 rows and 18 variables:
+#' @format A csfmt_rts_data_v1 with 11028 rows and 18 variables:
 #' \describe{
 #'   \item{granularity_time}{day/isoweek}
 #'   \item{granularity_geo}{nation, county}
@@ -28,12 +28,12 @@
 #'   \item{covid19_cases_testdate_pr100000}{Number of confirmed covid19 cases per 100.000 population}
 #' }
 #' @source \url{https://github.com/folkehelseinstituttet/surveillance_data/blob/master/covid19/_DOCUMENTATION_data_covid19_msis_by_time_location.txt}
-"norway_covid19_cases_by_time_location"
+"nor_covid19_cases_by_time_location"
 
 
 #' An example data_fn that returns a data set
 #' @export
-example_data_fn_norway_covid19_cases_by_time_location <- function(){
-  plnr::norway_covid19_cases_by_time_location
+example_data_fn_nor_covid19_cases_by_time_location <- function(){
+  plnr::nor_covid19_cases_by_time_location
 }
 

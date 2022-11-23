@@ -72,7 +72,7 @@ p <- plnr::Plan$new()
 
 # Data function
 data_fn <- function(){
-  return(plnr::norway_covid19_cases_by_time_location)
+  return(plnr::nor_covid19_cases_by_time_location)
 }
 
 # We add sources of data
@@ -139,7 +139,7 @@ p <- plnr::Plan$new()
 
 # Data function
 data_fn <- function(){
-  return(plnr::norway_covid19_cases_by_time_location[location_code=="norge"])
+  return(plnr::nor_covid19_cases_by_time_location[location_code=="norge"])
 }
 
 # We add sources of data
@@ -201,7 +201,7 @@ p <- plnr::Plan$new()
 
 # Data function
 data_fn <- function(){
-  return(plnr::norway_covid19_cases_by_time_location)
+  return(plnr::nor_covid19_cases_by_time_location)
 }
 
 # We add sources of data

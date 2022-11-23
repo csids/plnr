@@ -3,7 +3,7 @@
 #' @param argset Named list.
 #' @examples
 #' p <- plnr::Plan$new()
-#' p$add_data("covid_data", fn_name = "plnr::example_data_fn_norway_covid19_cases_by_time_location")
+#' p$add_data("covid_data", fn_name = "plnr::example_data_fn_nor_covid19_cases_by_time_location")
 #' batch_argset_list <- list(
 #'   list(name = "analysis_1", var_1 = 1, var_2 = "i"),
 #'   list(name = "analysis_2", var_1 = 2, var_2 = "j"),
@@ -98,10 +98,10 @@ Plan <- R6::R6Class(
     #' @param direct A direct data set.
     #' @examples
     #' p <- plnr::Plan$new()
-    #' data_fn <- function(){return(plnr::norway_covid19_cases_by_time_location)}
+    #' data_fn <- function(){return(plnr::nor_covid19_cases_by_time_location)}
     #' p$add_data("data_1", fn = data_fn)
-    #' p$add_data("data_2", fn_name = "plnr::example_data_fn_norway_covid19_cases_by_time_location")
-    #' p$add_data("data_3", direct = plnr::norway_covid19_cases_by_time_location)
+    #' p$add_data("data_2", fn_name = "plnr::example_data_fn_nor_covid19_cases_by_time_location")
+    #' p$add_data("data_3", direct = plnr::nor_covid19_cases_by_time_location)
     #' p$get_data()
     add_data = function(name, fn = NULL, fn_name = NULL, direct = NULL) {
       stopifnot(is.null(fn) | is.function(fn))
@@ -171,7 +171,7 @@ Plan <- R6::R6Class(
     #' @param ... Named arguments to be added to the argset.
     #' @examples
     #' p <- plnr::Plan$new()
-    #' p$add_data("covid_data", fn_name = "plnr::example_data_fn_norway_covid19_cases_by_time_location")
+    #' p$add_data("covid_data", fn_name = "plnr::example_data_fn_nor_covid19_cases_by_time_location")
     #' p$add_analysis(
     #'   name = "analysis_1",
     #'   fn_name = "plnr::example_action_fn"
@@ -195,7 +195,7 @@ Plan <- R6::R6Class(
     #' @param df A data.frame where each row is a new argset, and each column will be a named element in the argset.
     #' @examples
     #' p <- plnr::Plan$new()
-    #' p$add_data("covid_data", fn_name = "plnr::example_data_fn_norway_covid19_cases_by_time_location")
+    #' p$add_data("covid_data", fn_name = "plnr::example_data_fn_nor_covid19_cases_by_time_location")
     #' batch_argset_df <- data.frame(name = c("a", "b", "c"), var_1 = c(1, 2, 3), var_2 = c("i", "j", "k"))
     #' p$add_analysis_from_df(
     #'   fn_name = "plnr::example_action_fn",
@@ -223,7 +223,7 @@ Plan <- R6::R6Class(
     #' @param l A list of lists with named elements where each outermost element is a new argset, and each internal named element named element in the argset.
     #' @examples
     #' p <- plnr::Plan$new()
-    #' p$add_data("covid_data", fn_name = "plnr::example_data_fn_norway_covid19_cases_by_time_location")
+    #' p$add_data("covid_data", fn_name = "plnr::example_data_fn_nor_covid19_cases_by_time_location")
     #' batch_argset_list <- list(
     #'   list(name = "analysis_1", var_1 = 1, var_2 = "i"),
     #'   list(name = "analysis_2", var_1 = 2, var_2 = "j"),
@@ -253,7 +253,7 @@ Plan <- R6::R6Class(
     #' @param fn Action function.
     #' @param fn_name Action function name.
     #' p <- plnr::Plan$new()
-    #' p$add_data("covid_data", fn_name = "plnr::example_data_fn_norway_covid19_cases_by_time_location")
+    #' p$add_data("covid_data", fn_name = "plnr::example_data_fn_nor_covid19_cases_by_time_location")
     #' batch_argset_list <- list(
     #'   list(name = "analysis_1", var_1 = 1, var_2 = "i"),
     #'   list(name = "analysis_2", var_1 = 2, var_2 = "j"),
@@ -334,7 +334,7 @@ Plan <- R6::R6Class(
     #' - current_elements (the hash of the named elements within the named list)
     #' @examples
     #' p <- plnr::Plan$new()
-    #' p$add_data("covid_data", fn_name = "plnr::example_data_fn_norway_covid19_cases_by_time_location")
+    #' p$add_data("covid_data", fn_name = "plnr::example_data_fn_nor_covid19_cases_by_time_location")
     #' p$get_data()
     get_data = function() {
       retval <- list()
@@ -384,7 +384,7 @@ Plan <- R6::R6Class(
     #' An analysis.
     #' @examples
     #' p <- plnr::Plan$new()
-    #' p$add_data("covid_data", fn_name = "plnr::example_data_fn_norway_covid19_cases_by_time_location")
+    #' p$add_data("covid_data", fn_name = "plnr::example_data_fn_nor_covid19_cases_by_time_location")
     #' batch_argset_list <- list(
     #'   list(name = "analysis_1", var_1 = 1, var_2 = "i"),
     #'   list(name = "analysis_2", var_1 = 2, var_2 = "j"),
@@ -408,7 +408,7 @@ Plan <- R6::R6Class(
     #' An argset
     #' @examples
     #' p <- plnr::Plan$new()
-    #' p$add_data("covid_data", fn_name = "plnr::example_data_fn_norway_covid19_cases_by_time_location")
+    #' p$add_data("covid_data", fn_name = "plnr::example_data_fn_nor_covid19_cases_by_time_location")
     #' batch_argset_list <- list(
     #'   list(name = "analysis_1", var_1 = 1, var_2 = "i"),
     #'   list(name = "analysis_2", var_1 = 2, var_2 = "j"),
@@ -430,7 +430,7 @@ Plan <- R6::R6Class(
     #' Data.table that contains all the argsets within a plan.
     #' @examples
     #' p <- plnr::Plan$new()
-    #' p$add_data("covid_data", fn_name = "plnr::example_data_fn_norway_covid19_cases_by_time_location")
+    #' p$add_data("covid_data", fn_name = "plnr::example_data_fn_nor_covid19_cases_by_time_location")
     #' batch_argset_list <- list(
     #'   list(name = "analysis_1", var_1 = 1, var_2 = "i"),
     #'   list(name = "analysis_2", var_1 = 2, var_2 = "j"),
@@ -469,7 +469,7 @@ Plan <- R6::R6Class(
     #' Returned value from the action function.
     #' @examples
     #' p <- plnr::Plan$new()
-    #' p$add_data("covid_data", fn_name = "plnr::example_data_fn_norway_covid19_cases_by_time_location")
+    #' p$add_data("covid_data", fn_name = "plnr::example_data_fn_nor_covid19_cases_by_time_location")
     #' batch_argset_list <- list(
     #'   list(name = "analysis_1", var_1 = 1, var_2 = "i"),
     #'   list(name = "analysis_2", var_1 = 2, var_2 = "j"),
@@ -537,7 +537,7 @@ Plan <- R6::R6Class(
     #' Returned value from the action function.
     #' @examples
     #' p <- plnr::Plan$new()
-    #' p$add_data("covid_data", fn_name = "plnr::example_data_fn_norway_covid19_cases_by_time_location")
+    #' p$add_data("covid_data", fn_name = "plnr::example_data_fn_nor_covid19_cases_by_time_location")
     #' batch_argset_list <- list(
     #'   list(name = "analysis_1", var_1 = 1, var_2 = "i"),
     #'   list(name = "analysis_2", var_1 = 2, var_2 = "j"),
@@ -561,7 +561,7 @@ Plan <- R6::R6Class(
     #' List where each element contains the returned value from the action function.
     #' @examples
     #' p <- plnr::Plan$new()
-    #' p$add_data("covid_data", fn_name = "plnr::example_data_fn_norway_covid19_cases_by_time_location")
+    #' p$add_data("covid_data", fn_name = "plnr::example_data_fn_nor_covid19_cases_by_time_location")
     #' batch_argset_list <- list(
     #'   list(name = "analysis_1", var_1 = 1, var_2 = "i"),
     #'   list(name = "analysis_2", var_1 = 2, var_2 = "j"),
@@ -642,7 +642,7 @@ Plan <- R6::R6Class(
     #' List where each element contains the returned value from the action function.
     #' @examples
     #' p <- plnr::Plan$new()
-    #' p$add_data("covid_data", fn_name = "plnr::example_data_fn_norway_covid19_cases_by_time_location")
+    #' p$add_data("covid_data", fn_name = "plnr::example_data_fn_nor_covid19_cases_by_time_location")
     #' batch_argset_list <- list(
     #'   list(name = "analysis_1", var_1 = 1, var_2 = "i"),
     #'   list(name = "analysis_2", var_1 = 2, var_2 = "j"),
@@ -665,7 +665,7 @@ Plan <- R6::R6Class(
     #' List where each element contains the returned value from the action function.
     #' @examples
     #' p <- plnr::Plan$new()
-    #' p$add_data("covid_data", fn_name = "plnr::example_data_fn_norway_covid19_cases_by_time_location")
+    #' p$add_data("covid_data", fn_name = "plnr::example_data_fn_nor_covid19_cases_by_time_location")
     #' batch_argset_list <- list(
     #'   list(name = "analysis_1", var_1 = 1, var_2 = "i"),
     #'   list(name = "analysis_2", var_1 = 2, var_2 = "j"),

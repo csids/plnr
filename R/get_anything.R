@@ -4,7 +4,7 @@
 #' plnr::get_anything works with package scoping.
 #' @param x the string that we are getting
 #' @examples
-#' plnr::get_anything("plnr::norway_covid19_cases_by_time_location")
+#' plnr::get_anything("plnr::nor_covid19_cases_by_time_location")
 #' @export
 get_anything <- function(x) {
   if (length(grep("::", x)) > 0) {

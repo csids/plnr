@@ -14,5 +14,5 @@ base::get does not work with package scoping (e.g. get("pkg::var")).
 plnr::get_anything works with package scoping.
 }
 \examples{
-plnr::get_anything("plnr::norway_covid19_cases_by_time_location")
+plnr::get_anything("plnr::nor_covid19_cases_by_time_location")
 }

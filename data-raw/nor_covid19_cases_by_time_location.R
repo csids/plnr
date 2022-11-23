@@ -74,8 +74,6 @@ colnames(week)
 # put daily and weekly together
 nor_covid19_cases_by_time_location <- rbind(d, week)
 
-nor_covid19_cases_by_time_location[, location_code := stringr::str_replace(location_code, "county", "county_nor")]
-nor_covid19_cases_by_time_location[location_code=="norge", location_code := "nation_nor"]
 
 # save the data into data folder in .rda format
 usethis::use_data(nor_covid19_cases_by_time_location, overwrite = TRUE)

@@ -3,7 +3,7 @@
 export(Plan)
 export(create_rmarkdown)
 export(example_action_fn)
-export(example_data_fn_norway_covid19_cases_by_time_location)
+export(example_data_fn_nor_covid19_cases_by_time_location)
 export(expand_list)
 export(get_anything)
 export(is_run_directly)
