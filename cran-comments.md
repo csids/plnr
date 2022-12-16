@@ -1,6 +1,6 @@
-# Resubmission
+# Submission
 
-More details added in the description.
+Updating vignettes.
 
 ## Test environments
 
@@ -10,13 +10,7 @@ More details added in the description.
 
 ## R CMD check results
 
-0 errors | 0 warnings
-
-* checking CRAN incoming feasibility ... NOTE
-
-Maintainer: 'Richard Aubrey White <hello@rwhite.no>'
-  
-New submission
+0 errors | 0 warnings | 0 notes
 
 ## Downstream dependencies
 
