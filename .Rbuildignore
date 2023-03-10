@@ -15,3 +15,5 @@ pkgdown.yml
 data-raw/
 license.md
 ^CRAN-SUBMISSION$
+^doc$
+^Meta$

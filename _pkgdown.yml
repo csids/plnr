@@ -8,6 +8,8 @@ template:
     border-radius: 0.0rem
     btn-border-radius: 0.0rem
     # font-size-base: 0.75rem
+  includes:
+    in_header: <script data-goatcounter="https://csidsno.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 
 # navbar:
 #   bg: "#393c61"
