@@ -2,7 +2,8 @@ Package: plnr
 Title: A System for Planing Analyses
 Version: 2022.11.23
 Authors@R: c(
-  person(c("Richard","Aubrey"), "White", email = "hello@rwhite.no", role = c("aut", "cre"),comment = c(ORCID = "0000-0002-6747-1726"))
+  person(c("Richard","Aubrey"), "White", email = "hello@rwhite.no", role = c("aut", "cre"),comment = c(ORCID = "0000-0002-6747-1726")),
+  person("CSIDS", email = "hello@csids.no", role = c("cph"))
   )
 Description: A system to plan analyses within the mental model
     where you have one (or more) datasets and want to run either A) the same 
