@@ -701,26 +701,15 @@ Plan <- R6::R6Class(
           options(mc.cores = 1)
           catch_result <- tryCatch(
             {
-              list(
-                value = self$run_one_with_data(index_analysis = x, data = data, ...),
-                error = FALSE,
-                msg = ""
-              )
+              return(self$run_one_with_data(index_analysis = x, data = data, ...))
             },
             error = function(e) {
-              list(
-                value = NULL,
-                error = TRUE,
-                msg = paste0("Error in index ", x, ".\n********\n", e$message, "\n********\n")
-              )
+              system(sprintf('echo "\n%s\n"', paste0("Error in index ", x, ":\n\u2193\u2193\u2193\u2193\u2193\u2193\u2193\u2193\n", e$message, "\n********", collapse="")))
+              stop()
             }
           )
-          if(catch_result$error){
-            stop(catch_result$msg)
-          } else {
-            return(catch_result$value)
-          }
         },
+        ignore.interactive = TRUE,
         mc.cores = mc.cores,
         mc.style = "ETA",
         mc.substyle = 2
