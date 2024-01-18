@@ -683,6 +683,35 @@ Plan <- R6::R6Class(
         },
         delay_stdout = F
       )
+    },
+
+    #' @description
+    #' Run all analyses in parallel (data is obtained automatically from self$get_data()).
+    #'
+    #' This function only works on linux computers and uses `pbmcapply` as the parallel backend.
+    #' @param mc.cores Number of cores to be used.
+    #' @param ... Not used.
+    #' @return
+    #' List where each element contains the returned value from the action function.
+    run_all_parallel = function(mc.cores = getOption("mc.cores", 2L), ...){
+      data <- self$get_data()
+      raw <- pbmcapply::pbmclapply(
+        self$x_seq_along(),
+        function(x){
+          options(mc.cores = 1)
+          catch_result <- tryCatch(
+            {
+              return(self$run_one_with_data(index_analysis = x, data = data, ...))
+            },
+            error = function(e) {
+              stop(paste0("Error in index ", x, ".\n********\n", e$message, "\n********\n"))
+            }
+          )
+        },
+        mc.cores = mc.cores,
+        mc.style = "ETA",
+        mc.substyle = 2
+      )
     }
   ),
   private = list(

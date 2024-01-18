@@ -20,16 +20,17 @@ Encoding: UTF-8
 LazyData: true
 Depends: R (>= 3.3.0)
 Imports: data.table,
-  R6,
-  uuid,
-  foreach,
-  fs,
-  glue,
-  usethis,
-  purrr,
-  utils,
   digest,
-  stats
+  fs,
+  foreach,
+  glue,
+  pbmcapply,
+  purrr,
+  R6,
+  stats,
+  usethis,
+  utils,
+  uuid
 Suggests: testthat,
   knitr,
   rmarkdown,
@@ -38,5 +39,5 @@ Suggests: testthat,
   readxl,
   magrittr
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.3
 VignetteBuilder: knitr
