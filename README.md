@@ -2,7 +2,7 @@
 
 ## Overview 
 
-[plnr](https://www.csids.no/plnr/) is a framework to plan analyses within the mental model where you have one (or more) datasets and want to run either:
+[plnr](https://www.csids.no/plnr/) is a framework for planning analyses within the mental model where you have one (or more) datasets and want to run either:
 
 - The same function multiple times with different arguments.
 - Multiple functions. 

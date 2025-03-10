@@ -5,7 +5,7 @@ Authors@R: c(
   person(c("Richard","Aubrey"), "White", email = "hello@rwhite.no", role = c("aut", "cre"),comment = c(ORCID = "0000-0002-6747-1726")),
   person("CSIDS", email = "hello@csids.no", role = c("cph"))
   )
-Description: A framework to plan analyses within the mental model where you 
+Description: A framework for planning analyses within the mental model where you 
     have one (or more) datasets and want to run either A) The same function 
     multiple times with different arguments, or B) Multiple functions. 
     This is appropriate when A) Applying the same function to multiple strata (e.g., locations, age groups),
