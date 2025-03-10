@@ -2,13 +2,20 @@
 
 ## Overview 
 
-[plnr](https://www.csids.no/plnr/) is a system to help you plan analyses.
+[plnr](https://www.csids.no/plnr/) is a framework to plan analyses within the mental model where you have one (or more) datasets and want to run either:
+
+- The same function multiple times with different arguments.
+- Multiple functions. 
+    
+This is appropriate when:
+
+- Applying the same function to multiple strata (e.g., locations, age groups).
+- Applying the same statistical method to multiple variables (e.g. exposures).
+- Creating multiple different tables or graphs for a report.
 
 Read the introduction vignette [here](https://www.csids.no/plnr/articles/plnr.html) or run `help(package="plnr")`.
 
 ## csverse
-
-<a href="https://www.csids.no/packages.html"><img src="https://www.csids.no/packages/csverse.png" align="right" width="120" /></a>
 
 The [csverse](https://www.csids.no/packages.html) is a set of R packages developed to help solve problems that frequently occur when performing disease surveillance.
 
