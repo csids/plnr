@@ -1,7 +1,5 @@
 ---
 title: "Introduction to plnr"
-author: "Richard Aubrey White"
-date: "2022-06-02"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Introduction to plnr}

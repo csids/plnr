@@ -2,3 +2,31 @@ url: https://www.csids.no/plnr/
 
 template:
   package: csidstemplatepkgdown
+
+reference:
+- title: "Plan Management"
+  desc: "Classes and functions related to defining and managing an analysis plan."
+  contents:
+    - Plan
+
+- title: "Utility Functions"
+  desc: "General-purpose utility functions for various tasks."
+  contents:
+    - expand_list
+    - get_anything
+    - is_run_directly
+    - set_opts
+    - try_again
+
+- title: "Project Creation"
+  desc: "Functions for setting up and managing example RMarkdown projects."
+  contents:
+    - create_rmarkdown
+
+- title: "Testing Functions"
+  desc: "Functions designed for testing analysis workflows."
+  contents:
+    - example_action_fn
+    - example_data_fn_nor_covid19_cases_by_time_location
+    - nor_covid19_cases_by_time_location
+    - test_action_fn

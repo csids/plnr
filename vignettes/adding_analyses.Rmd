@@ -1,7 +1,5 @@
 ---
 title: "Adding Analyses to a Plan"
-author: "Richard Aubrey White"
-date: "2022-06-02"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Adding Analyses to a Plan}
