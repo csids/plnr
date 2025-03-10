@@ -1,8 +1,8 @@
 ---
-title: "Adding Analyses to a Plan"
+title: "Adding analyses to a plan"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Adding Analyses to a Plan}
+  %\VignetteIndexEntry{Adding analyses to a plan}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options: 
