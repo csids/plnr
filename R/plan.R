@@ -131,17 +131,17 @@ Plan <- R6::R6Class(
     #' @return NULL, modifies the plan in place
     #' @examples
     #' p <- plnr::Plan$new()
-    #' 
+    #'
     #' # Add data using a function
     #' data_fn <- function() { return(plnr::nor_covid19_cases_by_time_location) }
     #' p$add_data("data_1", fn = data_fn)
-    #' 
+    #'
     #' # Add data using a function name
     #' p$add_data("data_2", fn_name = "plnr::example_data_fn_nor_covid19_cases_by_time_location")
-    #' 
+    #'
     #' # Add data directly
     #' p$add_data("data_3", direct = plnr::nor_covid19_cases_by_time_location)
-    #' 
+    #'
     #' # View added data
     #' p$get_data()
     add_data = function(name, fn = NULL, fn_name = NULL, direct = NULL) {
@@ -162,11 +162,11 @@ Plan <- R6::R6Class(
     #' @return NULL, modifies the plan in place
     #' @examples
     #' p <- plnr::Plan$new()
-    #' 
+    #'
     #' # Add argsets with different arguments
     #' p$add_argset("argset_1", var_1 = 3, var_b = "hello")
     #' p$add_argset("argset_2", var_1 = 8, var_c = "hello2")
-    #' 
+    #'
     #' # View added argsets
     #' p$get_argsets_as_dt()
     add_argset = function(name = uuid::UUIDgenerate(), ...) {
@@ -181,17 +181,17 @@ Plan <- R6::R6Class(
     #' @return NULL, modifies the plan in place
     #' @examples
     #' p <- plnr::Plan$new()
-    #' 
+    #'
     #' # Create data frame of argsets
     #' batch_argset_df <- data.frame(
     #'   name = c("a", "b", "c"),
     #'   var_1 = c(1, 2, 3),
     #'   var_2 = c("i", "j", "k")
     #' )
-    #' 
+    #'
     #' # Add argsets from data frame
     #' p$add_argset_from_df(batch_argset_df)
-    #' 
+    #'
     #' # View added argsets
     #' p$get_argsets_as_dt()
     add_argset_from_df = function(df) {
@@ -207,17 +207,17 @@ Plan <- R6::R6Class(
     #' @return NULL, modifies the plan in place
     #' @examples
     #' p <- plnr::Plan$new()
-    #' 
+    #'
     #' # Create list of argsets
     #' batch_argset_list <- list(
     #'   list(name = "a", var_1 = 1, var_2 = "i"),
     #'   list(name = "b", var_1 = 2, var_2 = "j"),
     #'   list(name = "c", var_1 = 3, var_2 = "k")
     #' )
-    #' 
+    #'
     #' # Add argsets from list
     #' p$add_argset_from_list(batch_argset_list)
-    #' 
+    #'
     #' # View added argsets
     #' p$get_argsets_as_dt()
     add_argset_from_list = function(l) {
@@ -235,16 +235,16 @@ Plan <- R6::R6Class(
     #' @return NULL, modifies the plan in place
     #' @examples
     #' p <- plnr::Plan$new()
-    #' 
+    #'
     #' # Add example data
     #' p$add_data("covid_data", fn_name = "plnr::example_data_fn_nor_covid19_cases_by_time_location")
-    #' 
+    #'
     #' # Add analysis
     #' p$add_analysis(
     #'   name = "analysis_1",
     #'   fn_name = "plnr::example_action_fn"
     #' )
-    #' 
+    #'
     #' # View argsets and run analysis
     #' p$get_argsets_as_dt()
     #' p$run_one("analysis_1")
@@ -266,23 +266,23 @@ Plan <- R6::R6Class(
     #' @return NULL, modifies the plan in place
     #' @examples
     #' p <- plnr::Plan$new()
-    #' 
+    #'
     #' # Add example data
     #' p$add_data("covid_data", fn_name = "plnr::example_data_fn_nor_covid19_cases_by_time_location")
-    #' 
+    #'
     #' # Create data frame of analyses
     #' batch_argset_df <- data.frame(
     #'   name = c("a", "b", "c"),
     #'   var_1 = c(1, 2, 3),
     #'   var_2 = c("i", "j", "k")
     #' )
-    #' 
+    #'
     #' # Add analyses from data frame
     #' p$add_analysis_from_df(
     #'   fn_name = "plnr::example_action_fn",
     #'   df = batch_argset_df
     #' )
-    #' 
+    #'
     #' # View argsets and run example
     #' p$get_argsets_as_dt()
     #' p$run_one(1)
@@ -306,23 +306,23 @@ Plan <- R6::R6Class(
     #' @return NULL, modifies the plan in place
     #' @examples
     #' p <- plnr::Plan$new()
-    #' 
+    #'
     #' # Add example data
     #' p$add_data("covid_data", fn_name = "plnr::example_data_fn_nor_covid19_cases_by_time_location")
-    #' 
+    #'
     #' # Create list of analyses
     #' batch_argset_list <- list(
     #'   list(name = "analysis_1", var_1 = 1, var_2 = "i"),
     #'   list(name = "analysis_2", var_1 = 2, var_2 = "j"),
     #'   list(name = "analysis_3", var_1 = 3, var_2 = "k")
     #' )
-    #' 
+    #'
     #' # Add analyses from list
     #' p$add_analysis_from_list(
     #'   fn_name = "plnr::example_action_fn",
     #'   l = batch_argset_list
     #' )
-    #' 
+    #'
     #' # View argsets and run example
     #' p$get_argsets_as_dt()
     #' p$run_one("analysis_1")
@@ -782,6 +782,7 @@ Plan <- R6::R6Class(
     #' @param ... Not used.
     #' @return
     #' List where each element contains the returned value from the action function.
+    #' @importFrom pbmcapply pbmclapply
     run_all_parallel = function(mc.cores = getOption("mc.cores", 2L), ...){
       data <- self$get_data()
       raw <- pbmcapply::pbmclapply(
@@ -827,107 +828,4 @@ Plan <- R6::R6Class(
   )
 )
 
-# #' run_all_parallel
-# #' @param plan a
-# #' @param cores a
-# #' @param future.chunk.size Size of future chunks
-# #' @param verbose a
-# #' @param multisession a
-# #' @export
-# run_all_parallel <- function(
-#   plan,
-#   cores = parallel::detectCores(),
-#   future.chunk.size = NULL,
-#   verbose = interactive(),
-#   multisession = TRUE){
-#
-#   if(multisession){
-#     future::plan(future::multisession, workers = cores, earlySignal = TRUE)
-#   } else {
-#     future::plan(future.callr::callr, workers = cores, earlySignal = TRUE)
-#   }
-#   on.exit(future:::ClusterRegistry("stop"))
-#
-#   progressr::handlers(progressr::progress_handler(
-#     format = "[:bar] :current/:total (:percent) in :elapsedfull, eta: :eta",
-#     clear = FALSE
-#     ))
-#
-#   y <- progressr::with_progress({
-#     pb <- progressr::progressor(along = plan$seq_along())
-#     data <- plan$get_data()
-#
-#     future.apply::future_lapply(plan$seq_along(), function(x) {
-#       pb(sprintf("x=%g", x))
-#       plan$run_one_with_data(index_arg = x, data = data)
-#     }, future.chunk.size = future.chunk.size)
-#   })
-# }
-#'
-#' #' Plans
-#' #' @import data.table
-#' #' @import R6
-#' #' @export
-#' #' @exportClass Plans
-#' Plans <- R6::R6Class(
-#'   "Plans",
-#'   portable = FALSE,
-#'   cloneable = TRUE,
-#'   public = list(
-#'     list_plan = list(),
-#'     initialize = function() {
-#'     },
-#'     add_plan = function(p) {
-#'       list_plan[[length(list_plan) + 1]] <<- Plan$new()
-#'
-#'       # add data
-#'       for (i in seq_along(p$data)) {
-#'         list_plan[[length(list_plan)]]$add_data(
-#'           fn = p$data[[i]]$fn,
-#'           df = p$data[[i]]$df,
-#'           name = p$data[[i]]$name
-#'         )
-#'       }
-#'
-#'       # add analyses
-#'       for (i in seq_along(p$list_arg)) {
-#'         arg <- p$list_arg[[i]]$arg
-#'         arg$fn <- p$list_arg[[i]]$fn
-#'
-#'         do.call(list_plan[[length(list_plan)]]$add_analysis, arg)
-#'       }
-#'     },
-#'     add_analysis = function(fn, ...) {
-#'       list_arg[[length(list_arg) + 1]] <<- list(
-#'         fn = fn,
-#'         arg = ...
-#'       )
-#'     },
-#'     len = function(index_plan) {
-#'       if (missing(index_plan)) {
-#'         return(length(list_plan))
-#'       } else {
-#'         return(length(list_plan[[index_plan]]))
-#'       }
-#'     },
-#'     x_seq_along = function(index_plan) {
-#'       if (missing(index_plan)) {
-#'         return(seq_along(list_plan))
-#'       } else {
-#'         return(seq_along(list_plan[[index_plan]]))
-#'       }
-#'     },
-#'     get_data = function(index_plan) {
-#'       list_plan[[index_plan]]$get_data()
-#'     },
-#'     get_analysis = function(index_plan, index_arg) {
-#'       list_plan[[index_plan]]$get_analysis(index_arg)
-#'     },
-#'     analysis_run = function(data, analysis) {
-#'       analysis$fn(
-#'         data = data,
-#'         arg = analysis$arg
-#'       )
-#'     }
-#'   )
-#' )
+

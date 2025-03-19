@@ -17,6 +17,7 @@
 #' @return `TRUE` invisibly if successful, otherwise throws an error with the last
 #' error message
 #' @examples
+#' \dontrun{
 #' # Try a simple operation
 #' try_again({
 #'   # Your code here
@@ -28,6 +29,7 @@
 #'   # Your code here
 #'   stop("Simulated error")
 #' }, delay_seconds_min = 1, delay_seconds_max = 3)
+#' }
 #' @export
 try_again <- function(x, times = 2, delay_seconds_min = 5, delay_seconds_max = 10, verbose = FALSE) {
   i <- 1

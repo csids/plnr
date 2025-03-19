@@ -17,3 +17,6 @@ license.md
 ^CRAN-SUBMISSION$
 ^doc$
 ^Meta$
+@eaDir
+man/@eaDir
+.DS_Store

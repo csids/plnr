@@ -39,6 +39,7 @@ The function is adapted from the \code{try_again} function in the testthat packa
 but with additional features for controlling retry behavior and verbosity.
 }
 \examples{
+\dontrun{
 # Try a simple operation
 try_again({
   # Your code here
@@ -50,4 +51,5 @@ try_again({
   # Your code here
   stop("Simulated error")
 }, delay_seconds_min = 1, delay_seconds_max = 3)
+}
 }
