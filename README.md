@@ -1,5 +1,8 @@
 # plnr <a href="https://www.csids.no/plnr/"><img src="man/figures/logo.png" align="right" width="120" /></a>
 
+[![CRAN status](https://www.r-pkg.org/badges/version/plnr)](https://cran.r-project.org/package=plnr)
+[![CRAN downloads](https://cranlogs.r-pkg.org/badges/plnr)](https://cran.r-project.org/package=plnr)
+
 ## Overview 
 
 [plnr](https://www.csids.no/plnr/) is a powerful framework for planning and executing analyses in R. It's designed for scenarios where you need to:
