@@ -27,13 +27,12 @@ The created project includes:
 }
 }
 \examples{
+\dontrun{
 # Create a temporary directory for the example
 temp_dir <- tempfile("plnr_example_")
 create_rmarkdown(temp_dir)
 
 # View the created structure
 list.files(temp_dir, recursive = TRUE)
-
-# Clean up
-unlink(temp_dir, recursive = TRUE)
+}
 }

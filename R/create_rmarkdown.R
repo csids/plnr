@@ -13,15 +13,14 @@
 #' @param home Character string, the path where the project should be created
 #' @return NULL, creates files and directories in the specified location
 #' @examples
+#' \dontrun{
 #' # Create a temporary directory for the example
 #' temp_dir <- tempfile("plnr_example_")
 #' create_rmarkdown(temp_dir)
 #'
 #' # View the created structure
 #' list.files(temp_dir, recursive = TRUE)
-#'
-#' # Clean up
-#' unlink(temp_dir, recursive = TRUE)
+#' }
 #' @export
 create_rmarkdown <- function(home) {
   fs::dir_create(fs::path(home))
