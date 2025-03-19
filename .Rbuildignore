@@ -20,3 +20,4 @@ license.md
 @eaDir
 man/@eaDir
 .DS_Store
+.github
