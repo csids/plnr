@@ -104,15 +104,9 @@ p$apply_action_fn_to_all_argsets(fn_name = "fn_fig_1")
 p$run_one("fig_1_2002")
 ```
 
-## Documentation
-
-- [Package Website](https://www.csids.no/plnr/)
-- [GitHub Repository](https://github.com/csids/plnr)
-- [Issue Tracker](https://github.com/csids/plnr/issues)
-
 ## Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+Contributions are welcome! Please feel free to submit a [Pull Request](https://github.com/csids/plnr/pulls).
 
 ## License
 
