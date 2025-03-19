@@ -15,28 +15,44 @@ editor_options:
 
 ## Core Concepts
 
-### Key Components
++----------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| [Broad technical terms]{.underline}    |                                                                                                                                                                     |
++----------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| **Object**                             | **Description**                                                                                                                                                     |
++----------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| argset                                 | A named list containing a set of arguments.                                                                                                                         |
++----------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| analysis                               | These are the fundamental units that are scheduled in `plnr`:                                                                                                       |
+|                                        |                                                                                                                                                                     |
+|                                        | -   1 argset                                                                                                                                                        |
+|                                        | -   1 (action) function that takes two arguments                                                                                                                    |
+|                                        |     1.  data (named list)                                                                                                                                           |
+|                                        |     2.  argset (named list)                                                                                                                                         |
++----------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| plan                                   | This is the overarching "scheduler":                                                                                                                                |
+|                                        |                                                                                                                                                                     |
+|                                        | -   1 data pull                                                                                                                                                     |
+|                                        | -   1 list of analyses                                                                                                                                              |
++----------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| [Different types of plans]{.underline} |                                                                                                                                                                     |
++----------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| **Plan Type**                          | **Description**                                                                                                                                                     |
++----------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Single-function plan                   | Same action function applied multiple times with different argsets applied to the same datasets.                                                                    |
++----------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Multi-function plan                    | Different action functions applied to the same datasets.                                                                                                            |
++----------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| [Plan Examples]{.underline}            |                                                                                                                                                                     |
++----------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| **Plan Type**                          | **Example**                                                                                                                                                         |
++----------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Single-function plan                   | Multiple strata (e.g. locations, age groups) that you need to apply the same function to to (e.g. outbreak detection, trend detection, graphing).                   |
++----------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Single-function plan                   | Multiple variables (e.g. multiple outcomes, multiple exposures) that you need to apply the same statistical methods to (e.g. regression models, correlation plots). |
++----------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Multi-function plan                    | Creating the output for a report (e.g. multiple different tables and graphs).                                                                                       |
++----------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 
-| Component | Description |
-|-----------|-------------|
-| **Data** | One or more datasets that will be used across all analyses |
-| **Argset** | A named list containing a set of arguments for an analysis |
-| **Analysis** | The fundamental unit in `plnr`, consisting of: |
-|           | - 1 argset (arguments) |
-|           | - 1 action function that takes two arguments: |
-|           |   1. data (named list) |
-|           |   2. argset (named list) |
-| **Plan** | The main scheduler that contains: |
-|          | - 1 data pull |
-|          | - 1 list of analyses |
-
-### Types of Plans
-
-| Plan Type | Description | Use Cases |
-|-----------|-------------|-----------|
-| Single-function plan | Same action function applied multiple times with different argsets | - Multiple strata analysis (e.g., locations, age groups) |
-|           | applied to the same datasets | - Multiple variable analysis (e.g., outcomes, exposures) |
-| Multi-function plan | Different action functions applied to the same datasets | - Creating report outputs (e.g., multiple tables and graphs) |
 
 ## Basic Usage
 
@@ -88,10 +104,7 @@ p$run_one("fig_1_2002")
 
 ### Data Management
 
-The framework ensures efficient data management by:
-- Loading data once and reusing across analyses
-- Separating data cleaning from analysis
-- Providing hash-based tracking of data changes
+The framework ensures efficient data management by: - Loading data once and reusing across analyses - Separating data cleaning from analysis - Providing hash-based tracking of data changes
 
 ### Debugging Tools
 
@@ -162,28 +175,25 @@ p1$get_data()$hash$current_elements
 
 ## Best Practices
 
-1. **Data Organization**
-   - Keep data cleaning separate from analysis
-   - Use meaningful names for datasets
-   - Document data structure and assumptions
-
-2. **Analysis Functions**
-   - Always accept `data` and `argset` parameters
-   - Use `is_run_directly()` for development
-   - Keep functions focused and single-purpose
-
-3. **Plan Structure**
-   - Use meaningful names for argsets and analyses
-   - Group related analyses together
-   - Document plan structure and dependencies
-
-4. **Development Workflow**
-   - Start with small examples
-   - Use debugging tools during development
-   - Test analyses individually before running full plan
+1.  **Data Organization**
+    -   Keep data cleaning separate from analysis
+    -   Use meaningful names for datasets
+    -   Document data structure and assumptions
+2.  **Analysis Functions**
+    -   Always accept `data` and `argset` parameters
+    -   Use `is_run_directly()` for development
+    -   Keep functions focused and single-purpose
+3.  **Plan Structure**
+    -   Use meaningful names for argsets and analyses
+    -   Group related analyses together
+    -   Document plan structure and dependencies
+4.  **Development Workflow**
+    -   Start with small examples
+    -   Use debugging tools during development
+    -   Test analyses individually before running full plan
 
 ## Next Steps
 
-1. Read the [Adding Analyses](https://www.csids.no/plnr/articles/adding_analyses.html) vignette for more detailed examples
-2. Check out the [package website](https://www.csids.no/plnr/) for additional resources
-3. Explore the function documentation with `help(package="plnr")`
+1.  Read the [Adding Analyses](https://www.csids.no/plnr/articles/adding_analyses.html) vignette for more detailed examples
+2.  Check out the [package website](https://www.csids.no/plnr/) for additional resources
+3.  Explore the function documentation with `help(package="plnr")`
