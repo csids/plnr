@@ -37,11 +37,13 @@ install.packages("plnr")
 To install the development version or access packages that haven't been released on CRAN:
 
 1. Edit your `.Rprofile`:
+
 ```r
 usethis::edit_r_profile()
 ```
 
 2. Add the following configuration:
+
 ```r
 options(
   repos = structure(c(
@@ -52,6 +54,7 @@ options(
 ```
 
 3. Restart R and install:
+
 ```r
 install.packages("plnr")
 ```
