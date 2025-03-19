@@ -1,0 +1,10 @@
+pandoc: 2.9.2.1
+pkgdown: 2.1.0
+pkgdown_sha: ~
+articles:
+  adding_analyses: adding_analyses.html
+  plnr: plnr.html
+last_built: 2025-03-19T15:04Z
+urls:
+  reference: https://www.csids.no/plnr/reference
+  article: https://www.csids.no/plnr/articles

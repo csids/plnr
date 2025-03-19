@@ -1,0 +1,25 @@
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://www.csids.no/plnr/404.html</loc></url>
+<url><loc>https://www.csids.no/plnr/LICENSE-text.html</loc></url>
+<url><loc>https://www.csids.no/plnr/articles/adding_analyses.html</loc></url>
+<url><loc>https://www.csids.no/plnr/articles/index.html</loc></url>
+<url><loc>https://www.csids.no/plnr/articles/plnr.html</loc></url>
+<url><loc>https://www.csids.no/plnr/authors.html</loc></url>
+<url><loc>https://www.csids.no/plnr/index.html</loc></url>
+<url><loc>https://www.csids.no/plnr/news/index.html</loc></url>
+<url><loc>https://www.csids.no/plnr/reference/Plan.html</loc></url>
+<url><loc>https://www.csids.no/plnr/reference/create_rmarkdown.html</loc></url>
+<url><loc>https://www.csids.no/plnr/reference/example_action_fn.html</loc></url>
+<url><loc>https://www.csids.no/plnr/reference/example_data_fn_nor_covid19_cases_by_time_location.html</loc></url>
+<url><loc>https://www.csids.no/plnr/reference/expand_list.html</loc></url>
+<url><loc>https://www.csids.no/plnr/reference/get_anything.html</loc></url>
+<url><loc>https://www.csids.no/plnr/reference/hash_it.html</loc></url>
+<url><loc>https://www.csids.no/plnr/reference/index.html</loc></url>
+<url><loc>https://www.csids.no/plnr/reference/is_run_directly.html</loc></url>
+<url><loc>https://www.csids.no/plnr/reference/nor_covid19_cases_by_time_location.html</loc></url>
+<url><loc>https://www.csids.no/plnr/reference/set_opts.html</loc></url>
+<url><loc>https://www.csids.no/plnr/reference/test_action_fn.html</loc></url>
+<url><loc>https://www.csids.no/plnr/reference/try_again.html</loc></url>
+<url><loc>https://www.csids.no/plnr/reference/uuid_generator.html</loc></url>
+</urlset>
+
