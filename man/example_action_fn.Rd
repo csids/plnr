@@ -2,30 +2,44 @@
 % Please edit documentation in R/plan.R
 \name{example_action_fn}
 \alias{example_action_fn}
-\title{An example action_fn for an analysis}
+\title{Example action function for demonstrating analysis structure}
 \usage{
 example_action_fn(data, argset)
 }
 \arguments{
-\item{data}{Named list.}
+\item{data}{A named list containing the datasets for the analysis}
 
-\item{argset}{Named list.}
+\item{argset}{A named list containing the arguments for the analysis}
+}
+\value{
+NULL, prints information about the input data and argset
 }
 \description{
-An example action_fn for an analysis
+This function serves as an example of how to structure an action function
+for use with the \code{Plan} class. It simply prints the names of the data
+and argset components it receives.
 }
 \examples{
+# Create a new plan
 p <- plnr::Plan$new()
+
+# Add example data
 p$add_data("covid_data", fn_name = "plnr::example_data_fn_nor_covid19_cases_by_time_location")
+
+# Create batch of argsets
 batch_argset_list <- list(
   list(name = "analysis_1", var_1 = 1, var_2 = "i"),
   list(name = "analysis_2", var_1 = 2, var_2 = "j"),
   list(name = "analysis_3", var_1 = 3, var_2 = "k")
 )
+
+# Add analyses to plan
 p$add_analysis_from_list(
   fn_name = "plnr::example_action_fn",
   l = batch_argset_list
 )
+
+# View argsets and run example
 p$get_argsets_as_dt()
 p$run_one("analysis_1")
 }

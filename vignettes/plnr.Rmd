@@ -9,238 +9,181 @@ editor_options:
   chunk_output_type: console
 ---
 
-+----------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| [Broad technical terms]{.underline}    |                                                                                                                                                                     |
-+----------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| **Object**                             | **Description**                                                                                                                                                     |
-+----------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| argset                                 | A named list containing a set of arguments.                                                                                                                         |
-+----------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| analysis                               | These are the fundamental units that are scheduled in `plnr`:                                                                                                       |
-|                                        |                                                                                                                                                                     |
-|                                        | -   1 argset                                                                                                                                                        |
-|                                        | -   1 (action) function that takes two arguments                                                                                                                    |
-|                                        |     1.  data (named list)                                                                                                                                           |
-|                                        |     2.  argset (named list)                                                                                                                                         |
-+----------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| plan                                   | This is the overarching "scheduler":                                                                                                                                |
-|                                        |                                                                                                                                                                     |
-|                                        | -   1 data pull                                                                                                                                                     |
-|                                        | -   1 list of analyses                                                                                                                                              |
-+----------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| [Different types of plans]{.underline} |                                                                                                                                                                     |
-+----------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| **Plan Type**                          | **Description**                                                                                                                                                     |
-+----------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| Single-function plan                   | Same action function applied multiple times with different argsets applied to the same datasets.                                                                    |
-+----------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| Multi-function plan                    | Different action functions applied to the same datasets.                                                                                                            |
-+----------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| [Plan Examples]{.underline}            |                                                                                                                                                                     |
-+----------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| **Plan Type**                          | **Example**                                                                                                                                                         |
-+----------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| Single-function plan                   | Multiple strata (e.g. locations, age groups) that you need to apply the same function to to (e.g. outbreak detection, trend detection, graphing).                   |
-+----------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| Single-function plan                   | Multiple variables (e.g. multiple outcomes, multiple exposures) that you need to apply the same statistical methods to (e.g. regression models, correlation plots). |
-+----------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| Multi-function plan                    | Creating the output for a report (e.g. multiple different tables and graphs).                                                                                       |
-+----------------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+# Introduction
 
-## Philosophy
+`plnr` is a framework for planning and executing analyses in R. It's designed to help you organize and run multiple analyses efficiently, whether you're applying the same function with different arguments or running multiple different functions on your data.
 
-In brief, we work within the mental model where we have one (or more) datasets and we want to run multiple analyses on these datasets. These multiple analyses can take the form of:
+## Core Concepts
 
--   **Single-function plans:** One action function (e.g. `table_1`) called multiple times with different argsets (e.g. `year=2019`, `year=2020`).
--   **Multi-function plans:** Multiple action functions (e.g. `table_1`, `table_2`) called multiple times with different argsets (e.g. `table_1`: `year=2019`, while for `table_2`: `year=2019` and `year=2020`)
+### Key Components
 
-By demanding that all analyses use the same data sources we can:
+| Component | Description |
+|-----------|-------------|
+| **Data** | One or more datasets that will be used across all analyses |
+| **Argset** | A named list containing a set of arguments for an analysis |
+| **Analysis** | The fundamental unit in `plnr`, consisting of: |
+|           | - 1 argset (arguments) |
+|           | - 1 action function that takes two arguments: |
+|           |   1. data (named list) |
+|           |   2. argset (named list) |
+| **Plan** | The main scheduler that contains: |
+|          | - 1 data pull |
+|          | - 1 list of analyses |
 
-1.  Be efficient with requiring the minimal amount of data-pulling (this only happens once at the start).
-2.  Better enforce the concept that data-cleaning and analysis should be completely separate.
+### Types of Plans
 
-By demanding that all analysis functions only use two arguments (`data` and `argset`) we can:
+| Plan Type | Description | Use Cases |
+|-----------|-------------|-----------|
+| Single-function plan | Same action function applied multiple times with different argsets | - Multiple strata analysis (e.g., locations, age groups) |
+|           | applied to the same datasets | - Multiple variable analysis (e.g., outcomes, exposures) |
+| Multi-function plan | Different action functions applied to the same datasets | - Creating report outputs (e.g., multiple tables and graphs) |
 
-1.  Reduce mental fatigue by working within the same mental model for each analysis.
-2.  Make it easier for analyses to be exchanged with each other and iterated on.
-3.  Easily schedule the running of each analysis.
+## Basic Usage
 
-By including all of this in one `Plan` class, we can easily maintain a good overview of all the analyses (i.e. outputs) that need to be run.
-
-## Examples
-
-We now provide a simple example of a single-function plan that shows how a person can develop code to provide graphs for multiple years. More examples are provided inside the vignette [Adding Analyses to a Plan](https://docs.sykdomspulsen.no/plnr/articles/adding_analyses.html).
+Let's start with a simple example that demonstrates the core concepts:
 
 ```{r, collapse=FALSE}
+library(plnr)
 library(ggplot2)
 library(data.table)
 
-# We begin by defining a new plan
-p <- plnr::Plan$new()
+# Create a new plan
+p <- Plan$new()
 
-# We add sources of data
-# We can add data directly
+# Add data
 p$add_data(
   name = "deaths",
   direct = data.table(deaths=1:4, year=2001:2004)
 )
 
-# We can add data functions that return data
-p$add_data(
-  name = "ok",
-  fn = function() {
-    3
-  }
-)
-
-# We can then add a simple analysis that returns a figure.
-# Because this is a single-analysis plan, we begin by adding the argsets.
-
-# We add the first argset to the plan
+# Add argsets for different years
 p$add_argset(
   name = "fig_1_2002",
   year_max = 2002
 )
 
-# And another argset
 p$add_argset(
   name = "fig_1_2003",
   year_max = 2003
 )
 
-# And another argset
-# (don't need to provide a name if you refer to it via index)
-p$add_argset(
-  year_max = 2004
-)
-
-# Create an analysis function
-# (takes two arguments -- data and argset)
-fn_fig_1 <- function(data, argset){
-  plot_data <- data$deaths[year<= argset$year_max]
+# Define analysis function
+fn_fig_1 <- function(data, argset) {
+  plot_data <- data$deaths[year <= argset$year_max]
   
-  q <- ggplot(plot_data, aes(x=year, y=deaths))
-  q <- q + geom_line()
-  q <- q + geom_point(size=3)
-  q <- q + labs(title = glue::glue("Deaths from 2001 until {argset$year_max}"))
-  q
+  ggplot(plot_data, aes(x=year, y=deaths)) +
+    geom_line() +
+    geom_point(size=3) +
+    labs(title = glue::glue("Deaths from 2001 until {argset$year_max}"))
 }
 
-# Apply the analysis function to all argsets
+# Apply function to all argsets
 p$apply_action_fn_to_all_argsets(fn_name = "fn_fig_1")
 
-# How many analyses have we created?
-p$x_length()
+# Run analyses
+p$run_one("fig_1_2002")
+```
 
-# Examine the argsets that are available
-p$get_argsets_as_dt()
+## Advanced Features
 
-# When debugging and developing code, we have a number of
-# convenience functions that let us directly access the
-# data and argsets.
+### Data Management
 
-# We can directly access the data:
+The framework ensures efficient data management by:
+- Loading data once and reusing across analyses
+- Separating data cleaning from analysis
+- Providing hash-based tracking of data changes
+
+### Debugging Tools
+
+`plnr` includes several tools to help with development and debugging:
+
+```{r, collapse=FALSE}
+# Access data directly
 p$get_data()
 
-# We can access the argset by index (i.e. first argset):
-p$get_argset(1)
-
-# We can also access the argset by name:
+# Access specific argset
 p$get_argset("fig_1_2002")
 
-# We can acess the analysis (function + argset) by both index and name:
+# Access analysis by name or index
 p$get_analysis(1)
 
-# We recommend using plnr::is_run_directly() to hide
-# the first two lines of the analysis function that directly 
-# extracts the needed data and argset for one of your analyses.
-# This allows for simple debugging and code development
-# (the programmer would manually run the first two lines
-# of code and then run line-by-line inside the function)
-fn_analysis <- function(data, argset){
-  if(plnr::is_run_directly()){
+# Use is_run_directly() for development
+fn_analysis <- function(data, argset) {
+  if(plnr::is_run_directly()) {
     data <- p$get_data()
     argset <- p$get_argset("fig_1_2002")
   }
   
   # function continues here
 }
-
-# We can run the analysis for each argset (by index and name):
-p$run_one("fig_1_2002")
-p$run_one("fig_1_2003")
-p$run_one(3)
 ```
 
-## fn_name or fn?
+### Function Naming
 
-In the functions `add_analysis`, `add_analysis_from_df`, `apply_action_fn_to_all_argsets`, and `add_data` there is the option to use either `fn_name` or `fn` to add the function.
-
-We use them as follows:
+When adding analyses, you can use either `fn_name` or `fn`:
 
 ```{r, collapse=FALSE}
-library(ggplot2)
-library(data.table)
-
-# We begin by defining a new plan and adding data
-p <- plnr::Plan$new()
-p$add_data(direct = data.table(deaths=1:4, year=2001:2004), name = "deaths")
-
-# We can then add the analysis with `fn_name`
+# Using fn_name (recommended)
 p$add_analysis(
   name = "fig_1_2002",
   fn_name = "fn_fig_1",
   year_max = 2002
 )
 
-# Or we can add the analysis with `fn_name`
+# Using fn (for function factories)
 p$add_analysis(
   name = "fig_1_2003",
   fn = fn_fig_1,
   year_max = 2003
 )
-
-p$run_one("fig_1_2002")
-p$run_one("fig_1_2003")
 ```
 
-The difference is that with `fn_name` we provide the name of the function (e.g. `fn_name = "fn_fig_1"`) while with `fn` we provide the actual function (e.g. `fn = fn_fig_1`).
+### Hash-based Caching
 
-It is recommended to use `fn_name` because `fn_name` calls the function via `do.call` which means that RStudio debugging will work properly. The only reason you would use `fn` is when you are using [function factories](https://adv-r.hadley.nz/function-factories.html).
-
-## Hash
-
-A hash function is used to map data of arbitrary size to fixed-size values. We can use this to uniquely identify datasets.
-
-The `Plan` method `get_data` will automatically compute the [spookyhash](https://github.com/k0dai/spookyhash) via digest::digest for:
-
--   The entire named list ('current')
--   Each element in the named list ('current_elements')
+The framework uses hashing to track data changes:
 
 ```{r, collapse=FALSE}
-library(data.table)
-
-# We begin by defining a new plan and adding data
-p1 <- plnr::Plan$new()
+# Create two plans with same data
+p1 <- Plan$new()
 p1$add_data(direct = data.table(deaths=1:4, year=2001:2004), name = "deaths")
 p1$add_data(direct = data.table(deaths=1:4, year=2001:2004), name = "deaths2")
-p1$add_data(direct = data.table(deaths=1:5, year=2001:2005), name = "deaths3")
 
-# The hash for 'deaths' and 'deaths2' is the same.
-# The hash is different for 'deaths3' (different data).
-p1$get_data()$hash$current_elements
-
-# We begin by defining a new plan and adding data
-p2 <- plnr::Plan$new()
+p2 <- Plan$new()
 p2$add_data(direct = data.table(deaths=1:4, year=2001:2004), name = "deaths")
 p2$add_data(direct = data.table(deaths=1:4, year=2001:2004), name = "deaths2")
 
-# The hashes for p1 'deaths', p1 'deaths2', p2 'deaths', and p2 'deaths2'
-# are all identical, because the content within each of the datasets is the same.
-p2$get_data()$hash$current_elements
+# Same data has same hash
+identical(p1$get_data()$hash$current_elements, p2$get_data()$hash$current_elements)
 
-# The hash for the entire named list is different for p1 vs p2
-# because p1 has 3 datasets while p2 only has 2.
-p1$get_data()$hash$current
-p2$get_data()$hash$current
+# Different data has different hash
+p1$add_data(direct = data.table(deaths=1:5, year=2001:2005), name = "deaths3")
+p1$get_data()$hash$current_elements
 ```
+
+## Best Practices
+
+1. **Data Organization**
+   - Keep data cleaning separate from analysis
+   - Use meaningful names for datasets
+   - Document data structure and assumptions
+
+2. **Analysis Functions**
+   - Always accept `data` and `argset` parameters
+   - Use `is_run_directly()` for development
+   - Keep functions focused and single-purpose
+
+3. **Plan Structure**
+   - Use meaningful names for argsets and analyses
+   - Group related analyses together
+   - Document plan structure and dependencies
+
+4. **Development Workflow**
+   - Start with small examples
+   - Use debugging tools during development
+   - Test analyses individually before running full plan
+
+## Next Steps
+
+1. Read the [Adding Analyses](https://www.csids.no/plnr/articles/adding_analyses.html) vignette for more detailed examples
+2. Check out the [package website](https://www.csids.no/plnr/) for additional resources
+3. Explore the function documentation with `help(package="plnr")`

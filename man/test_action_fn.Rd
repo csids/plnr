@@ -2,15 +2,19 @@
 % Please edit documentation in R/plan.R
 \name{test_action_fn}
 \alias{test_action_fn}
-\title{A test action_fn for an analysis that returns the value 1}
+\title{Test action function that returns a constant value}
 \usage{
 test_action_fn(data, argset)
 }
 \arguments{
-\item{data}{Data}
+\item{data}{A named list containing the datasets (unused in this example)}
 
-\item{argset}{argset}
+\item{argset}{A named list containing the arguments (unused in this example)}
+}
+\value{
+The integer 1
 }
 \description{
-A test action_fn for an analysis that returns the value 1
+A simple test function that always returns 1, useful for testing
+the Plan framework's functionality.
 }

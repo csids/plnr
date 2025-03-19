@@ -2,11 +2,27 @@
 % Please edit documentation in R/is_run_directly.R
 \name{is_run_directly}
 \alias{is_run_directly}
-\title{Is this code run directly?}
+\title{Check if code is being run directly or from within a function}
 \usage{
 is_run_directly()
 }
+\value{
+A logical value: \code{TRUE} if the code is being run directly (i.e., from the global
+environment), \code{FALSE} if it's being run from within a function call
+}
 \description{
-This function determines if it is being called from within a function
-or if it is being run directly
+This function determines whether code is being executed directly in the global environment
+or from within a function call. It's particularly useful for development and debugging
+purposes, allowing functions to behave differently when run directly versus when called
+as part of a larger analysis plan.
+}
+\examples{
+# When run directly
+is_run_directly()  # TRUE
+
+# When run from within a function
+test_fn <- function() {
+  is_run_directly()  # FALSE
+}
+test_fn()
 }

@@ -1,13 +1,35 @@
-#' Try a code snipped multiple times.
+#' Retry code execution with exponential backoff
 #'
-#' Adapted from function try_again from package testthat.
-#' @param x code
-#' @param times Number of times to try
-#' @param delay_seconds_min Number of seconds to delay on failure
-#' @param delay_seconds_max Number of seconds to delay on failure
-#' @param verbose Boolean. Do you want information?
+#' This function attempts to execute code multiple times with random delays between
+#' attempts. It's particularly useful for handling transient failures in operations
+#' that may succeed on subsequent attempts, such as network requests or file operations.
+#'
+#' The function is adapted from the `try_again` function in the testthat package,
+#' but with additional features for controlling retry behavior and verbosity.
+#'
+#' @param x The code to execute (as an expression)
+#' @param times Integer, the maximum number of attempts to make. Defaults to 2
+#' @param delay_seconds_min Numeric, the minimum delay in seconds between attempts.
+#' Defaults to 5
+#' @param delay_seconds_max Numeric, the maximum delay in seconds between attempts.
+#' Defaults to 10
+#' @param verbose Logical, whether to show progress information. Defaults to `FALSE`
+#' @return `TRUE` invisibly if successful, otherwise throws an error with the last
+#' error message
+#' @examples
+#' # Try a simple operation
+#' try_again({
+#'   # Your code here
+#'   stop("Simulated error")
+#' }, times = 3, verbose = TRUE)
+#'
+#' # Try with custom delays
+#' try_again({
+#'   # Your code here
+#'   stop("Simulated error")
+#' }, delay_seconds_min = 1, delay_seconds_max = 3)
 #' @export
-try_again <- function (x, times = 2, delay_seconds_min = 5, delay_seconds_max = 10, verbose = FALSE) {
+try_again <- function(x, times = 2, delay_seconds_min = 5, delay_seconds_max = 10, verbose = FALSE) {
   i <- 1
   while (i <= times) {
     err <- tryCatch(withCallingHandlers({

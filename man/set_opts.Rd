@@ -2,13 +2,25 @@
 % Please edit documentation in R/set_opts.R
 \name{set_opts}
 \alias{set_opts}
-\title{set_opts}
+\title{Set package configuration options}
 \usage{
 set_opts(force_verbose = FALSE)
 }
 \arguments{
-\item{force_verbose}{Force verbose}
+\item{force_verbose}{Logical, whether to force verbose output messages regardless
+of the interactive state. Defaults to \code{FALSE}}
+}
+\value{
+NULL, modifies the package's internal configuration
 }
 \description{
-set_opts
+This function allows users to configure package-wide options, such as verbosity
+of output messages. It modifies the package's internal configuration state.
+}
+\examples{
+# Enable verbose output
+set_opts(force_verbose = TRUE)
+
+# Disable verbose output
+set_opts(force_verbose = FALSE)
 }

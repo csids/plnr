@@ -1,3 +1,13 @@
+# Version 2025.3.19
+
+- Comprehensive improvements to roxygen2 documentation across all R files:
+  - Enhanced Plan class documentation with better structure and clearer explanations
+  - Improved method documentation with detailed parameter descriptions and examples
+  - Added comprehensive documentation for internal functions
+  - Enhanced documentation for utility functions (is_run_directly, get_anything, expand_list)
+  - Added detailed examples and usage patterns for all functions
+  - Improved clarity and consistency across all documentation
+
 # Version 2024.1.18
 
 - plan$run_all_parallel public method created.

@@ -2,7 +2,7 @@
 % Please edit documentation in R/try_again.R
 \name{try_again}
 \alias{try_again}
-\title{Try a code snipped multiple times.}
+\title{Retry code execution with exponential backoff}
 \usage{
 try_again(
   x,
@@ -13,16 +13,41 @@ try_again(
 )
 }
 \arguments{
-\item{x}{code}
+\item{x}{The code to execute (as an expression)}
 
-\item{times}{Number of times to try}
+\item{times}{Integer, the maximum number of attempts to make. Defaults to 2}
 
-\item{delay_seconds_min}{Number of seconds to delay on failure}
+\item{delay_seconds_min}{Numeric, the minimum delay in seconds between attempts.
+Defaults to 5}
 
-\item{delay_seconds_max}{Number of seconds to delay on failure}
+\item{delay_seconds_max}{Numeric, the maximum delay in seconds between attempts.
+Defaults to 10}
 
-\item{verbose}{Boolean. Do you want information?}
+\item{verbose}{Logical, whether to show progress information. Defaults to \code{FALSE}}
+}
+\value{
+\code{TRUE} invisibly if successful, otherwise throws an error with the last
+error message
 }
 \description{
-Adapted from function try_again from package testthat.
+This function attempts to execute code multiple times with random delays between
+attempts. It's particularly useful for handling transient failures in operations
+that may succeed on subsequent attempts, such as network requests or file operations.
+}
+\details{
+The function is adapted from the \code{try_again} function in the testthat package,
+but with additional features for controlling retry behavior and verbosity.
+}
+\examples{
+# Try a simple operation
+try_again({
+  # Your code here
+  stop("Simulated error")
+}, times = 3, verbose = TRUE)
+
+# Try with custom delays
+try_again({
+  # Your code here
+  stop("Simulated error")
+}, delay_seconds_min = 1, delay_seconds_max = 3)
 }

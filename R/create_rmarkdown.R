@@ -1,5 +1,27 @@
-#' Create example rmarkdown project
-#' @param home Location of the 'home' directory
+#' Create an example R Markdown project structure
+#'
+#' This function creates a complete example project structure for an R Markdown analysis
+#' using the `plnr` framework. It sets up a standardized directory structure and creates
+#' example files demonstrating how to use `plnr` for data analysis and report generation.
+#'
+#' The created project includes:
+#' - A main `run.R` script that initializes the project and demonstrates `plnr` usage
+#' - Example analysis functions in the `R` directory
+#' - A template R Markdown document
+#' - Standard project directories (results, paper, raw)
+#'
+#' @param home Character string, the path where the project should be created
+#' @return NULL, creates files and directories in the specified location
+#' @examples
+#' # Create a temporary directory for the example
+#' temp_dir <- tempfile("plnr_example_")
+#' create_rmarkdown(temp_dir)
+#'
+#' # View the created structure
+#' list.files(temp_dir, recursive = TRUE)
+#'
+#' # Clean up
+#' unlink(temp_dir, recursive = TRUE)
 #' @export
 create_rmarkdown <- function(home) {
   fs::dir_create(fs::path(home))

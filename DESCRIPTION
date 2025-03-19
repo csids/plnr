@@ -1,41 +1,49 @@
 Package: plnr
-Title: A Framework for Planing Analyses
+Title: A Framework for Planning and Executing Analyses
 Version: 2022.11.23
 Authors@R: c(
   person(c("Richard","Aubrey"), "White", email = "hello@rwhite.no", role = c("aut", "cre"),comment = c(ORCID = "0000-0002-6747-1726")),
   person("CSIDS", email = "hello@csids.no", role = c("cph"))
   )
-Description: A framework for planning analyses within the mental model where you 
-    have one (or more) datasets and want to run either A) The same function 
-    multiple times with different arguments, or B) Multiple functions. 
-    This is appropriate when A) Applying the same function to multiple strata (e.g., locations, age groups),
-    B) Applying the same statistical method to multiple variables (e.g. exposures). or C)
-    Creating multiple different tables or graphs for a report.
+Description: A comprehensive framework for planning and executing analyses in R. 
+    It provides a structured approach to:
+    - Running the same function multiple times with different arguments
+    - Executing multiple different functions on the same datasets
+    - Creating systematic analyses across multiple strata or variables
+    The framework is particularly useful for:
+    - Applying the same analysis across multiple strata (e.g., locations, age groups)
+    - Running statistical methods on multiple variables (e.g., exposures, outcomes)
+    - Generating multiple tables or graphs for reports
+    - Creating systematic surveillance analyses
+    Key features include efficient data management, structured analysis planning,
+    flexible execution options, built-in debugging tools, and hash-based caching.
 License: MIT + file LICENSE
 URL: https://www.csids.no/plnr/, https://github.com/csids/plnr
 BugReports: https://github.com/csids/plnr/issues
 Encoding: UTF-8
 LazyData: true
 Depends: R (>= 3.3.0)
-Imports: data.table,
-  digest,
-  fs,
-  foreach,
-  glue,
-  pbmcapply,
-  purrr,
-  R6,
-  stats,
-  usethis,
-  utils,
-  uuid
-Suggests: testthat,
-  knitr,
-  rmarkdown,
-  progressr,
-  ggplot2,
-  readxl,
-  magrittr
+Imports: 
+    data.table,
+    digest,
+    fs,
+    foreach,
+    glue,
+    pbmcapply,
+    purrr,
+    R6,
+    stats,
+    usethis,
+    utils,
+    uuid
+Suggests: 
+    testthat,
+    knitr,
+    rmarkdown,
+    progressr,
+    ggplot2,
+    readxl,
+    magrittr
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.2
 VignetteBuilder: knitr

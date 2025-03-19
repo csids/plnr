@@ -2,17 +2,26 @@
 % Please edit documentation in R/get_anything.R
 \name{get_anything}
 \alias{get_anything}
-\title{Gets anything (including with package scoping)}
+\title{Get objects with package namespace support}
 \usage{
 get_anything(x)
 }
 \arguments{
-\item{x}{the string that we are getting}
+\item{x}{Character string specifying the object to retrieve. Can be either a simple
+object name or a namespace-qualified name (e.g., "pkg::var")}
+}
+\value{
+The requested object
 }
 \description{
-base::get does not work with package scoping (e.g. get("pkg::var")).
-plnr::get_anything works with package scoping.
+This function extends \code{base::get()} to support package namespace scoping (e.g., "pkg::var").
+It's particularly useful when working with package exports and namespace-qualified objects.
 }
 \examples{
+# Get a namespace-qualified object
 plnr::get_anything("plnr::nor_covid19_cases_by_time_location")
+
+# Get a simple object (same as base::get)
+x <- 1
+get_anything("x")
 }

@@ -2,13 +2,38 @@
 % Please edit documentation in R/create_rmarkdown.R
 \name{create_rmarkdown}
 \alias{create_rmarkdown}
-\title{Create example rmarkdown project}
+\title{Create an example R Markdown project structure}
 \usage{
 create_rmarkdown(home)
 }
 \arguments{
-\item{home}{Location of the 'home' directory}
+\item{home}{Character string, the path where the project should be created}
+}
+\value{
+NULL, creates files and directories in the specified location
 }
 \description{
-Create example rmarkdown project
+This function creates a complete example project structure for an R Markdown analysis
+using the \code{plnr} framework. It sets up a standardized directory structure and creates
+example files demonstrating how to use \code{plnr} for data analysis and report generation.
+}
+\details{
+The created project includes:
+\itemize{
+\item A main \code{run.R} script that initializes the project and demonstrates \code{plnr} usage
+\item Example analysis functions in the \code{R} directory
+\item A template R Markdown document
+\item Standard project directories (results, paper, raw)
+}
+}
+\examples{
+# Create a temporary directory for the example
+temp_dir <- tempfile("plnr_example_")
+create_rmarkdown(temp_dir)
+
+# View the created structure
+list.files(temp_dir, recursive = TRUE)
+
+# Clean up
+unlink(temp_dir, recursive = TRUE)
 }
