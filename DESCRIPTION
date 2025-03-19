@@ -6,16 +6,16 @@ Authors@R: c(
   person("CSIDS", email = "hello@csids.no", role = c("cph"))
   )
 Description: A comprehensive framework for planning and executing analyses in R. 
-    It provides a structured approach to:
-    - Running the same function multiple times with different arguments
-    - Executing multiple different functions on the same datasets
-    - Creating systematic analyses across multiple strata or variables
-    The framework is particularly useful for:
-    - Applying the same analysis across multiple strata (e.g., locations, age groups)
-    - Running statistical methods on multiple variables (e.g., exposures, outcomes)
-    - Generating multiple tables or graphs for reports
-    - Creating systematic surveillance analyses
-    Key features include efficient data management, structured analysis planning,
+    It provides a structured approach to running the same function multiple times 
+    with different arguments, executing multiple functions on the same datasets, 
+    and creating systematic analyses across multiple strata or variables. 
+
+    The framework is particularly useful for applying the same analysis across 
+    multiple strata (e.g., locations, age groups), running statistical methods 
+    on multiple variables (e.g., exposures, outcomes), generating multiple tables 
+    or graphs for reports, and creating systematic surveillance analyses. 
+
+    Key features include efficient data management, structured analysis planning, 
     flexible execution options, built-in debugging tools, and hash-based caching.
 License: MIT + file LICENSE
 URL: https://www.csids.no/plnr/, https://github.com/csids/plnr
